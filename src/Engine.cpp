@@ -17,7 +17,7 @@ namespace GameEngine{
 	bool Engine::initialise(){
 		_device = irr::createDevice(
 			irr::video::EDT_DIRECT3D9, _dimensions, 16, false, false, false, &handler);
-
+		//TODO investigate if vsync can be toggled
 		if (!_device){
 			std::cerr << "Error creating device" << std::endl;
 			return false;
