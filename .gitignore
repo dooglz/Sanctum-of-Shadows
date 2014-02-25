@@ -1,0 +1,13 @@
+bin/
+*.tlog
+*.log
+*.pdb
+*.idb
+*.lastbuildstate
+*.opensdf
+*.sdf
+*.suo
+*.user
+*.filters
+*.obj
+!resources/models/*.obj
