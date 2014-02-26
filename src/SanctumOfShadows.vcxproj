@@ -85,6 +85,7 @@
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MeshManager.cpp" />
     <ClCompile Include="MessageHandler.cpp" />
     <ClCompile Include="SanctumOfShadows.cpp" />
   </ItemGroup>
@@ -94,6 +95,7 @@
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="KeyboardHandler.h" />
+    <ClInclude Include="MeshManager.h" />
     <ClInclude Include="Message.h" />
     <ClInclude Include="MessageHandler.h" />
     <ClInclude Include="SanctumOfShadows.h" />

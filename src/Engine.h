@@ -9,6 +9,7 @@
 #include <string>
 #include <irrlicht.h>
 #include "KeyboardHandler.h"
+#include "MeshManager.h"
 
 namespace GameEngine{
 	class Engine{
@@ -52,4 +53,5 @@ namespace GameEngine{
 
 	extern Engine engine;
 	extern KeyHandler handler;
+	extern MeshManager meshManager;
 }
