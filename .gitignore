@@ -1,4 +1,4 @@
-bin/
+bin/*/
 *.tlog
 *.log
 *.pdb
