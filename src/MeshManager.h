@@ -1,5 +1,6 @@
 #include <irrlicht.h>
 #include <iostream>
+#include <btBulletCollisionCommon.h>
 
 namespace GameEngine{
 
@@ -11,5 +12,6 @@ namespace GameEngine{
 		~MeshManager();
 		static void analyse(irr::scene::IMesh* mesh, bool deepscan);
 		static void analyseI(irr::scene::IAnimatedMesh* mesh, bool deepscan);
+		static btBvhTriangleMeshShape* convertToBulletTriangleMesh(irr::scene::IMesh* mesh);
 	};
 }

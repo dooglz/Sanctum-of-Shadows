@@ -2,6 +2,7 @@
 #include <irrlicht.h>
 #include "Message.h"
 #include "MessageHandler.h"
+
 #include "EntityManager.h"
 
 namespace GameEngine{

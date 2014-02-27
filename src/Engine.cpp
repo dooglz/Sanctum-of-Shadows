@@ -6,7 +6,6 @@
 ===============================================================================*/
 
 #include "Engine.h"
-#include "EntityManager.h"
 #include <iostream>
 
 namespace GameEngine{
@@ -34,6 +33,11 @@ namespace GameEngine{
 		{
 			return false;
 		}
+		
+		if(!Physics::initialise())
+		{
+			return false;
+		}
 
 		return true;
 	}
@@ -55,7 +59,10 @@ namespace GameEngine{
 		{
 			return false;
 		}
-	
+		
+		//2nd param is physics ticks per second.
+		Physics::world->stepSimulation(delta,60);
+
 		return true;
 	}
 

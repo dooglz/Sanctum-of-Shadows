@@ -1,4 +1,9 @@
 #include "SanctumOfShadows.h"
+#include "Box.h"
+
+#include <btBulletDynamicsCommon.h>
+
+
 irr::scene::ICameraSceneNode* camera;
 irr::scene::ICameraSceneNode* Flycamera;
 irr::scene::ICameraSceneNode* Menucamera;
@@ -36,6 +41,9 @@ bool SanctumOfShadows::init(){
 		{
 			//Center map with world origin
 			q3node->setPosition(irr::core::vector3df(-1400,-144,-1349));
+			//q3node->setMaterialFlag(irr::video::EMF_LIGHTING, true);
+			//q3node->setMaterialType(irr::video::EMT_LIGHTMAP_LIGHTING_M4);
+
 			//Create a Triangle selector (AKA hitbox) made up of all the traingles in the map mesh 
 			selector = smgr->createOctreeTriangleSelector(q3node->getMesh(), q3node, 128);
 			//register the hitbox/selector to the node
@@ -83,11 +91,42 @@ bool SanctumOfShadows::init(){
 	node->setMaterialType(irr::video::EMT_TRANSPARENT_ADD_COLOR);
 	node->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/particlewhite.bmp"));
 
-	GameEngine::meshManager.analyse(cube,true);
+	//Text physics box
+	new Box(btVector3(0,-70.0f,0),irr::core::vector3df(150.0f,1.0f,150.0f),0.0f);
+	new Box(btVector3(0,-120.0f,0),irr::core::vector3df(400.0f,1.0f,400.0f),0.0f);
+	//
+
+	irr::scene::ISceneNode* multiBox = smgr->addMeshSceneNode(cube,0,-1,irr::core::vector3df(0,-30.0f,0));
+	multiBox->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+	multiBox->setScale(irr::core::vector3df(10,10,10));
+
+	//GameEngine::meshManager.analyse(cube,true);
+	
+
+
+	//Rigid body
+	btTransform transform;
+	transform.setIdentity();
+	transform.setOrigin(btVector3(0,0,0));
+	btDefaultMotionState* motionstate = new btDefaultMotionState(transform);
+
+	//setup shape
+	btCollisionShape* shape = GameEngine::meshManager.convertToBulletTriangleMesh(cube);
+
+	//calc intertia, based on mass and shape
+	btVector3 localInertia(0,0,0);
+	//shape->calculateLocalInertia(1.0f,localInertia);
+
+	//create the RB
+	btRigidBody* _rigidBody = new btRigidBody(0,0,shape,localInertia);
+	//add to world
+	GameEngine::Physics::world->addRigidBody(_rigidBody);
+
 
 	return true;
 }
 
+bool a;
 bool SanctumOfShadows::update(float delta){
 
 	//TODO, move some of this to baseclass
@@ -102,6 +141,13 @@ bool SanctumOfShadows::update(float delta){
 	}
 	if(GameEngine::handler.keyDown(irr::KEY_F4)){
 		GameEngine::engine.getDevice()->getSceneManager()->setActiveCamera(Menucamera);
+	}
+	if(GameEngine::handler.keyDown(irr::KEY_F5)){
+		new Box(btVector3(-75.0f + ((((float) rand()) / ((float) RAND_MAX))*150.0f),0,-75.0f + ((((float) rand()) / ((float) RAND_MAX))*150.0f)),irr::core::vector3df(10.0f,10.0f,10.0f),10.0f);
+	}
+	if(!a && GameEngine::handler.keyDown(irr::KEY_F6)){
+		new Box(btVector3(0,30,0),irr::core::vector3df(10.0f,10.0f,10.0f),10.0f);
+		a = true;
 	}
 
 	return true;

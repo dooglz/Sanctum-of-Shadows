@@ -24,6 +24,10 @@ namespace GameEngine{
 			static void registerEntity(Entity* entity);
 			static void removeEntity(Entity* entity);
 			static Entity* getEntity(int id);
+			static int entityCount()
+			{
+				return _entities.size();
+			}
 			static std::list<Entity*>* getNamedEntity(const std::string& name);
 			static void shutdown();
 			static void debug();
