@@ -18,7 +18,7 @@ void Player::unloadContent()
 
 void Player::update(float delta)
 {
-	_physicsMesh->getRB()->applyForce( btVector3(10000 , 0 ,0 ), btVector3(0 , 0 ,0 ));
+	_physicsMesh->getRB()->applyForce( btVector3(100 , 0 ,0 ), btVector3(0 , 0 ,0 ));
 }
 
 
