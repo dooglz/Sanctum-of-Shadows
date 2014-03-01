@@ -21,6 +21,7 @@ public:
 	void unloadContent();
 	void update(float delta);
 	void update2(float delta);
+	void update3(float delta);
 };
 
 /*

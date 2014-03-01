@@ -118,5 +118,113 @@ void Player::update2(float delta)
 		std::cout << std::endl;
 			_camera->setRotation(_physicsMesh->getNode()->getRotation());
 
+}
 
+void Player::update3(float delta)
+{
+        irr::scene::ICameraSceneNode* camera = _camera;
+		bool firstUpdate = true;
+		bool CursorControl = true;
+		bool NoVerticalMovement= true;
+		float MoveSpeed = 1000.0f;
+
+
+        // If the camera isn't the active camera, and receiving input, then don't process it.
+        if(!camera->isInputReceiverEnabled())
+                return;
+
+        irr::scene::ISceneManager * smgr = camera->getSceneManager();
+        if(smgr && smgr->getActiveCamera() != camera)
+                return;
+
+        // get time
+        irr::f32 timeDiff = (delta);
+
+        // update position
+        irr::core::vector3df pos = camera->getPosition();
+
+        // Update rotation
+       irr::core::vector3df target = (camera->getTarget() - camera->getAbsolutePosition());
+       irr::core::vector3df relativeRotation = target.getHorizontalAngle();
+	   
+        if (CursorControl)
+        {
+
+        }
+
+        // set target
+
+        target.set(0,0, irr::core::max_(1.f, pos.getLength()));
+        
+        irr::core::vector3df movedir = target;
+
+        irr::core::matrix4 mat;
+        mat.setRotationDegrees(irr::core::vector3df(relativeRotation.X, relativeRotation.Y, 0));
+        mat.transformVect(target);
+
+        //cout<<"B: "<<movedir.X<<" "<<movedir.Y<<" "<<movedir.Z<<endl;
+        if (NoVerticalMovement)
+        {
+                mat.setRotationDegrees(irr::core::vector3df(0, relativeRotation.Y, 0));
+                mat.transformVect(movedir);
+                //cout<<"C: "<<movedir.X<<" "<<movedir.Y<<" "<<movedir.Z<<endl;
+        }
+        else
+        {
+                movedir = target;
+        }
+
+        movedir.normalize();
+
+        movedir.Y = 0;
+        //body->getBodyPtr()->clearForces();
+		if (GameEngine::handler.keyDown(irr::KEY_KEY_W))
+        {
+
+                pos += movedir * timeDiff * MoveSpeed;
+				_physicsMesh->getRB()->applyCentralImpulse(GameEngine::Physics::irrVec3ToBtVec3(movedir * timeDiff * MoveSpeed));
+        }
+        if (GameEngine::handler.keyDown(irr::KEY_KEY_S))
+        {
+                pos -= movedir * timeDiff * MoveSpeed;
+                _physicsMesh->getRB()->applyCentralImpulse(GameEngine::Physics::irrVec3ToBtVec3(-movedir * timeDiff * MoveSpeed));
+        }
+        // strafing
+
+        irr::core::vector3df strafevect = target;
+        strafevect = strafevect.crossProduct(camera->getUpVector());
+
+        if (NoVerticalMovement)
+                strafevect.Y = 0.0f;
+
+        strafevect.normalize();
+
+        if (GameEngine::handler.keyDown(irr::KEY_KEY_A))
+        {
+        //      pos += strafevect * timeDiff * MoveSpeed;
+        //      body->setPosition(pos);
+                _physicsMesh->getRB()->applyCentralImpulse(GameEngine::Physics::irrVec3ToBtVec3(strafevect * timeDiff * MoveSpeed));
+        }
+        if (GameEngine::handler.keyDown(irr::KEY_KEY_D))
+        {
+                //pos -= strafevect * timeDiff * MoveSpeed;
+                //body->setPosition(pos);
+                _physicsMesh->getRB()->applyCentralImpulse(GameEngine::Physics::irrVec3ToBtVec3(-(strafevect * timeDiff * MoveSpeed)));
+        }
+
+        // write translation
+        
+        
+        //body->setPosition(pos);
+        //body->setRotation(relativeRotation);
+        //camera->setPosition(pos);
+        
+        // write right target
+        target += pos;
+        camera->setTarget(target);
+
+        
+/*      target += pos;
+        camera->setTarget(target);
+/**/
 }
