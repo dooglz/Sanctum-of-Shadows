@@ -150,6 +150,7 @@ void Player::update3(float delta)
 
         // Update rotation
        irr::core::vector3df target = (camera->getTarget() - camera->getAbsolutePosition());
+	   target = GameEngine::Physics::btVecToirrVec3(_physicsMesh->getRB()->getWorldTransform().getBasis()[2].normalize());
        irr::core::vector3df relativeRotation = target.getHorizontalAngle();
 	   
         if (CursorControl)
