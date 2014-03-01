@@ -10,6 +10,7 @@ private:
 public:
 	Player(){};
 	~Player(){};
+	irr::scene::ICameraSceneNode* getCamera() { return _camera; }
 	void intitalise(irr::core::vector3df position);
 	bool loadContent();
 	void unloadContent();
