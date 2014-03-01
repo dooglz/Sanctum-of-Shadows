@@ -27,6 +27,8 @@ void Player::intitalise(irr::core::vector3df position)
 
 	btScalar stepHeight = btScalar(0.35);
 	m_character = new btKinematicCharacterController (m_ghostObject,capsule,stepHeight);
+
+	_physicsMesh->getRB()->setActivationState(DISABLE_DEACTIVATION);
 }
 
 bool Player::loadContent()
@@ -131,12 +133,15 @@ void Player::update3(float delta)
 
         // If the camera isn't the active camera, and receiving input, then don't process it.
         if(!camera->isInputReceiverEnabled())
+		{
                 return;
+		}
 
         irr::scene::ISceneManager * smgr = camera->getSceneManager();
-        if(smgr && smgr->getActiveCamera() != camera)
+/*        if(smgr && smgr->getActiveCamera() != camera)
+		{
                 return;
-
+		}*/
         // get time
         irr::f32 timeDiff = (delta);
 
@@ -182,11 +187,13 @@ void Player::update3(float delta)
         {
 
                 pos += movedir * timeDiff * MoveSpeed;
+				btVector3 b = GameEngine::Physics::irrVec3ToBtVec3(movedir * timeDiff * MoveSpeed);
 				_physicsMesh->getRB()->applyCentralImpulse(GameEngine::Physics::irrVec3ToBtVec3(movedir * timeDiff * MoveSpeed));
         }
         if (GameEngine::handler.keyDown(irr::KEY_KEY_S))
         {
                 pos -= movedir * timeDiff * MoveSpeed;
+				btVector3 b = GameEngine::Physics::irrVec3ToBtVec3(movedir * timeDiff * MoveSpeed);
                 _physicsMesh->getRB()->applyCentralImpulse(GameEngine::Physics::irrVec3ToBtVec3(-movedir * timeDiff * MoveSpeed));
         }
         // strafing
