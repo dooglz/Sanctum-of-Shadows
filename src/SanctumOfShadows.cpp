@@ -1,6 +1,7 @@
 #include "SanctumOfShadows.h"
 #include "Box.h"
 #include "Level.h"
+#include "Player.h"
 
 #include <btBulletDynamicsCommon.h>
 
@@ -9,6 +10,7 @@ irr::scene::ICameraSceneNode* Flycamera;
 irr::scene::ICameraSceneNode* Menucamera;
 bool _flying;
 Level* level = new Level();
+Player* player;
 
 bool SanctumOfShadows::init(){
 	std::wcout <<  _gameTitle << " Game code init" << std::endl;
@@ -56,6 +58,10 @@ bool SanctumOfShadows::init(){
 	LightSpriteNode->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	LightSpriteNode->setMaterialType(irr::video::EMT_TRANSPARENT_ADD_COLOR);
 	LightSpriteNode->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/particlewhite.bmp"));
+
+
+	player = new Player();
+	player->intitalise(irr::core::vector3df(0,200.0f,0));
 
 
 	return true;

@@ -1,12 +1,14 @@
 #pragma once
 #include <irrlicht.h>
+#include "PhysicalEntity.h"
+#include "Box.h"
 
 class Player{
 private:
-	void* _physicsMesh;
+	GameEngine::PhysicalEntity* _physicsMesh;
 	irr::scene::ICameraSceneNode* _camera;
 public:
-	Player();
+	Player(){};
 	~Player(){};
 	void intitalise(irr::core::vector3df position);
 	bool loadContent();
