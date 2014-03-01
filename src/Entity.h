@@ -14,7 +14,7 @@ namespace GameEngine{
 		irr::scene::ISceneNode* _node;
 		bool _alive;
 		bool _shouldRemove;
-		void die();
+		virtual void die();
 
 	public:
 		Entity(int id, irr::scene::ISceneNode* node,const std::string& name);

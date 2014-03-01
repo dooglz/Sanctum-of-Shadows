@@ -1,6 +1,7 @@
 #pragma once
 #include <btBulletCollisionCommon.h>
 #include "Entity.h"
+#include "Engine.h"
 
 namespace GameEngine{
 
@@ -8,6 +9,7 @@ namespace GameEngine{
 	protected:
 		btRigidBody* _rigidBody;
 		btVector3 _position;
+		void die();
 	public:
 		PhysicalEntity(int id, irr::scene::ISceneNode* node,const std::string& name):Entity(id,node,name){}
 		virtual ~PhysicalEntity(){}

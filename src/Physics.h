@@ -1,5 +1,6 @@
 #include <btBulletCollisionCommon.h>
 #include <btBulletDynamicsCommon.h>
+#include <irrlicht.h>
 
 namespace GameEngine{
 	class Physics{
@@ -13,5 +14,9 @@ namespace GameEngine{
 		static btDiscreteDynamicsWorld* world;
 		static bool initialise();
 		static void shutdown();
+		//TODO actually do this properly
+		static btVector3 irrVec3ToBtVec3(irr::core::vector3df iVec){
+			return btVector3(iVec.X,iVec.Y,iVec.Z);
+		}
 	};
 }

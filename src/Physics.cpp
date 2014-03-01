@@ -1,6 +1,8 @@
 #include "Physics.h"
 
 namespace GameEngine{
+
+	//physics
 	btDiscreteDynamicsWorld* Physics::world;
 	btDefaultCollisionConfiguration* Physics::_collisionConfig;
 	btCollisionDispatcher* Physics::_dispatcher;
@@ -23,4 +25,5 @@ namespace GameEngine{
 		delete _broadPhase;
 		delete _collisionConfig;
 	}
+
 }

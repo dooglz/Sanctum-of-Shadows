@@ -6,6 +6,12 @@ namespace GameEngine{
 	void PhysicalEntity::update(float delta)
 	{
 		btVector3 point = _rigidBody->getCenterOfMassPosition();
+		//have we fallen out of world?
+		if(point.getY() < -200.0f)
+		{
+			die();
+			return;
+		}
 		//If the position hasn't changed, don't bother poking irrlicht
 		if(point == _position)
 		{
@@ -27,5 +33,12 @@ namespace GameEngine{
 
 			_node->setRotation(euler);
 		}
+	}
+	void PhysicalEntity::die(){
+		_node->remove();
+		GameEngine::Physics::world->removeRigidBody(_rigidBody);
+		delete _rigidBody;
+		_rigidBody = 0;
+		Entity::die();
 	}
 }

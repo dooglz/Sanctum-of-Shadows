@@ -13,7 +13,7 @@
 
 #include "MeshManager.h"
 #include "Physics.h"
-
+#include "BulletDebugDraw.h"
 
 namespace GameEngine{
 	class Engine{

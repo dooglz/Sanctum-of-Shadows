@@ -63,7 +63,6 @@ namespace GameEngine{
 	}
 	*/
 
-	
 	btBvhTriangleMeshShape* MeshManager::convertToBulletTriangleMesh(irr::scene::IMesh* mesh){
 		unsigned int i,j;
 		int numTriangles = 0; //this is the count of traingles,  = indices / 3
@@ -103,7 +102,8 @@ namespace GameEngine{
 				// scale the indices from multiple meshbuffers to single index array
 				//indices[ci]=cif+mb_indices[j];
 				indices[ci]=mb_indices[j];
-				std::cout << ci << " " << indices[ci] << std::endl;
+			//	indices[ci+cif]=mb_indices[j];
+			//	std::cout << ci << " " << indices[ci] << std::endl;
 
 				ci++;
 			}
@@ -120,10 +120,10 @@ namespace GameEngine{
 					vertices[cv] = mb_vertices[j].Pos.X;
 					vertices[cv+1] = mb_vertices[j].Pos.X;
 					vertices[cv+2] = mb_vertices[j].Pos.X;
-					std::cout << cv << " " << vertices[cv] << std::endl;
+					//std::cout << cv << " " << vertices[cv] << std::endl;
 					cv += 3;
 				} 
-				std::cout << std::endl;
+			//	std::cout << std::endl;
 			}
 			else if(mb->getVertexType()==irr::video::EVT_2TCOORDS)
 			{
@@ -134,47 +134,49 @@ namespace GameEngine{
 					vertices[cv] = mb_vertices[j].Pos.X;
 					vertices[cv+1] = mb_vertices[j].Pos.X;
 					vertices[cv+2] = mb_vertices[j].Pos.X;
-					std::cout << cv << " " << vertices[cv] << std::endl;
+				//	std::cout << cv << " " << vertices[cv] << std::endl;
 					cv += 3;
 				}    
-				std::cout << std::endl;
+			//	std::cout << std::endl;
 			}
 		}
-
-
+		
 		btTriangleIndexVertexArray* meshInterface = new btTriangleIndexVertexArray(
 			//number of Triangles	
 			numTriangles/3,
 			//the array of vertex indices that makes up the triangles
-			(int*)(indices),
+			indices,
 			//number of bytes to skip in the vertex indices array from the start of one triangle to the start of the next triangle.
 			triangleIndexStride,
 			//number of vertices
-			(numVerticies*3)-1,
+			(numVerticies*3),
 			//the array of vertex positions
-			(btScalar*)vertices,
+			vertices,
 			//number of bytes to skip in the vertex position array from the start of one vertex to the start of the next vertex.
 			vertStride
 		);
-		/*
-		btTriangleIndexVertexArray* meshInterface = new btTriangleIndexVertexArray();
+		
+		btTriangleIndexVertexArray* meshInterface2 = new btTriangleIndexVertexArray();
 		btIndexedMesh part;
-		part.m
-		part.m_vertexBase = (const btScalar*)vertices;
+		part.m_vertexBase = (const unsigned char*)vertices;
 		part.m_vertexStride = vertStride;
 		part.m_numVertices = (numVerticies*3);
-		part.m_triangleIndexBase = (const int*)indices;
+		part.m_triangleIndexBase = (const unsigned char*)indices;
 		part.m_triangleIndexStride = triangleIndexStride;
-		part.m_numTriangles = numTriangles;
-		part.m_indexType = PHY_SHORT;
+		part.m_numTriangles = (numTriangles / 3);
+		//part.m_indexType = PHY_SHORT;
+
+		std::cout << "vertstride: " << vertStride << "\t(numVerticies*3): " << (numVerticies*3) << std::endl;
+		std::cout << "triangleIndexStride: " << triangleIndexStride << "\t(numTriangles / 3): " << (numTriangles / 3) << std::endl;
+		std::cout << "vertices[0]: " << vertices[0] << "\tindices[0]: " << indices[0] << std::endl;
+		std::cout << "(const unsigned char*)vertices[0]: " << ((const unsigned char*)vertices)[0] << std::endl;
+		std::cout << "sizeof(vertices): " << sizeof(vertices) << "\tsizeof((const unsigned char*)vertices): " << sizeof((const unsigned char*)vertices) << std::endl;
 
 		meshInterface->addIndexedMesh(part,PHY_SHORT);
-		*/
-		std::cout << indices[numTriangles-1] << " " << vertices[(numVerticies*3)-1] << std::endl;
 
-
-		btBvhTriangleMeshShape* shape = new btBvhTriangleMeshShape(meshInterface,true,false);
-		shape->isInfinite();
+		btBvhTriangleMeshShape* shape = new btBvhTriangleMeshShape(meshInterface,true,true);
+		//shape->setLocalScaling(btVector3(100.0f,100.0f,100.0f));
+		//shape->isInfinite();
 		return shape;
 	}
 

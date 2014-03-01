@@ -1,13 +1,14 @@
 #include "SanctumOfShadows.h"
 #include "Box.h"
+#include "Level.h"
 
 #include <btBulletDynamicsCommon.h>
-
 
 irr::scene::ICameraSceneNode* camera;
 irr::scene::ICameraSceneNode* Flycamera;
 irr::scene::ICameraSceneNode* Menucamera;
 bool _flying;
+Level* level = new Level();
 
 bool SanctumOfShadows::init(){
 	std::wcout <<  _gameTitle << " Game code init" << std::endl;
@@ -29,40 +30,20 @@ bool SanctumOfShadows::init(){
 	originBox->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	originBox->setScale(irr::core::vector3df(10,10,10));
 	//load the level
-	GameEngine::engine.getDevice()->getFileSystem()->addFileArchive("maps/map-20kdm2.pk3");
-	irr::scene::IAnimatedMesh* mesh = smgr->getMesh("20kdm2.bsp");
-    irr::scene::IMeshSceneNode* q3node = 0;
-	irr::scene::ITriangleSelector* selector = 0;
-    if (mesh)
-	{
-		//GameEngine::meshManager.analyseI(mesh);
-		q3node = smgr->addOctreeSceneNode(mesh->getMesh(0), 0, -1, 1024);
-		if (q3node)
-		{
-			//Center map with world origin
-			q3node->setPosition(irr::core::vector3df(-1400,-144,-1349));
-			//q3node->setMaterialFlag(irr::video::EMF_LIGHTING, true);
-			//q3node->setMaterialType(irr::video::EMT_LIGHTMAP_LIGHTING_M4);
-
-			//Create a Triangle selector (AKA hitbox) made up of all the traingles in the map mesh 
-			selector = smgr->createOctreeTriangleSelector(q3node->getMesh(), q3node, 128);
-			//register the hitbox/selector to the node
-			q3node->setTriangleSelector(selector);
-			// We're not done with this selector yet, so don't drop it.
-		}
-	}
+	level->loadContent();
 
 	//add fps camera
 
 	camera = GameEngine::engine.getDevice()->getSceneManager()->addCameraSceneNodeFPS();
 	Flycamera = GameEngine::engine.getDevice()->getSceneManager()->addCameraSceneNodeFPS();
+	Flycamera->setFarValue(10000.0f);
 	Menucamera = GameEngine::engine.getDevice()->getSceneManager()->addCameraSceneNode(0,irr::core::vector3df(0,0,223),irr::core::vector3df(0,0,0));
 
 	//setup camera to world collision
-	if (selector)
+	if (level->getSelector())
     {
 		irr::scene::ISceneNodeAnimator* anim = smgr->createCollisionResponseAnimator(
-            selector, camera, 
+            level->getSelector(), camera, 
 			//Camera/Player size, Eplisoid, x50 hight, x30 radius
 			irr::core::vector3df(30,50,30),
 			//Gravity affecting player
@@ -71,7 +52,7 @@ bool SanctumOfShadows::init(){
 			irr::core::vector3df(0,30,0)
 		);
 		// As soon as we're done with the selector, drop it.
-        selector->drop();
+       // level->getSelector()->drop();
         camera->addAnimator(anim);
 		// And likewise, drop the animator when we're done referring to it.
         anim->drop();
@@ -93,6 +74,7 @@ bool SanctumOfShadows::init(){
 
 	//Text physics box
 	new Box(btVector3(0,-70.0f,0),irr::core::vector3df(150.0f,1.0f,150.0f),0.0f);
+	new Box(btVector3(-1400,-144,-1349),irr::core::vector3df(10.0f,1.0f,10.0f),0.0f);
 	new Box(btVector3(0,-120.0f,0),irr::core::vector3df(400.0f,1.0f,400.0f),0.0f);
 	//
 
@@ -107,26 +89,27 @@ bool SanctumOfShadows::init(){
 	//Rigid body
 	btTransform transform;
 	transform.setIdentity();
-	transform.setOrigin(btVector3(0,0,0));
+	//transform.setOrigin(btVector3(0,-30.0f,0));
+	//transform.setOrigin(btVector3(-1400,-144,-1349));
 	btDefaultMotionState* motionstate = new btDefaultMotionState(transform);
 
 	//setup shape
 	btCollisionShape* shape = GameEngine::meshManager.convertToBulletTriangleMesh(cube);
-
+	//btCollisionShape* shape = GameEngine::meshManager.convertToBulletTriangleMesh(mesh->getMesh(0));
 	//calc intertia, based on mass and shape
 	btVector3 localInertia(0,0,0);
 	//shape->calculateLocalInertia(1.0f,localInertia);
 
 	//create the RB
-	btRigidBody* _rigidBody = new btRigidBody(0,0,shape,localInertia);
+	btRigidBody* _rigidBody = new btRigidBody(0,motionstate,shape,localInertia);
 	//add to world
 	GameEngine::Physics::world->addRigidBody(_rigidBody);
-
+	std::cout << "_rigibody "<< &_rigidBody << std::endl;
 
 	return true;
 }
 
-bool a;
+bool a,b;
 bool SanctumOfShadows::update(float delta){
 
 	//TODO, move some of this to baseclass
@@ -143,12 +126,33 @@ bool SanctumOfShadows::update(float delta){
 		GameEngine::engine.getDevice()->getSceneManager()->setActiveCamera(Menucamera);
 	}
 	if(GameEngine::handler.keyDown(irr::KEY_F5)){
-		new Box(btVector3(-75.0f + ((((float) rand()) / ((float) RAND_MAX))*150.0f),0,-75.0f + ((((float) rand()) / ((float) RAND_MAX))*150.0f)),irr::core::vector3df(10.0f,10.0f,10.0f),10.0f);
+		new Box(btVector3(-75.0f + ((((float) rand()) / ((float) RAND_MAX))*150.0f),100.0f,-75.0f + ((((float) rand()) / ((float) RAND_MAX))*150.0f)),irr::core::vector3df(10.0f,10.0f,10.0f),10.0f);
 	}
 	if(!a && GameEngine::handler.keyDown(irr::KEY_F6)){
 		new Box(btVector3(0,30,0),irr::core::vector3df(10.0f,10.0f,10.0f),10.0f);
 		a = true;
 	}
+	if(GameEngine::handler.keyUp(irr::KEY_F6)){
+		a = false;
+	}
+
+	if(!b && GameEngine::handler.keyDown(irr::KEY_F7)){
+		irr::scene::ICameraSceneNode* cam = GameEngine::engine.getDevice()->getSceneManager()->getActiveCamera();
+		Box* bx = new Box(
+			GameEngine::Physics::irrVec3ToBtVec3(cam->getAbsolutePosition()),
+			irr::core::vector3df(10.0f,10.0f,10.0f),
+			10.0f
+		);
+		irr::core::vector3df start = cam->getPosition();
+		irr::core::vector3df end = (cam->getTarget() - start);
+		end.normalize();
+		bx->getRB()->setLinearVelocity(GameEngine::Physics::irrVec3ToBtVec3(end) * 100.0f);
+		b = true;
+	}
+		if(GameEngine::handler.keyUp(irr::KEY_F7)){
+		b = false;
+	}
+
 
 	return true;
 }

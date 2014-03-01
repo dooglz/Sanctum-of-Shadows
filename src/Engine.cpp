@@ -12,6 +12,9 @@ namespace GameEngine{
 
 	Engine engine = Engine();
 	KeyHandler handler = KeyHandler();
+	const bool debug_draw_bullet = true;	
+	irr::video::SMaterial debugMat;
+	DebugDraw* debugDraw;
 
 	bool Engine::initialise(){
 		_device = irr::createDevice(
@@ -38,6 +41,24 @@ namespace GameEngine{
 		{
 			return false;
 		}
+		if(debug_draw_bullet)
+		{
+			//physics debug
+			debugDraw = new DebugDraw(_device);
+			   debugDraw->setDebugMode(
+					 btIDebugDraw::DBG_DrawWireframe |
+					 btIDebugDraw::DBG_DrawAabb |
+					 btIDebugDraw::DBG_DrawContactPoints |
+					 //btIDebugDraw::DBG_DrawText |
+					 //btIDebugDraw::DBG_DrawConstraintLimits |
+					 btIDebugDraw::DBG_DrawConstraints //|
+			   );
+			  Physics::world->setDebugDrawer(debugDraw);
+
+			   debugMat.Lighting = false;
+		}
+
+
 
 		return true;
 	}
@@ -72,6 +93,14 @@ namespace GameEngine{
 		}
 		_device->getSceneManager()->drawAll();
 		_device->getGUIEnvironment()->drawAll();
+		
+		if(debug_draw_bullet)
+		{
+			_device->getVideoDriver()->setMaterial(debugMat);
+			_device->getVideoDriver()->setTransform(irr::video::ETS_WORLD, irr::core::IdentityMatrix);
+			Physics::world->debugDrawWorld();
+		}
+
 		if (!_device->getVideoDriver()->endScene()){
 			return false;
 		}
