@@ -10,7 +10,7 @@ void Level::intitalise()
 bool Level::loadContent()
 {
 	GameEngine::engine.getDevice()->getFileSystem()->addFileArchive("maps/map-20kdm2.pk3");
-	irr::scene::IAnimatedMesh* mesh = GameEngine::engine.getDevice()->getSceneManager->getMesh("20kdm2.bsp");
+	irr::scene::IAnimatedMesh* mesh = GameEngine::engine.getDevice()->getSceneManager()->getMesh("20kdm2.bsp");
     irr::scene::IMeshSceneNode* q3node = 0;
 	irr::scene::ITriangleSelector* selector = 0;
     if (mesh)
