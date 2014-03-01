@@ -2,11 +2,16 @@
 #include <irrlicht.h>
 #include "PhysicalEntity.h"
 #include "Box.h"
+#include "BulletDynamics/Character/btKinematicCharacterController.h"
+#include "BulletCollision/CollisionDispatch/btGhostObject.h"
 
 class Player{
 private:
 	GameEngine::PhysicalEntity* _physicsMesh;
 	irr::scene::ICameraSceneNode* _camera;
+	//
+	btPairCachingGhostObject* m_ghostObject;
+	btKinematicCharacterController* m_character;
 public:
 	Player(){};
 	~Player(){};
@@ -15,6 +20,7 @@ public:
 	bool loadContent();
 	void unloadContent();
 	void update(float delta);
+	void update2(float delta);
 };
 
 /*

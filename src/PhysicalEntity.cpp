@@ -13,7 +13,7 @@ namespace GameEngine{
 			return;
 		}
 		//If the position hasn't changed, don't bother poking irrlicht
-		if(point == _position)
+		if(false && point == _position)
 		{
 			return;
 		}
