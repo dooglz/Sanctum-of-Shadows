@@ -95,6 +95,7 @@
     <ClCompile Include="MessageHandler.cpp" />
     <ClCompile Include="PhysicalEntity.cpp" />
     <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="SanctumOfShadows.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -111,6 +112,7 @@
     <ClInclude Include="MessageHandler.h" />
     <ClInclude Include="PhysicalEntity.h" />
     <ClInclude Include="Physics.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="SanctumOfShadows.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
