@@ -20,9 +20,9 @@ void Player::unloadContent()
 
 void Player::update(float delta)
 {
-<<<<<<< HEAD
+
 	_physicsMesh->getRB()->applyForce( btVector3(100 , 0 ,0 ), btVector3(0 , 0 ,0 ));
-=======
+
 	//_physicsMesh->getRB()->applyCentralForce( btVector3(0 ,0 ,500 ));
 	//_physicsMesh->getRB()->applyTorque(btVector3(0,500,0));
 	if(GameEngine::handler.keyDown(irr::KEY_KEY_W))
@@ -44,7 +44,7 @@ void Player::update(float delta)
 	btVector3 angles = _physicsMesh->getRB()->getAngularFactor();
 	_physicsMesh->getRB()->setAngularFactor(btVector3(0, angles.getY(), 0));
 	_camera->setRotation(_physicsMesh->getNode()->getRotation());
->>>>>>> 92a0e0242dfde6437f4b2920d359974b3bd909e0
+
 }
 
 
