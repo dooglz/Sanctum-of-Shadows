@@ -6,7 +6,6 @@ private:
 	irr::scene::ITriangleSelector* _selector;
 public:
 	Level() :Entity(-1,0,"Level"){}
-	Level(irr::scene::IAnimatedMeshSceneNode* node) : Entity(0,node){}
 	~Level(){};
 	void intitalise();
 	bool loadContent();
