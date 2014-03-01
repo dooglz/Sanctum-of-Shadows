@@ -12,10 +12,11 @@ Level* level = new Level();
 
 bool SanctumOfShadows::init(){
 	std::wcout <<  _gameTitle << " Game code init" << std::endl;
-	//
+	
 	if (!GameEngine::engine.loadContent()){
 		return false;
 	}
+
 	irr::scene::ISceneManager* smgr = GameEngine::engine.getDevice()->getSceneManager();
 
 	//Add a cube at origin, for bearings
@@ -25,86 +26,37 @@ bool SanctumOfShadows::init(){
 		std::cerr << "Error loading Mesh" << std::endl;
 		return false;
 	}
-	
 	irr::scene::ISceneNode* originBox = smgr->addMeshSceneNode(cube);
 	originBox->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	originBox->setScale(irr::core::vector3df(10,10,10));
+	
 	//load the level
 	level->loadContent();
 
-	//add fps camera
-
+	//Cameras
 	camera = GameEngine::engine.getDevice()->getSceneManager()->addCameraSceneNodeFPS();
-	Flycamera = GameEngine::engine.getDevice()->getSceneManager()->addCameraSceneNodeFPS();
-	Flycamera->setFarValue(10000.0f);
-	Menucamera = GameEngine::engine.getDevice()->getSceneManager()->addCameraSceneNode(0,irr::core::vector3df(0,0,223),irr::core::vector3df(0,0,0));
+	camera->setPosition(irr::core::vector3df(0,100,0));
 
-	//setup camera to world collision
-	if (level->getSelector())
-    {
-		irr::scene::ISceneNodeAnimator* anim = smgr->createCollisionResponseAnimator(
-            level->getSelector(), camera, 
-			//Camera/Player size, Eplisoid, x50 hight, x30 radius
-			irr::core::vector3df(30,50,30),
-			//Gravity affecting player
-            irr::core::vector3df(0,-10,0), 
-			//translate hitbox down, so camera is at eye level rather than centered.
-			irr::core::vector3df(0,30,0)
-		);
-		// As soon as we're done with the selector, drop it.
-       // level->getSelector()->drop();
-        camera->addAnimator(anim);
-		// And likewise, drop the animator when we're done referring to it.
-        anim->drop();
-    }
+	Flycamera = GameEngine::engine.getDevice()->getSceneManager()->addCameraSceneNodeFPS();
+	Flycamera->setPosition(irr::core::vector3df(0,100,0));
+	Flycamera->setFarValue(10000.0f);
+
+	Menucamera = GameEngine::engine.getDevice()->getSceneManager()->addCameraSceneNode(0,irr::core::vector3df(0,100,223),irr::core::vector3df(0,100,0));
 
 	// create light
-	irr::scene::ISceneNode* node = 0;
-	node = smgr->addLightSceneNode(0, irr::core::vector3df(0,0,0), irr::video::SColorf(1.0f, 0.6f, 0.7f, 1.0f), 1000.0f);
+	irr::scene::ISceneNode* Lightnode = 0;
+	Lightnode = smgr->addLightSceneNode(0, irr::core::vector3df(0,100,0), irr::video::SColorf(1.0f, 0.6f, 0.7f, 1.0f), 1000.0f);
 	irr::scene::ISceneNodeAnimator* anim = 0;
-	anim = smgr->createFlyCircleAnimator (irr::core::vector3df(0,0,0),200.0f);
-	node->addAnimator(anim);
+	anim = smgr->createFlyCircleAnimator (irr::core::vector3df(0,100,0),200.0f);
+	Lightnode->addAnimator(anim);
 	anim->drop();
 
-	// attach billboard to light
-	node = smgr->addBillboardSceneNode(node, irr::core::dimension2d<irr::f32>(50, 50));
-	node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-	node->setMaterialType(irr::video::EMT_TRANSPARENT_ADD_COLOR);
-	node->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/particlewhite.bmp"));
+	// attach billboard sprite to light
+	irr::scene::ISceneNode* LightSpriteNode = smgr->addBillboardSceneNode(Lightnode, irr::core::dimension2d<irr::f32>(50, 50));
+	LightSpriteNode->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+	LightSpriteNode->setMaterialType(irr::video::EMT_TRANSPARENT_ADD_COLOR);
+	LightSpriteNode->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/particlewhite.bmp"));
 
-	//Text physics box
-	new Box(btVector3(0,-70.0f,0),irr::core::vector3df(150.0f,1.0f,150.0f),0.0f);
-	new Box(btVector3(-1400,-144,-1349),irr::core::vector3df(10.0f,1.0f,10.0f),0.0f);
-	new Box(btVector3(0,-120.0f,0),irr::core::vector3df(400.0f,1.0f,400.0f),0.0f);
-	//
-
-	irr::scene::ISceneNode* multiBox = smgr->addMeshSceneNode(cube,0,-1,irr::core::vector3df(0,-30.0f,0));
-	multiBox->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-	multiBox->setScale(irr::core::vector3df(10,10,10));
-
-	//GameEngine::meshManager.analyse(cube,true);
-	
-
-
-	//Rigid body
-	btTransform transform;
-	transform.setIdentity();
-	//transform.setOrigin(btVector3(0,-30.0f,0));
-	//transform.setOrigin(btVector3(-1400,-144,-1349));
-	btDefaultMotionState* motionstate = new btDefaultMotionState(transform);
-
-	//setup shape
-	btCollisionShape* shape = GameEngine::meshManager.convertToBulletTriangleMesh(cube);
-	//btCollisionShape* shape = GameEngine::meshManager.convertToBulletTriangleMesh(mesh->getMesh(0));
-	//calc intertia, based on mass and shape
-	btVector3 localInertia(0,0,0);
-	//shape->calculateLocalInertia(1.0f,localInertia);
-
-	//create the RB
-	btRigidBody* _rigidBody = new btRigidBody(0,motionstate,shape,localInertia);
-	//add to world
-	GameEngine::Physics::world->addRigidBody(_rigidBody);
-	std::cout << "_rigibody "<< &_rigidBody << std::endl;
 
 	return true;
 }
