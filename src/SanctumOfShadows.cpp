@@ -74,7 +74,7 @@ bool SanctumOfShadows::update(float delta){
 	player->update(delta);
 	//TODO, move some of this to baseclass
 	if(GameEngine::handler.keyDown(irr::KEY_F1)){
-		GameEngine::engine.debug();
+		GameEngine::engine.getDevice()->getSceneManager()->setActiveCamera(player->getCamera());
 	}
 	if(GameEngine::handler.keyDown(irr::KEY_F2)){
 		GameEngine::engine.getDevice()->getSceneManager()->setActiveCamera(camera);
