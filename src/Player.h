@@ -14,6 +14,7 @@ private:
 	//
 	btPairCachingGhostObject* m_ghostObject;
 	btKinematicCharacterController* m_character;
+	btKinematicCharacterController*  addCharacter(btScalar stepHeight,btVector3* characterPosition, btScalar characterHeight, btScalar characterWidth);
 public:
 	Player(){};
 	~Player(){};

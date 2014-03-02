@@ -8,9 +8,9 @@ namespace GameEngine{
 	private:
 		static btDefaultCollisionConfiguration* _collisionConfig;
 		static btCollisionDispatcher* _dispatcher;
-		static btBroadphaseInterface* _broadPhase;
 		static btSequentialImpulseConstraintSolver* _solver;
 	public:
+		static btBroadphaseInterface* broadPhase;
 		static btDiscreteDynamicsWorld* world;
 		static bool initialise();
 		static void shutdown();
@@ -21,8 +21,21 @@ namespace GameEngine{
 		static irr::core::vector3df btVecToirrVec3(const btVector3& bVec){
 			return irr::core::vector3df((float)bVec.getX(),(float)bVec.getY(),(float)bVec.getZ());
 		}
-
+		enum EPhysicsCollisionMask {
+			E_Static   = 1 << 0,
+			E_Riggid   = 1 << 1,
+			E_Actor      = 1 << 2,
+			E_Trigger   = 1 << 3,
+	
+			//Statics collide with Riggids and actors
+			E_StaticGroup   = E_Riggid | E_Actor,
+			//actors collide with statics, rigids, actors, and triggers
+			E_ActorGroup   = E_Static | E_Riggid | E_Actor | E_Trigger,
+			E_RiggidGroup   = E_Static | E_Riggid | E_Actor | E_Trigger,
+			E_TriggerGroup   = E_Riggid | E_Actor | E_Static
+		};
 	};
+
 
 	class MotionState : public btMotionState
 	{

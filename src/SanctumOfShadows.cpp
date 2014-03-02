@@ -9,7 +9,7 @@ irr::scene::ICameraSceneNode* camera;
 irr::scene::ICameraSceneNode* Flycamera;
 irr::scene::ICameraSceneNode* Menucamera;
 bool _flying;
-Level* level = new Level();
+Level* level;
 Player* player;
 
 bool SanctumOfShadows::init(){
@@ -23,6 +23,7 @@ bool SanctumOfShadows::init(){
 
 	
 	//load the level
+	level = new Level();
 	level->loadContent();
 
 	//Cameras

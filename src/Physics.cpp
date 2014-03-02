@@ -6,15 +6,15 @@ namespace GameEngine{
 	btDiscreteDynamicsWorld* Physics::world;
 	btDefaultCollisionConfiguration* Physics::_collisionConfig;
 	btCollisionDispatcher* Physics::_dispatcher;
-	btBroadphaseInterface* Physics::_broadPhase;
+	btBroadphaseInterface* Physics::broadPhase;
 	btSequentialImpulseConstraintSolver* Physics::_solver;
 
 	bool Physics::initialise(){
 		_collisionConfig = new btDefaultCollisionConfiguration();
 		_dispatcher = new btCollisionDispatcher(_collisionConfig);
-		_broadPhase = new btAxisSweep3(btVector3(-1000,1000,1000), btVector3(1000,1000,1000));
+		broadPhase = new btAxisSweep3(btVector3(-1000,1000,1000), btVector3(1000,1000,1000));
 		_solver= new btSequentialImpulseConstraintSolver();
-		Physics::world = new btDiscreteDynamicsWorld(_dispatcher,_broadPhase,_solver,_collisionConfig);
+		Physics::world = new btDiscreteDynamicsWorld(_dispatcher,broadPhase,_solver,_collisionConfig);
 		return true;
 	}
 
@@ -22,8 +22,7 @@ namespace GameEngine{
 		delete Physics::world;
 		delete _solver;
 		delete _dispatcher;
-		delete _broadPhase;
+		delete broadPhase;
 		delete _collisionConfig;
 	}
-
 }

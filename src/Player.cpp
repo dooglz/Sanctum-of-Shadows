@@ -18,16 +18,16 @@ void Player::intitalise(irr::core::vector3df position)
 	btScalar playerMass = 60.0;
 	btVector3 playerInertia(0.0, 0.0, 0.0);
 	playerShape->calculateLocalInertia(playerMass, playerInertia);
-
-
 	btRigidBody::btRigidBodyConstructionInfo playerRigidBodyCI(playerMass, playerfallMotionState, playerShape, playerInertia);
 	btRigidBody* _playerRB = new btRigidBody(playerRigidBodyCI);
-	GameEngine::Physics::world->addRigidBody(_playerRB);
+	GameEngine::Physics::world->addRigidBody(_playerRB,GameEngine::Physics::E_Riggid,GameEngine::Physics::E_RiggidGroup);
 	//Prevent sleeping
 	_playerRB->setActivationState(DISABLE_DEACTIVATION);
 
 	_camera = GameEngine::engine.getDevice()->getSceneManager()->addCameraSceneNode(_playerNode,irr::core::vector3df(0,0,0));
 	_camera->bindTargetAndRotation(true);
+
+	btKinematicCharacterController* playerCC = addCharacter((btScalar)1.0f, &btVector3(position.X, position.Y, position.Z), (btScalar)100, (btScalar)60);
 	
 }
 
@@ -124,121 +124,150 @@ void Player::update2(float delta)
 
 void Player::update3(float delta)
 {
-		if(GameEngine::handler.keyDown(irr::KEY_RIGHT))
+	if(GameEngine::handler.keyDown(irr::KEY_RIGHT))
 	{
 		_playerRB->applyTorque(btVector3(0,50000,0));
 	}
 
-        irr::scene::ICameraSceneNode* camera = _camera;
-		bool firstUpdate = true;
-		bool CursorControl = true;
-		bool NoVerticalMovement= true;
-		float MoveSpeed = 1000.0f;
+	bool firstUpdate = true;
+	bool CursorControl = true;
+	bool NoVerticalMovement= true;
+	float MoveSpeed = 1000.0f;
 
 
-        // If the camera isn't the active camera, and receiving input, then don't process it.
-        if(!camera->isInputReceiverEnabled())
-		{
-                return;
-		}
+	// If the camera isn't the active camera, and receiving input, then don't process it.
+	if(!_camera->isInputReceiverEnabled())
+	{
+			return;
+	}
 
-        irr::scene::ISceneManager * smgr = camera->getSceneManager();
-/*        if(smgr && smgr->getActiveCamera() != camera)
-		{
-                return;
-		}*/
-        // get time
-        irr::f32 timeDiff = (delta);
+	irr::scene::ISceneManager * smgr = _camera->getSceneManager();
+	/*      if(smgr && smgr->getActiveCamera() != camera)
+	{
+			return;
+	}*/
 
-        // update position
-        irr::core::vector3df pos = camera->getPosition();
+	// get time
+	irr::f32 timeDiff = (delta);
 
-        // Update rotation
-       irr::core::vector3df target = (camera->getTarget() - camera->getAbsolutePosition());
-	   target = GameEngine::Physics::btVecToirrVec3(_physicsMesh->getRB()->getWorldTransform().getBasis()[2].normalize());
-       irr::core::vector3df relativeRotation = target.getHorizontalAngle();
+	// update position
+	irr::core::vector3df pos = _camera->getPosition();
+
+	// Update rotation
+	irr::core::vector3df target = (_camera->getTarget() - _camera->getAbsolutePosition());
+	target = GameEngine::Physics::btVecToirrVec3(_playerRB->getWorldTransform().getBasis()[2].normalize());
+	irr::core::vector3df relativeRotation = target.getHorizontalAngle();
 	   
-        if (CursorControl)
-        {
+	if (CursorControl)
+	{
 
-        }
+	}
 
-        // set target
+	// set target
 
-        target.set(0,0, irr::core::max_(1.f, pos.getLength()));
+	target.set(0,0, irr::core::max_(1.f, pos.getLength()));
         
-        irr::core::vector3df movedir = target;
+	irr::core::vector3df movedir = target;
 
-        irr::core::matrix4 mat;
-        mat.setRotationDegrees(irr::core::vector3df(relativeRotation.X, relativeRotation.Y, 0));
-        mat.transformVect(target);
+	irr::core::matrix4 mat;
+	mat.setRotationDegrees(irr::core::vector3df(relativeRotation.X, relativeRotation.Y, 0));
+	mat.transformVect(target);
 
-        //cout<<"B: "<<movedir.X<<" "<<movedir.Y<<" "<<movedir.Z<<endl;
-        if (NoVerticalMovement)
-        {
-                mat.setRotationDegrees(irr::core::vector3df(0, relativeRotation.Y, 0));
-                mat.transformVect(movedir);
-                //cout<<"C: "<<movedir.X<<" "<<movedir.Y<<" "<<movedir.Z<<endl;
-        }
-        else
-        {
-                movedir = target;
-        }
+	//cout<<"B: "<<movedir.X<<" "<<movedir.Y<<" "<<movedir.Z<<endl;
+	if (NoVerticalMovement)
+	{
+			mat.setRotationDegrees(irr::core::vector3df(0, relativeRotation.Y, 0));
+			mat.transformVect(movedir);
+			//cout<<"C: "<<movedir.X<<" "<<movedir.Y<<" "<<movedir.Z<<endl;
+	}
+	else
+	{
+			movedir = target;
+	}
 
-        movedir.normalize();
+	movedir.normalize();
 
-        movedir.Y = 0;
-        //body->getBodyPtr()->clearForces();
-		if (GameEngine::handler.keyDown(irr::KEY_KEY_W))
-        {
+	movedir.Y = 0;
+	//body->getBodyPtr()->clearForces();
+	if (GameEngine::handler.keyDown(irr::KEY_KEY_W))
+	{
 
-                pos += movedir * timeDiff * MoveSpeed;
-				btVector3 b = GameEngine::Physics::irrVec3ToBtVec3(movedir * timeDiff * MoveSpeed);
-				_playerRB->applyCentralImpulse(GameEngine::Physics::irrVec3ToBtVec3(movedir * timeDiff * MoveSpeed));
-        }
-        if (GameEngine::handler.keyDown(irr::KEY_KEY_S))
-        {
-                pos -= movedir * timeDiff * MoveSpeed;
-				btVector3 b = GameEngine::Physics::irrVec3ToBtVec3(movedir * timeDiff * MoveSpeed);
-                _playerRB->applyCentralImpulse(GameEngine::Physics::irrVec3ToBtVec3(-movedir * timeDiff * MoveSpeed));
-        }
-        // strafing
+			pos += movedir * timeDiff * MoveSpeed;
+			btVector3 b = GameEngine::Physics::irrVec3ToBtVec3(movedir * timeDiff * MoveSpeed);
+			_playerRB->applyCentralImpulse(GameEngine::Physics::irrVec3ToBtVec3(movedir * timeDiff * MoveSpeed));
+	}
+	if (GameEngine::handler.keyDown(irr::KEY_KEY_S))
+	{
+			pos -= movedir * timeDiff * MoveSpeed;
+			btVector3 b = GameEngine::Physics::irrVec3ToBtVec3(movedir * timeDiff * MoveSpeed);
+			_playerRB->applyCentralImpulse(GameEngine::Physics::irrVec3ToBtVec3(-movedir * timeDiff * MoveSpeed));
+	}
+	// strafing
 
-        irr::core::vector3df strafevect = target;
-        //strafevect = strafevect.crossProduct( camera->getUpVector());
-		strafevect = strafevect.crossProduct(GameEngine::Physics::btVecToirrVec3(_physicsMesh->getRB()->getWorldTransform().getBasis()[1].normalize()));
+	irr::core::vector3df strafevect = target;
+	//strafevect = strafevect.crossProduct( camera->getUpVector());
+	strafevect = strafevect.crossProduct(GameEngine::Physics::btVecToirrVec3(_physicsMesh->getRB()->getWorldTransform().getBasis()[1].normalize()));
 
-        if (NoVerticalMovement)
-                strafevect.Y = 0.0f;
+	if (NoVerticalMovement)
+			strafevect.Y = 0.0f;
 
-        strafevect.normalize();
+	strafevect.normalize();
 
-        if (GameEngine::handler.keyDown(irr::KEY_KEY_A))
-        {
-        //      pos += strafevect * timeDiff * MoveSpeed;
-        //      body->setPosition(pos);
-                _playerRB->applyCentralImpulse(GameEngine::Physics::irrVec3ToBtVec3(strafevect * timeDiff * MoveSpeed));
-        }
-        if (GameEngine::handler.keyDown(irr::KEY_KEY_D))
-        {
-                //pos -= strafevect * timeDiff * MoveSpeed;
-                //body->setPosition(pos);
-                _playerRB->applyCentralImpulse(GameEngine::Physics::irrVec3ToBtVec3(-(strafevect * timeDiff * MoveSpeed)));
-        }
+	if (GameEngine::handler.keyDown(irr::KEY_KEY_A))
+	{
+	//      pos += strafevect * timeDiff * MoveSpeed;
+	//      body->setPosition(pos);
+			_playerRB->applyCentralImpulse(GameEngine::Physics::irrVec3ToBtVec3(strafevect * timeDiff * MoveSpeed));
+	}
+	if (GameEngine::handler.keyDown(irr::KEY_KEY_D))
+	{
+			//pos -= strafevect * timeDiff * MoveSpeed;
+			//body->setPosition(pos);
+			_playerRB->applyCentralImpulse(GameEngine::Physics::irrVec3ToBtVec3(-(strafevect * timeDiff * MoveSpeed)));
+	}
 
-        // write translation
+	// write translation
         
         
-        //body->setPosition(pos);
-        //body->setRotation(relativeRotation);
-        //camera->setPosition(pos);
+	//body->setPosition(pos);
+	//body->setRotation(relativeRotation);
+	//camera->setPosition(pos);
         
-        // write right target
-        //target += pos;
-        //camera->setTarget(target);
+	// write right target
+	//target += pos;
+	//camera->setTarget(target);
 
         
-/*      target += pos;
-        camera->setTarget(target);
-/**/
+	//target += pos;
+	//camera->setTarget(target);
 }
+
+
+btKinematicCharacterController*  Player::addCharacter(btScalar stepHeight,btVector3* characterPosition, btScalar characterHeight, btScalar characterWidth)
+{
+	btPairCachingGhostObject* ghostObject= new btPairCachingGhostObject();
+	GameEngine::Physics::broadPhase->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
+
+	btConvexShape* characterShape = new btCapsuleShape(characterWidth, characterHeight);
+	btTransform trans;
+
+	trans.setIdentity();
+	btScalar physicsWorldScaling2 = 0.1f;
+
+	trans.setOrigin(*characterPosition);
+
+	ghostObject->setWorldTransform(trans);
+
+	ghostObject->setCollisionShape(characterShape);
+	//ghostObject->setCollisionFlags(ghostObject->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
+	ghostObject->setCollisionFlags (btCollisionObject::CF_CHARACTER_OBJECT);
+
+	btKinematicCharacterController*  character = new btKinematicCharacterController (ghostObject, characterShape, stepHeight, 1);
+   
+	GameEngine::Physics::world->addCollisionObject(ghostObject, GameEngine::Physics::E_Actor,GameEngine::Physics::E_ActorGroup);
+	//GameEngine::Physics::world->addCollisionObject(ghostObject,btBroadphaseProxy::CharacterFilter, btBroadphaseProxy::StaticFilter|btBroadphaseProxy::DefaultFilter);
+
+	GameEngine::Physics::world->addCharacter(character);
+
+	return character;
+};

@@ -17,7 +17,7 @@ bool Level::loadContent()
 
 	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(0,groundMotionState,groundShape,btVector3(0.0, 0.0, 0.0));
 	btRigidBody* groundRigidBody = new btRigidBody(groundRigidBodyCI);
-	GameEngine::Physics::world->addRigidBody(groundRigidBody);
+	GameEngine::Physics::world->addRigidBody(groundRigidBody,GameEngine::Physics::E_Static,GameEngine::Physics::E_StaticGroup);
 
 	irr::scene::IAnimatedMesh* am = GameEngine::engine.getDevice()->getSceneManager()->addHillPlaneMesh("plane", irr::core::dimension2df(1000,1000), irr::core::dimension2du(1,1));
 	if (am)
