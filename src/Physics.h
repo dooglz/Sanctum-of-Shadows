@@ -21,5 +21,29 @@ namespace GameEngine{
 		static irr::core::vector3df btVecToirrVec3(const btVector3& bVec){
 			return irr::core::vector3df((float)bVec.getX(),(float)bVec.getY(),(float)bVec.getZ());
 		}
+
 	};
+
+	class MotionState : public btMotionState
+	{
+	public:
+		MotionState(const btTransform& initalTransformation, irr::scene::ISceneNode* const node) : node(node), initalTransformation(initalTransformation){}
+		
+		void getWorldTransform(btTransform& worldTrans) const
+		{
+			worldTrans = this->initalTransformation;
+		}
+
+		void setWorldTransform(const btTransform& worldTrans)
+		{
+			worldTrans.getOpenGLMatrix(matr.pointer());
+			this->node->setRotation(matr.getRotationDegrees());
+			this->node->setPosition(matr.getTranslation());
+		}
+	private:
+		irr::scene::ISceneNode* const node;
+		irr::core::matrix4 matr;
+		btTransform initalTransformation;
+	};
+
 }

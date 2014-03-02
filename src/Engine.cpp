@@ -49,7 +49,7 @@ namespace GameEngine{
 					 btIDebugDraw::DBG_DrawWireframe |
 					 btIDebugDraw::DBG_DrawAabb |
 					 btIDebugDraw::DBG_DrawContactPoints |
-					 //btIDebugDraw::DBG_DrawText |
+					 btIDebugDraw::DBG_DrawText |
 					 //btIDebugDraw::DBG_DrawConstraintLimits |
 					 btIDebugDraw::DBG_DrawConstraints //|
 			   );

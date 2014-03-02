@@ -9,6 +9,8 @@ class Player{
 private:
 	GameEngine::PhysicalEntity* _physicsMesh;
 	irr::scene::ICameraSceneNode* _camera;
+	btRigidBody* _playerRB;
+	irr::scene::ISceneNode* _playerNode;
 	//
 	btPairCachingGhostObject* m_ghostObject;
 	btKinematicCharacterController* m_character;

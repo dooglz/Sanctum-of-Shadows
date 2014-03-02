@@ -21,16 +21,6 @@ bool SanctumOfShadows::init(){
 
 	irr::scene::ISceneManager* smgr = GameEngine::engine.getDevice()->getSceneManager();
 
-	//Add a cube at origin, for bearings
-	irr::scene::IAnimatedMesh* cube = smgr->getMesh("models/cube1.obj");
-	if (!cube)
-	{
-		std::cerr << "Error loading Mesh" << std::endl;
-		return false;
-	}
-	irr::scene::ISceneNode* originBox = smgr->addMeshSceneNode(cube);
-	originBox->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-	originBox->setScale(irr::core::vector3df(10,10,10));
 	
 	//load the level
 	level->loadContent();
@@ -62,6 +52,23 @@ bool SanctumOfShadows::init(){
 
 	player = new Player();
 	player->intitalise(irr::core::vector3df(0,200.0f,0));
+	//
+
+	/*
+	irr::scene::IMeshSceneNode* sphere = smgr->addSphereSceneNode(10.0f);
+	sphere->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+
+	btCollisionShape* fallShape = new btSphereShape(10.0);
+	GameEngine::MotionState* fallMotionState = new GameEngine::MotionState(btTransform(btQuaternion(0.0, 0.0, 0.0, 1.0), btVector3(0.0, 50.0, 0.0)), sphere);
+	btScalar mass = 10.0;
+	btVector3 inertia(0.0, 0.0, 0.0);
+	fallShape->calculateLocalInertia(mass, inertia);
+
+	btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass, fallMotionState, fallShape, inertia);
+	btRigidBody* fallRigidBody = new btRigidBody(fallRigidBodyCI);
+	GameEngine::Physics::world->addRigidBody(fallRigidBody);
+	*/
+	//
 
 
 	return true;
@@ -72,7 +79,7 @@ bool SanctumOfShadows::update(float delta){
 	//adding player update
 
 	//player->update(delta);
-	player->update3(delta);
+	//player->update3(delta);
 	//TODO, move some of this to baseclass
 	if(GameEngine::handler.keyDown(irr::KEY_F1)){
 		GameEngine::engine.getDevice()->getSceneManager()->setActiveCamera(player->getCamera());

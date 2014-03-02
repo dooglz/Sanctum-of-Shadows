@@ -5,7 +5,7 @@ namespace GameEngine{
 
 	void PhysicalEntity::update(float delta)
 	{
-		btVector3 point = _rigidBody->getCenterOfMassPosition();
+		btVector3 point = _rigidBody->getWorldTransform().getOrigin();
 		//have we fallen out of world?
 		if(point.getY() < -200.0f)
 		{
