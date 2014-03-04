@@ -295,9 +295,9 @@ void Player::update4(float delta)
 		walkDirection -= forwardDir;	
 	}
 	btVector3 gg = walkDirection*walkSpeed;
-	if(_characterC && gg.length() != btScalar(0)){
+	//if(_characterC && gg.length() != btScalar(0)){
 		_characterC->setWalkDirection(gg);
-	}
+//	}
 	std::cout <<std::endl;
 }
 
