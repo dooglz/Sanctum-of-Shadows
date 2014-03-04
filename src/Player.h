@@ -7,9 +7,7 @@
 
 class Player{
 private:
-	GameEngine::PhysicalEntity* _physicsMesh;
 	irr::scene::ICameraSceneNode* _camera;
-	btRigidBody* _playerRB;
 	irr::scene::ISceneNode* _playerNode;
 	//
 	btPairCachingGhostObject* _ghostObject;
@@ -23,9 +21,6 @@ public:
 	bool loadContent();
 	void unloadContent();
 	void update(float delta);
-	void update2(float delta);
-	void update3(float delta);
-	void update4(float delta);
 };
 
 /*
