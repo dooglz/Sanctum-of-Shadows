@@ -27,7 +27,7 @@ void Player::intitalise(irr::core::vector3df position)
 	_camera = GameEngine::engine.getDevice()->getSceneManager()->addCameraSceneNode(_playerNode,irr::core::vector3df(0,0,0));
 	_camera->bindTargetAndRotation(true);
 
-	btKinematicCharacterController* playerCC = addCharacter((btScalar)1.0f, &btVector3(position.X, position.Y, position.Z), (btScalar)100, (btScalar)60);
+	_characterC = addCharacter((btScalar)1.0f, &btVector3(position.X, position.Y, position.Z), (btScalar)50, (btScalar)30);
 	
 }
 
@@ -242,10 +242,68 @@ void Player::update3(float delta)
 	//camera->setTarget(target);
 }
 
+void Player::update4(float delta)
+{	
+	if(!_ghostObject ){
+		return;
+	}
+	/*
+	//during idle mode, just run 1 simulation step maximum
+	int maxSimSubSteps = m_idle ? 1 : 2;
+	if (m_idle)
+		dt = 1.0/420.f;
+	*/
+
+	///set walkDirection for our character
+	btTransform xform;
+	xform = _ghostObject->getWorldTransform ();
+
+	btVector3 forwardDir = xform.getBasis()[2];
+	//	printf("forwardDir=%f,%f,%f\n",forwardDir[0],forwardDir[1],forwardDir[2]);
+	btVector3 upDir = xform.getBasis()[1];
+	btVector3 strafeDir = xform.getBasis()[0];
+	forwardDir.normalize ();
+	upDir.normalize ();
+	strafeDir.normalize ();
+
+	btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
+	btScalar walkVelocity = btScalar(1.1) * 100.0;
+	btScalar walkSpeed = walkVelocity * delta;
+
+	//rotate view
+	if (GameEngine::handler.keyDown(irr::KEY_KEY_A))
+	{
+		btMatrix3x3 orn = _ghostObject->getWorldTransform().getBasis();
+		orn *= btMatrix3x3(btQuaternion(btVector3(0,1,0),5.0f*delta));
+		_ghostObject->getWorldTransform ().setBasis(orn);
+	}
+
+	if (GameEngine::handler.keyDown(irr::KEY_KEY_D))
+	{
+		btMatrix3x3 orn = _ghostObject->getWorldTransform().getBasis();
+		orn *= btMatrix3x3(btQuaternion(btVector3(0,1,0),-5.0f*delta));
+		_ghostObject->getWorldTransform ().setBasis(orn);
+	}
+
+	if (GameEngine::handler.keyDown(irr::KEY_KEY_W))
+	{
+		walkDirection += forwardDir;
+	}
+
+	if (GameEngine::handler.keyDown(irr::KEY_KEY_S))
+	{
+		walkDirection -= forwardDir;	
+	}
+	btVector3 gg = walkDirection*walkSpeed;
+	if(_characterC && gg.length() != btScalar(0)){
+		_characterC->setWalkDirection(gg);
+	}
+	std::cout <<std::endl;
+}
 
 btKinematicCharacterController*  Player::addCharacter(btScalar stepHeight,btVector3* characterPosition, btScalar characterHeight, btScalar characterWidth)
 {
-	btPairCachingGhostObject* ghostObject= new btPairCachingGhostObject();
+	_ghostObject = new btPairCachingGhostObject();
 	GameEngine::Physics::broadPhase->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
 
 	btConvexShape* characterShape = new btCapsuleShape(characterWidth, characterHeight);
@@ -256,15 +314,15 @@ btKinematicCharacterController*  Player::addCharacter(btScalar stepHeight,btVect
 
 	trans.setOrigin(*characterPosition);
 
-	ghostObject->setWorldTransform(trans);
+	_ghostObject->setWorldTransform(trans);
 
-	ghostObject->setCollisionShape(characterShape);
+	_ghostObject->setCollisionShape(characterShape);
 	//ghostObject->setCollisionFlags(ghostObject->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
-	ghostObject->setCollisionFlags (btCollisionObject::CF_CHARACTER_OBJECT);
+	_ghostObject->setCollisionFlags (btCollisionObject::CF_CHARACTER_OBJECT);
 
-	btKinematicCharacterController*  character = new btKinematicCharacterController (ghostObject, characterShape, stepHeight, 1);
+	btKinematicCharacterController*  character = new btKinematicCharacterController (_ghostObject, characterShape, stepHeight, 1);
    
-	GameEngine::Physics::world->addCollisionObject(ghostObject, GameEngine::Physics::E_Actor,GameEngine::Physics::E_ActorGroup);
+	GameEngine::Physics::world->addCollisionObject(_ghostObject, GameEngine::Physics::E_Actor,GameEngine::Physics::E_ActorGroup);
 	//GameEngine::Physics::world->addCollisionObject(ghostObject,btBroadphaseProxy::CharacterFilter, btBroadphaseProxy::StaticFilter|btBroadphaseProxy::DefaultFilter);
 
 	GameEngine::Physics::world->addCharacter(character);

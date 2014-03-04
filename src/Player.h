@@ -12,8 +12,8 @@ private:
 	btRigidBody* _playerRB;
 	irr::scene::ISceneNode* _playerNode;
 	//
-	btPairCachingGhostObject* m_ghostObject;
-	btKinematicCharacterController* m_character;
+	btPairCachingGhostObject* _ghostObject;
+	btKinematicCharacterController* _characterC;
 	btKinematicCharacterController*  addCharacter(btScalar stepHeight,btVector3* characterPosition, btScalar characterHeight, btScalar characterWidth);
 public:
 	Player(){};
@@ -25,6 +25,7 @@ public:
 	void update(float delta);
 	void update2(float delta);
 	void update3(float delta);
+	void update4(float delta);
 };
 
 /*
