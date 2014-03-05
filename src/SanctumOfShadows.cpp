@@ -54,7 +54,7 @@ bool SanctumOfShadows::init(){
 	player = new Player();
 	player->intitalise(irr::core::vector3df(0,200.0f,0));
 	enemy = new Enemy();
-	enemy->intitalise(irr::core::vector3df(0,220.0f,0));
+	enemy->intitalise(irr::core::vector3df(400.0f,200.0f,0), player);
 	//
 
 	/*

@@ -1,8 +1,9 @@
 #include "Enemy.h"
 
 
-void Enemy::intitalise(irr::core::vector3df position)
+void Enemy::intitalise(irr::core::vector3df position, Player* player)
 {
+	_player = player;
 	irr::core::vector3df playerScale = irr::core::vector3df(50.0f,80.0f,50.0f);
 	//Physics Kinematic caracter Object
 	_characterC = addCharacter((btScalar)1.0f, &btVector3(position.X, position.Y, position.Z), (btScalar)50, (btScalar)30);
@@ -23,7 +24,7 @@ void Enemy::update(float delta)
 
 
 	if(_ghostObject ){
-		///set walkDirection for our character
+		///set walkDirection for our Enemy
 		btTransform xform;
 		xform = _ghostObject->getWorldTransform ();
 
@@ -38,6 +39,14 @@ void Enemy::update(float delta)
 		btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
 		btScalar walkVelocity = btScalar(1.1) * 600.0;
 		btScalar walkSpeed = walkVelocity * delta;
+
+
+		if((_player->getNode()->getPosition() - _EnemyNode->getPosition()).getLength() < 100.0f )
+		{
+			std::cout << "player is near" <<std::endl;
+		}
+
+
 		if(n2 < 2)
 		{
 			if (n1 < 40)
@@ -60,7 +69,7 @@ void Enemy::update(float delta)
 		}
 		
 
-		//rotate view
+		//rotate the enemy when these are called
 		if (walkleft == true)
 		{
 			btMatrix3x3 orn = _ghostObject->getWorldTransform().getBasis();

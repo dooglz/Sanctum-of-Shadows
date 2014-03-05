@@ -20,6 +20,8 @@ public:
 	void intitalise(irr::core::vector3df position);
 	bool loadContent();
 	void unloadContent();
+	irr::scene::ISceneNode* getNode() { return _playerNode; }
+
 	void update(float delta);
 };
 
