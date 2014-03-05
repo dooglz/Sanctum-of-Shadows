@@ -39,26 +39,46 @@ void Enemy::update(float delta)
 		btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
 		btScalar walkVelocity = btScalar(1.1) * 600.0;
 		btScalar walkSpeed = walkVelocity * delta;
-		walkleft=0;
-		walkright=0;
+		walkleft=false;
+		walkright=false;
 
+		float angleToplayer =  forwardDir.angle(GameEngine::Physics::irrVec3ToBtVec3 ((_player->getNode()->getPosition() - _EnemyNode->getPosition())));
+		if(angleToplayer > 1)
+		{
+			angleToplayer =1;
+		}
+		if(angleToplayer < -1)
+		{
+			angleToplayer = -1;
+		}
+		angleToplayer = acos(angleToplayer);
+		float crossToplayer = forwardDir.cross(GameEngine::Physics::irrVec3ToBtVec3 ((_player->getNode()->getPosition() - _EnemyNode->getPosition()))).getY(); 
 		if((_player->getNode()->getPosition() - _EnemyNode->getPosition()).getLength() < 100.0f )
 		{
-			float a = forwardDir.angle(GameEngine::Physics::irrVec3ToBtVec3 ((_player->getNode()->getPosition() - _EnemyNode->getPosition())));
-			a = acos(a);
-			float b = forwardDir.cross(GameEngine::Physics::irrVec3ToBtVec3 ((_player->getNode()->getPosition() - _EnemyNode->getPosition()))).getY(); 
-			std::cout << "player is near: " << b <<std::endl;
-			if(b> 0)
+			std::cout << "player is near: " <<std::endl;
+
+		/*	if ((_player->getNode()->getPosition() + _EnemyNode->getPosition()).crossProduct)
+			{
+				
+			}*/
+		}
+		else
+		{
+			if(crossToplayer < 0)
 			{
 				walkleft=true;
 			}else{
 				walkright = true;
 			}
-			
-		/*	if ((_player->getNode()->getPosition() + _EnemyNode->getPosition()).crossProduct)
+			if(angleToplayer < 60)
 			{
-				
-			}*/
+				walkforward = true;
+			}
+			else
+			{
+				walkforward = false;
+			}
+
 		}
 
 		/*
