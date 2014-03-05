@@ -41,8 +41,9 @@ void Enemy::update(float delta)
 		btScalar walkSpeed = walkVelocity * delta;
 		walkleft=false;
 		walkright=false;
-
+		walkforward = false;
 		float angleToplayer =  forwardDir.angle(GameEngine::Physics::irrVec3ToBtVec3 ((_player->getNode()->getPosition() - _EnemyNode->getPosition())));
+
 		if(angleToplayer > 1)
 		{
 			angleToplayer =1;
@@ -51,23 +52,18 @@ void Enemy::update(float delta)
 		{
 			angleToplayer = -1;
 		}
+		
 		angleToplayer = acos(angleToplayer);
 		float crossToplayer = forwardDir.cross(GameEngine::Physics::irrVec3ToBtVec3 ((_player->getNode()->getPosition() - _EnemyNode->getPosition()))).getY(); 
-		if((_player->getNode()->getPosition() - _EnemyNode->getPosition()).getLength() < 100.0f )
+		if((_player->getNode()->getPosition() - _EnemyNode->getPosition()).getLength() < 300.0f )
 		{
 			std::cout << "player is near: " <<std::endl;
-
-		/*	if ((_player->getNode()->getPosition() + _EnemyNode->getPosition()).crossProduct)
-			{
-				
-			}*/
-		}
-		else
-		{
+		
 			if(crossToplayer < 0)
 			{
 				walkleft=true;
-			}else{
+			}else
+			{
 				walkright = true;
 			}
 			if(angleToplayer < 60)
