@@ -14,7 +14,7 @@ Box::Box (const btVector3& position, const irr::core::vector3df& scale, float ma
 	btTransform transform;
 	transform.setIdentity();
 	transform.setOrigin(position);
-	btDefaultMotionState* motionstate = new btDefaultMotionState(transform);
+	GameEngine::MotionState* motionstate = new GameEngine::MotionState(btTransform(btQuaternion(0.0, 0.0, 0.0, 1.0), position), _node);
 
 	//setup shape
 	btVector3 halfExtends(scale.X*0.5f,scale.Y*0.5f,scale.Z*0.5f);
