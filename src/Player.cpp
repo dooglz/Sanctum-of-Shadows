@@ -74,7 +74,7 @@ void Player::update(float delta)
 			// Follow with the camera
 			if(_camera)
 			{
-			//	_camera->setTarget( _playerNode->getPosition() );
+				_camera->setTarget( _playerNode->getPosition()+GameEngine::Physics::btVecToirrVec3(forwardDir) );
 			}
 		}
 	}
