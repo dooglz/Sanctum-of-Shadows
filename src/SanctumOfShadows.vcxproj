@@ -86,6 +86,7 @@
   <ItemGroup>
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="BulletdebugDraw.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityManager.cpp" />
@@ -101,6 +102,7 @@
   <ItemGroup>
     <ClInclude Include="Box.h" />
     <ClInclude Include="BulletDebugDraw.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />

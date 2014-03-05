@@ -1,23 +1,25 @@
-#include "Player.h"
+#include "Enemy.h"
 
-void Player::intitalise(irr::core::vector3df position)
+
+void Enemy::intitalise(irr::core::vector3df position)
 {
-	irr::core::vector3df playerScale = irr::core::vector3df(60.0f,100.0f,60.0f);
+	irr::core::vector3df playerScale = irr::core::vector3df(50.0f,800.0f,50.0f);
 	//Physics Kinematic caracter Object
 	_characterC = addCharacter((btScalar)1.0f, &btVector3(position.X, position.Y, position.Z), (btScalar)50, (btScalar)30);
 	//player render node
 	//_playerNode = GameEngine::engine.getDevice()->getSceneManager()->addEmptySceneNode();
-	_playerNode = GameEngine::engine.getDevice()->getSceneManager()->addCubeSceneNode(1.0f);
-	_playerNode->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_dev_stone.png"));
-	_playerNode->setScale(playerScale);
-	_playerNode->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+	_EnemyNode = GameEngine::engine.getDevice()->getSceneManager()->addCubeSceneNode(1.0f);
+	_EnemyNode->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_dev_stone.png"));
+	_EnemyNode->setScale(playerScale);
+	_EnemyNode->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	//player camera
-	_camera = GameEngine::engine.getDevice()->getSceneManager()->addCameraSceneNode(_playerNode,irr::core::vector3df(0,0,0));
-	_camera->bindTargetAndRotation(true);
 }
 
-void Player::update(float delta)
+void Enemy::update(float delta)
 {	
+
+
+
 	if(_ghostObject ){
 		///set walkDirection for our character
 		btTransform xform;
@@ -36,51 +38,47 @@ void Player::update(float delta)
 		btScalar walkSpeed = walkVelocity * delta;
 
 		//rotate view
-		if (GameEngine::handler.keyDown(irr::KEY_KEY_A))
+		if (walkleft = true)
 		{
 			btMatrix3x3 orn = _ghostObject->getWorldTransform().getBasis();
 			orn *= btMatrix3x3(btQuaternion(btVector3(0,1,0),-5.0f*delta));
 			_ghostObject->getWorldTransform ().setBasis(orn);
 		}
 
-		if (GameEngine::handler.keyDown(irr::KEY_KEY_D))
+		if (walkright = true)
 		{
 			btMatrix3x3 orn = _ghostObject->getWorldTransform().getBasis();
 			orn *= btMatrix3x3(btQuaternion(btVector3(0,1,0),5.0f*delta));
 			_ghostObject->getWorldTransform ().setBasis(orn);
 		}
 
-		if (GameEngine::handler.keyDown(irr::KEY_KEY_W))
+		if (walkforward = true)
 		{
 			walkDirection += forwardDir;
 		}
 
-		if (GameEngine::handler.keyDown(irr::KEY_KEY_S))
+		/*if (GameEngine::handler.keyDown(irr::KEY_KEY_S))
 		{
 			walkDirection -= forwardDir;	
-		}
+		}*/
 		_characterC->setWalkDirection(walkDirection*walkSpeed);
 
 		//Set the render node's position and rotation to match _ghostObject's
 		//btMotionState is currently only available for rigid bodies and not Ghost Objects apperently
-		if(_playerNode)
+		if(_EnemyNode)
 		{
 			btTransform worldTrans;
 			worldTrans = _ghostObject->getWorldTransform();
 			irr::core::matrix4 matr;
 			worldTrans.getOpenGLMatrix(matr.pointer());
-			_playerNode->setRotation(matr.getRotationDegrees());
-			_playerNode->setPosition(matr.getTranslation());
-			// Follow with the camera
-			if(_camera)
-			{
-			//	_camera->setTarget( _playerNode->getPosition() );
-			}
+			_EnemyNode->setRotation(matr.getRotationDegrees());
+			_EnemyNode->setPosition(matr.getTranslation());
+		
 		}
 	}
 }
 
-btKinematicCharacterController*  Player::addCharacter(btScalar stepHeight,btVector3* characterPosition, btScalar characterHeight, btScalar characterWidth)
+btKinematicCharacterController*  Enemy::addCharacter(btScalar stepHeight,btVector3* characterPosition, btScalar characterHeight, btScalar characterWidth)
 {
 	_ghostObject = new btPairCachingGhostObject();
 	GameEngine::Physics::broadPhase->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
@@ -109,12 +107,12 @@ btKinematicCharacterController*  Player::addCharacter(btScalar stepHeight,btVect
 	return character;
 };
 
-bool Player::loadContent()
+bool Enemy::loadContent()
 {
 	return true;
 }
 
-void Player::unloadContent()
+void Enemy::unloadContent()
 {
 
 }
