@@ -27,7 +27,7 @@ Box::Box (const btVector3& position, const irr::core::vector3df& scale, float ma
 	//create the RB
 	_rigidBody = new btRigidBody(mass,motionstate,shape,localInertia);
 	//add to world
-	GameEngine::Physics::world->addRigidBody(_rigidBody);
+	GameEngine::Physics::world->addRigidBody(_rigidBody,GameEngine::Physics::E_Actor,GameEngine::Physics::E_ActorGroup);
 
 	//free memory used for setup
 	//delete motionstate;
