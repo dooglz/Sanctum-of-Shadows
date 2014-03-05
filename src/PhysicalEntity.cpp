@@ -17,6 +17,7 @@ namespace GameEngine{
 		{
 			return;
 		}
+		/*
 		else
 		{
 			_position = point;
@@ -33,7 +34,10 @@ namespace GameEngine{
 
 			_node->setRotation(euler);
 		}
+		*/
 	}
+
+
 	void PhysicalEntity::die(){
 		_node->remove();
 		GameEngine::Physics::world->removeRigidBody(_rigidBody);
