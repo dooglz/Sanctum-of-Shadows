@@ -2,7 +2,7 @@
 #include "Box.h"
 #include "Level.h"
 #include "Player.h"
-
+#include "Enemy.h"
 #include <btBulletDynamicsCommon.h>
 
 irr::scene::ICameraSceneNode* camera;
@@ -11,7 +11,7 @@ irr::scene::ICameraSceneNode* Menucamera;
 bool _flying;
 Level* level;
 Player* player;
-
+Enemy* enemy;
 bool SanctumOfShadows::init(){
 	std::wcout <<  _gameTitle << " Game code init" << std::endl;
 	
@@ -53,6 +53,8 @@ bool SanctumOfShadows::init(){
 
 	player = new Player();
 	player->intitalise(irr::core::vector3df(0,200.0f,0));
+	enemy = new Enemy();
+	enemy->intitalise(irr::core::vector3df(0,220.0f,0));
 	//
 
 	/*
@@ -78,7 +80,7 @@ bool SanctumOfShadows::init(){
 bool a,b;
 bool SanctumOfShadows::update(float delta){
 	player->update(delta);
-
+	enemy->update(delta);
 	//TODO, move some of this to baseclass
 	if(GameEngine::handler.keyDown(irr::KEY_F1)){
 		GameEngine::engine.getDevice()->getSceneManager()->setActiveCamera(player->getCamera());

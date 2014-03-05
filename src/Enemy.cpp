@@ -3,7 +3,7 @@
 
 void Enemy::intitalise(irr::core::vector3df position)
 {
-	irr::core::vector3df playerScale = irr::core::vector3df(50.0f,800.0f,50.0f);
+	irr::core::vector3df playerScale = irr::core::vector3df(50.0f,80.0f,50.0f);
 	//Physics Kinematic caracter Object
 	_characterC = addCharacter((btScalar)1.0f, &btVector3(position.X, position.Y, position.Z), (btScalar)50, (btScalar)30);
 	//player render node
@@ -17,7 +17,9 @@ void Enemy::intitalise(irr::core::vector3df position)
 
 void Enemy::update(float delta)
 {	
-
+	int n1 = rand() % 100;
+	int n2 = rand() % 250;
+	int n3 = rand() % 100;
 
 
 	if(_ghostObject ){
@@ -36,23 +38,44 @@ void Enemy::update(float delta)
 		btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
 		btScalar walkVelocity = btScalar(1.1) * 600.0;
 		btScalar walkSpeed = walkVelocity * delta;
+		if(n2 < 2)
+		{
+			if (n1 < 40)
+			{
+			walkforward = true;
+			
+			}
+			else 
+			{
+				walkforward = false;
+			}
+			if(n3 < 40)
+			{
+				walkleft = true;
+			}
+			else
+			{
+				walkleft = false;
+			}
+		}
+		
 
 		//rotate view
-		if (walkleft = true)
+		if (walkleft == true)
 		{
 			btMatrix3x3 orn = _ghostObject->getWorldTransform().getBasis();
-			orn *= btMatrix3x3(btQuaternion(btVector3(0,1,0),-5.0f*delta));
+			orn *= btMatrix3x3(btQuaternion(btVector3(0,1,0),-2.0f*delta));
 			_ghostObject->getWorldTransform ().setBasis(orn);
 		}
 
-		if (walkright = true)
+		if (walkright == true)
 		{
 			btMatrix3x3 orn = _ghostObject->getWorldTransform().getBasis();
 			orn *= btMatrix3x3(btQuaternion(btVector3(0,1,0),5.0f*delta));
 			_ghostObject->getWorldTransform ().setBasis(orn);
 		}
 
-		if (walkforward = true)
+		if (walkforward == true)
 		{
 			walkDirection += forwardDir;
 		}
