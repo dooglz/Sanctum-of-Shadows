@@ -21,7 +21,6 @@ bool SanctumOfShadows::init(){
 
 	irr::scene::ISceneManager* smgr = GameEngine::engine.getDevice()->getSceneManager();
 
-	
 	//load the level
 	level = new Level();
 	level->loadContent();
