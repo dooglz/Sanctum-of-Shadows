@@ -1,8 +1,7 @@
 #include "Player.h"
-
-void Player::intitalise(irr::core::vector3df position)
+Player::Player(irr::core::vector3df position): Character(-1,0,"player")
 {
-	_walkVelocity = btScalar(600);
+	_walkVelocity = btScalar(1000);
 	irr::core::vector3df playerScale = irr::core::vector3df(60.0f,100.0f,60.0f);
 	//Physics Kinematic caracter Object
 	_characterC = addCharacter((btScalar)1.0f, &btVector3(position.X, position.Y, position.Z), (btScalar)50, (btScalar)30);
@@ -58,5 +57,10 @@ bool Player::loadContent()
 
 void Player::unloadContent()
 {
-
+	if(_camera)
+	{
+		_camera->drop();
+		_camera = 0;
+	}
+	Character::unloadContent();
 }

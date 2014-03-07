@@ -2,7 +2,6 @@
 #include <irrlicht.h>
 #include "Message.h"
 #include "MessageHandler.h"
-
 #include "EntityManager.h"
 
 namespace GameEngine{
@@ -18,7 +17,7 @@ namespace GameEngine{
 
 	public:
 		Entity(int id, irr::scene::ISceneNode* node,const std::string& name);
-			virtual ~Entity(){}
+		virtual ~Entity(){}
 		irr::scene::ISceneNode* getNode()
 		{
 			return _node;

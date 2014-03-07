@@ -50,10 +50,9 @@ bool SanctumOfShadows::init(){
 	LightSpriteNode->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/particlewhite.bmp"));
 
 
-	player = new Player();
-	player->intitalise(irr::core::vector3df(0,200.0f,0));
-	enemy = new Enemy();
-	enemy->intitalise(irr::core::vector3df(400.0f,200.0f,0), player);
+	player = new Player(irr::core::vector3df(0,200.0f,0));
+	Enemy::setPlayerRef(player);
+	enemy = new Enemy(irr::core::vector3df(400.0f,200.0f,0));
 	//
 
 	/*
@@ -78,8 +77,6 @@ bool SanctumOfShadows::init(){
 
 bool a,b;
 bool SanctumOfShadows::update(float delta){
-	player->update(delta);
-	enemy->update(delta);
 	//TODO, move some of this to baseclass
 	if(GameEngine::handler.keyDown(irr::KEY_ESCAPE))
 	{

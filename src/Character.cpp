@@ -8,10 +8,10 @@ void Character::intitalise(irr::core::vector3df position, irr::core::vector3df s
 	{
 		size = irr::core::vector3df(50.0f,80.0f,50.0f);
 	}
-	_characterC = addCharacter((btScalar)1.0f, &btVector3(position.X, position.Y, position.Z), (btScalar)size.Y, (btScalar)size.X);
 
 	//Physics Kinematic caracter Object
-	_characterC = addCharacter((btScalar)1.0f, &btVector3(position.X, position.Y, position.Z), (btScalar)50, (btScalar)30);
+	_characterC = addCharacter((btScalar)1.0f, &btVector3(position.X, position.Y, position.Z), (btScalar)size.Y/2, (btScalar)size.X/2);
+
 	//render node
 	_node = GameEngine::engine.getDevice()->getSceneManager()->addEmptySceneNode();
 }
@@ -35,8 +35,7 @@ void Character::walk(float delta)
 	if(_ghostObject )
 	{
 		btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
-		btScalar walkVelocity = btScalar(600.0);
-		btScalar walkSpeed = walkVelocity * delta;
+		btScalar walkSpeed = _walkVelocity * delta;
 		
 		//rotate
 		if (walkleft == true)
@@ -82,7 +81,8 @@ void Character::walk(float delta)
 btKinematicCharacterController*  Character::addCharacter(btScalar stepHeight,btVector3* characterPosition, btScalar characterHeight, btScalar characterWidth)
 {
 	_ghostObject = new btPairCachingGhostObject();
-	GameEngine::Physics::broadPhase->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
+	btGhostPairCallback* ghostPairCallback = new btGhostPairCallback();
+	GameEngine::Physics::broadPhase->getOverlappingPairCache()->setInternalGhostPairCallback(ghostPairCallback);
 
 	btConvexShape* characterShape = new btCapsuleShape(characterWidth, characterHeight);
 	btTransform trans;
@@ -104,16 +104,16 @@ btKinematicCharacterController*  Character::addCharacter(btScalar stepHeight,btV
 	//GameEngine::Physics::world->addCollisionObject(ghostObject,btBroadphaseProxy::CharacterFilter, btBroadphaseProxy::StaticFilter|btBroadphaseProxy::DefaultFilter);
 
 	GameEngine::Physics::world->addCharacter(character);
-
+	
 	return character;
 };
 
-bool Character::loadContent()
-{
-	return true;
-}
-
-void Character::unloadContent()
-{
-
+void Character::unloadContent(){
+	if(_node)
+	{
+		_node->drop();
+		_node = 0;
+	}
+	delete _characterC;
+	_characterC = 0;
 }

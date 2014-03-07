@@ -1,9 +1,10 @@
 #include "Enemy.h"
 
-void Enemy::intitalise(irr::core::vector3df position, Player* player)
+Player* Enemy::_player;
+
+Enemy::Enemy(irr::core::vector3df position): Character(-1,0,"enemy")
 {
 	_walkVelocity = btScalar(600);
-	_player = player;
 	irr::core::vector3df enemyScale = irr::core::vector3df(50.0f,80.0f,50.0f);
 	//Physics Kinematic caracter Object
 	_characterC = addCharacter((btScalar)1.0f, &btVector3(position.X, position.Y, position.Z), (btScalar)enemyScale.Y/2, (btScalar)enemyScale.X/2);
@@ -13,6 +14,7 @@ void Enemy::intitalise(irr::core::vector3df position, Player* player)
 	_node->setScale(enemyScale);
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 }
+
 
 void Enemy::update(float delta)
 {	
@@ -43,7 +45,7 @@ void Enemy::update(float delta)
 	float crossToplayer = _forwardDir.cross(GameEngine::Physics::irrVec3ToBtVec3 ((_player->getNode()->getPosition() - _node->getPosition()))).getY(); 
 	
 	//TODO put these in a header, with other things when enemies get more complicated
-	float visibleRange = 450.0f;
+	float visibleRange = 300.0f;
 	float combatRange = 130.0f;
 
 	float distanceToPlayer = (_player->getNode()->getPosition() - _node->getPosition()).getLength();
@@ -91,5 +93,5 @@ bool Enemy::loadContent()
 
 void Enemy::unloadContent()
 {
-
+	Character::unloadContent();
 }

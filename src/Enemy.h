@@ -6,12 +6,13 @@
 class Enemy:public Character{
 private:
 	//This will not be nessisary once these are true entities again.
-	Player* _player;
+	static Player* _player;
 public:
-	Enemy(){};
+	Enemy(irr::core::vector3df position);
 	~Enemy(){};
-	void intitalise(irr::core::vector3df position, Player* player);
+	void intitalise(){};
 	bool loadContent();
 	void unloadContent();
 	void update(float delta);
+	static void setPlayerRef(Player* player){_player = player;}
 };

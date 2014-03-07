@@ -19,11 +19,11 @@ bool Level::loadContent()
 	btRigidBody* groundRigidBody = new btRigidBody(groundRigidBodyCI);
 	GameEngine::Physics::world->addRigidBody(groundRigidBody,GameEngine::Physics::E_Static,GameEngine::Physics::E_StaticGroup);
 
-	irr::scene::IAnimatedMesh* am = GameEngine::engine.getDevice()->getSceneManager()->addHillPlaneMesh("plane", irr::core::dimension2df(3000,3000), irr::core::dimension2du(1,1));
+	irr::scene::IAnimatedMesh* am = GameEngine::engine.getDevice()->getSceneManager()->addHillPlaneMesh("plane", irr::core::dimension2df(2000,2000), irr::core::dimension2du(1,1));
 	if (am)
 	{
 	  irr::scene::IMeshSceneNode* msn = GameEngine::engine.getDevice()->getSceneManager()->addMeshSceneNode(am->getMesh(0));
-	  msn->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_dev_spiral.jpg"));
+	  msn->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_dev_radius.png"));
 	  msn->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	}
 
