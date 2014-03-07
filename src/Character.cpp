@@ -3,6 +3,7 @@
 //this makes a geneirc character with a blank render object
 void Character::intitalise(irr::core::vector3df position, irr::core::vector3df size)
 {
+	_walkVelocity = btScalar(600);
 	if(size.getLengthSQ() == 0)
 	{
 		size = irr::core::vector3df(50.0f,80.0f,50.0f);
@@ -15,24 +16,26 @@ void Character::intitalise(irr::core::vector3df position, irr::core::vector3df s
 	_node = GameEngine::engine.getDevice()->getSceneManager()->addEmptySceneNode();
 }
 
+void Character::update(float delta)
+{
+	_xform = _ghostObject->getWorldTransform ();
+
+	_forwardDir = _xform.getBasis()[2];
+	_forwardDir.setX(-1.0f * _forwardDir.getX());//Some crazy bullet stuff results in this needing done.
+	_upDir = _xform.getBasis()[1];
+	_strafeDir = _xform.getBasis()[0];
+
+	_forwardDir.normalize ();
+	_upDir.normalize ();
+	_strafeDir.normalize ();
+}
+
 void Character::walk(float delta)
 {	
 	if(_ghostObject )
 	{
-		///set walkDirection for our Enemy
-		btTransform xform;
-		xform = _ghostObject->getWorldTransform ();
-
-		btVector3 forwardDir = xform.getBasis()[2];
-		forwardDir.setX(-1.0f * forwardDir.getX());//Some crazy bullet stuff results in this needing done.
-		btVector3 upDir = xform.getBasis()[1];
-		btVector3 strafeDir = xform.getBasis()[0];
-		forwardDir.normalize ();
-		upDir.normalize ();
-		strafeDir.normalize ();
-
 		btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
-		btScalar walkVelocity = btScalar(1.1) * 600.0;
+		btScalar walkVelocity = btScalar(600.0);
 		btScalar walkSpeed = walkVelocity * delta;
 		
 		//rotate
@@ -52,12 +55,12 @@ void Character::walk(float delta)
 
 		if (walkforward == true)
 		{
-			walkDirection += forwardDir;
+			walkDirection += _forwardDir;
 		}
 
 		if (walkback == true)
 		{
-			walkDirection -= forwardDir;	
+			walkDirection -= _forwardDir;	
 		}
 		_characterC->setWalkDirection(walkDirection*walkSpeed);
 

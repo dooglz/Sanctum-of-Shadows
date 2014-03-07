@@ -1,10 +1,6 @@
 #pragma once
 #include <irrlicht.h>
-#include "PhysicalEntity.h"
-#include "Box.h"
 #include "Character.h"
-#include "BulletDynamics/Character/btKinematicCharacterController.h"
-#include "BulletCollision/CollisionDispatch/btGhostObject.h"
 
 class Player:public Character{
 private:

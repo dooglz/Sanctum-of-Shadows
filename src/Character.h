@@ -15,6 +15,13 @@ protected:
 	bool walkback;
 	bool walkleft;
 	bool walkright;
+	//
+	btTransform _xform;
+	btVector3 _forwardDir;
+	btVector3 _upDir;
+	btVector3 _strafeDir;
+	btScalar _walkVelocity;
+	//
 	btPairCachingGhostObject* _ghostObject;
 	btKinematicCharacterController* _characterC;
 	btKinematicCharacterController*  addCharacter(btScalar stepHeight,btVector3* characterPosition, btScalar characterHeight, btScalar characterWidth);
@@ -27,5 +34,5 @@ public:
 	btKinematicCharacterController* getController() { return _characterC; }
 	bool loadContent();
 	void unloadContent();
-	void update(float delta){};
+	void update(float delta);
 };
