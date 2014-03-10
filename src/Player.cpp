@@ -13,15 +13,44 @@ Player::Player(irr::core::vector3df position): Character(-1,0,"player")
 	//player camera
 	_camera = GameEngine::engine.getDevice()->getSceneManager()->addCameraSceneNode(_node,irr::core::vector3df(0,0,0));
 	_camera->bindTargetAndRotation(true);
+	_health = 100;
 }
 
 void Player::update(float delta)
 {	
+	float combatRange = 130.0f;
 	walkleft = false;
 	walkright = false;
 	walkforward = false;
 	walkback = false;
 	Character::update(delta);
+	
+
+	if (GameEngine::handler.keyDown(irr::KEY_SPACE))
+	{
+		std::list<Entity*>* entities = GameEngine::EntityManager::getNamedEntity("Skeletors");
+		//if the list isn't empty, then we check if we have hit something 
+		if(entities->size() > 0)
+		{
+			for(auto iter = entities->begin(); iter != entities->end(); ++iter)
+			{
+				//check if the current Skeletor is alive. no point checking collision if it isn't 
+				if ((*iter)->isAlive() && ((*iter)->getNode()->getPosition() - _node->getPosition()).getLength() < combatRange)
+				{
+					//checking combat range when space is pressed 
+					std::cerr << "d-d-d-d-d-duel" << std::endl;
+
+					_health = _health--;
+						if( _health == 0)
+						{
+							//player had "died"
+							std::cerr << "combat over" << std::endl;
+						}
+					//create a bounding box for the invader 
+				}					
+			}
+		}
+	}
 
 	if (GameEngine::handler.keyDown(irr::KEY_KEY_A))
 	{
@@ -63,4 +92,14 @@ void Player::unloadContent()
 		_camera = 0;
 	}
 	Character::unloadContent();
+}
+
+void Player::handleMessage(const GameEngine::Message& message)
+{
+	//handle incoming message
+	if(message.message == "Attack")
+	{
+
+		delete message.data;
+	}
 }

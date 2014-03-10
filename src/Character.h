@@ -16,6 +16,7 @@ protected:
 	bool walkback;
 	bool walkleft;
 	bool walkright;
+	int _health;
 	//
 	btTransform _xform;
 	btVector3 _forwardDir;
@@ -36,4 +37,5 @@ public:
 	void update(float delta);
 	void intitalise(){};
 	void unloadContent();
+	int getHealth() { return _health; }
 };

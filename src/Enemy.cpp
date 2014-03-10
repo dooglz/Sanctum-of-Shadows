@@ -2,7 +2,7 @@
 
 Player* Enemy::_player;
 
-Enemy::Enemy(irr::core::vector3df position): Character(-1,0,"enemy")
+Enemy::Enemy(irr::core::vector3df position): Character(-1,0,"Skeletors")
 {
 	_walkVelocity = btScalar(600);
 	irr::core::vector3df enemyScale = irr::core::vector3df(50.0f,80.0f,50.0f);
@@ -13,6 +13,7 @@ Enemy::Enemy(irr::core::vector3df position): Character(-1,0,"enemy")
 	_node->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_dev_flurry.jpg"));
 	_node->setScale(enemyScale);
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+	_health = 80;
 }
 
 

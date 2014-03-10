@@ -13,4 +13,5 @@ public:
 	void update(float delta);
 	irr::scene::ICameraSceneNode* getCamera() { return _camera; }
 	void intitalise(){};
+	void Player::handleMessage(const GameEngine::Message& message);
 };
