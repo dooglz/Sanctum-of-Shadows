@@ -56,6 +56,10 @@ int main(){
 
 			currtime = device->getTimer()->getRealTime();
 			delta = (currtime - prevTime) / 1000.f; // Time in seconds
+			if(delta > 1.0f)
+			{
+				delta = 0.0f;
+			}
 
 			if (!GameEngine::engine.update(delta)){
 				break;
