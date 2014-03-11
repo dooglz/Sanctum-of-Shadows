@@ -22,6 +22,7 @@ namespace GameEngine{
 			std::wstring _caption;
 			irr::core::dimension2d<irr::u32> _dimensions;
 			irr::scene::ICameraSceneNode* _camera;
+			bool _run;
 		public:
 			//constructor
 			Engine(){}
@@ -54,6 +55,8 @@ namespace GameEngine{
 			void unloadContent();
 			void shutdown();
 			void debug();
+			void stop();
+			bool run();
 	};
 
 	extern Engine engine;

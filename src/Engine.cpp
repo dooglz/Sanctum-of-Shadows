@@ -17,6 +17,7 @@ namespace GameEngine{
 	DebugDraw* debugDraw;
 
 	bool Engine::initialise(){
+		_run = true;
 		_device = irr::createDevice(
 			irr::video::EDT_DIRECT3D9, _dimensions, 16, false, true, false, &handler);
 		//TODO investigate if vsync can be toggled
@@ -113,7 +114,18 @@ namespace GameEngine{
 
 	void Engine::shutdown(){
 		EntityManager::shutdown();
-		_device->drop();
+		if(_device)
+		{
+			_device->closeDevice();
+			_device = NULL;
+		}
+	}
+
+	void Engine::stop(){
+		_run = false;
+	}
+	bool Engine::run(){
+		return _run;
 	}
 
 	void Engine::debug(){

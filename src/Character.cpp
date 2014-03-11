@@ -112,8 +112,8 @@ void Character::unloadContent(){
 	if(_node)
 	{
 		_node->drop();
-		_node = 0;
+		_node = NULL;
 	}
 	delete _characterC;
-	_characterC = 0;
+	_characterC = NULL;
 }

@@ -50,7 +50,7 @@ int main(){
 
 	//Main Loop
 	int lastFPS = -1;
-	while (device->run()){
+	while (device->run() && GameEngine::engine.run()){
 		if (device->isWindowActive())
         {
 			currtime = device->getTimer()->getRealTime();

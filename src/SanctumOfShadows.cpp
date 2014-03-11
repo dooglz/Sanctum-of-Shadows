@@ -80,7 +80,7 @@ bool SanctumOfShadows::update(float delta){
 	//TODO, move some of this to baseclass
 	if(GameEngine::handler.keyDown(irr::KEY_ESCAPE))
 	{
-		GameEngine::engine.getDevice()->closeDevice();
+		GameEngine::engine.stop();
 	}
 	if(GameEngine::handler.keyDown(irr::KEY_F1)){
 		GameEngine::engine.getDevice()->getSceneManager()->setActiveCamera(player->getCamera());

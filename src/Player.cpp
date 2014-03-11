@@ -41,12 +41,11 @@ void Player::update(float delta)
 					std::cerr << "d-d-d-d-d-duel" << std::endl;
 
 					_health = _health--;
-						if( _health == 0)
-						{
-							//player had "died"
-							std::cerr << "combat over" << std::endl;
-						}
-					//create a bounding box for the invader 
+					if( _health == 0)
+					{
+						//player had "died"
+						std::cerr << "combat over" << std::endl;
+					}
 				}					
 			}
 		}
