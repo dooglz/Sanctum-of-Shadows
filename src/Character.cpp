@@ -109,11 +109,6 @@ btKinematicCharacterController*  Character::addCharacter(btScalar stepHeight,btV
 };
 
 void Character::unloadContent(){
-	if(_node)
-	{
-		_node->drop();
-		_node = NULL;
-	}
 	delete _characterC;
 	_characterC = NULL;
 }

@@ -8,9 +8,9 @@
 
 #include <string>
 #include <irrlicht.h>
+
 #include "KeyboardHandler.h"
 #include "EntityManager.h"
-
 #include "MeshManager.h"
 #include "Physics.h"
 #include "BulletDebugDraw.h"

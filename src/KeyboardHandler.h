@@ -5,6 +5,7 @@ namespace GameEngine{
 	class KeyHandler : public irr::IEventReceiver{
 		private:
 			enum keyStatesENUM { UP, DOWN, PRESSED, RELEASED };
+			bool firedKeys[irr::KEY_KEY_CODES_COUNT];
 			keyStatesENUM keyState[irr::KEY_KEY_CODES_COUNT];
 		public:
 			KeyHandler(){
@@ -21,12 +22,14 @@ namespace GameEngine{
 						// If key was not down before
 						if (keyState[event.KeyInput.Key] != DOWN  && keyState[event.KeyInput.Key] != PRESSED)
 						{
-							keyState[event.KeyInput.Key] = PRESSED; // Set to Pressed
+							keyState[event.KeyInput.Key] = PRESSED;
 						}
-						else
+						// if key was down before
+						else 
 						{
+							//Technically this line should set it to equal HOLD, but as we can't determine it accuratly, just stick to DOWN
 							//key repeat timing is set by the os, so for a few fames a key will be registered as pressed rather than down, untill the repeat event comes in.
-							// if key was down before
+							//This is why we set pressed keys to be down immediatly in update()
  							keyState[event.KeyInput.Key] = DOWN; // Set to Down
 						}
 					}
@@ -35,18 +38,49 @@ namespace GameEngine{
 						// if the key is down
 						if (keyState[event.KeyInput.Key] != UP)
 						{
-							keyState[event.KeyInput.Key] = RELEASED; // Set to Released
+							keyState[event.KeyInput.Key] = RELEASED;
 						}
 					}
 				}
-				//std::cout << " -> " << keyState[event.KeyInput.Key] << std::endl;
 				return false;
 			}
+
+			void update(){
+				for (int i = 0; i < irr::KEY_KEY_CODES_COUNT; ++i){
+					if(keyState[i] == RELEASED)
+					{
+						keyState[i] = UP;
+						firedKeys[i] = false;
+					}
+					else if(keyState[i] == PRESSED)
+					{
+						keyState[i] = DOWN;
+					}
+				}
+			}
+
 			bool keyPressed(char keycode)
 			{
-				if (keyState[keycode] == PRESSED)
+				if ( keyState[keycode] == PRESSED)
 				{
-					//std::cout << keyState[keycode] << std::endl;
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+
+			bool keyFired(char keycode)
+			{
+				if (firedKeys[keycode])
+				{
+					//key has been fired,
+					return false;
+				}
+				else if (!firedKeys[keycode] && keyState[keycode] == DOWN)
+				{
+					firedKeys[keycode] = true;
 					return true;
 				}
 				else
@@ -57,7 +91,7 @@ namespace GameEngine{
 
 			bool keyDown(char keycode)
 			{
-				if (keyState[keycode] == DOWN || keyState[keycode] == PRESSED)
+				if (keyState[keycode] == DOWN)
 				{
 					return true;
 				}
@@ -69,7 +103,7 @@ namespace GameEngine{
 
 			bool keyUp(char keycode)
 			{
-				if (keyState[keycode] == UP || keyState[keycode] == RELEASED)
+				if (keyState[keycode] == UP)
 				{
 					return true;
 				}

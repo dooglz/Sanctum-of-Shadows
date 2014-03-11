@@ -73,6 +73,7 @@ namespace GameEngine{
 	}
 
 	bool Engine::update(float delta){
+		handler.update();
 		if(!EntityManager::update(delta))
 		{
 			return false;

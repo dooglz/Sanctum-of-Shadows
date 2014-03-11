@@ -75,37 +75,42 @@ bool SanctumOfShadows::init(){
 	return true;
 }
 
-bool a,b;
 bool SanctumOfShadows::update(float delta){
 	//TODO, move some of this to baseclass
-	if(GameEngine::handler.keyDown(irr::KEY_ESCAPE))
+
+	if(GameEngine::handler.keyFired(irr::KEY_ESCAPE))
 	{
 		GameEngine::engine.stop();
 	}
-	if(GameEngine::handler.keyDown(irr::KEY_F1)){
+
+	//Debug Camera commands
+	if(GameEngine::handler.keyFired(irr::KEY_F1))
+	{
 		GameEngine::engine.getDevice()->getSceneManager()->setActiveCamera(player->getCamera());
 	}
-	if(GameEngine::handler.keyDown(irr::KEY_F2)){
+	if(GameEngine::handler.keyFired(irr::KEY_F2))
+	{
 		GameEngine::engine.getDevice()->getSceneManager()->setActiveCamera(camera);
 	}
-	if(GameEngine::handler.keyDown(irr::KEY_F3)){
+	if(GameEngine::handler.keyFired(irr::KEY_F3))
+	{
 		GameEngine::engine.getDevice()->getSceneManager()->setActiveCamera(Flycamera);
 	}
-	if(GameEngine::handler.keyDown(irr::KEY_F4)){
+	if(GameEngine::handler.keyFired(irr::KEY_F4))
+	{
 		GameEngine::engine.getDevice()->getSceneManager()->setActiveCamera(Menucamera);
 	}
-	if(GameEngine::handler.keyDown(irr::KEY_F5)){
+	//debug random physics objects
+	if(GameEngine::handler.keyDown(irr::KEY_F5))
+	{
 		new Box(btVector3(-75.0f + ((((float) rand()) / ((float) RAND_MAX))*150.0f),100.0f,-75.0f + ((((float) rand()) / ((float) RAND_MAX))*150.0f)),irr::core::vector3df(10.0f,10.0f,10.0f),10.0f);
 	}
-	if(!a && GameEngine::handler.keyDown(irr::KEY_F6)){
+	if(GameEngine::handler.keyFired(irr::KEY_F6))
+	{
 		new Box(btVector3(0,30,0),irr::core::vector3df(10.0f,10.0f,10.0f),10.0f);
-		a = true;
-	}
-	if(GameEngine::handler.keyUp(irr::KEY_F6)){
-		a = false;
 	}
 
-	if(!b && GameEngine::handler.keyDown(irr::KEY_F7)){
+	if(GameEngine::handler.keyFired(irr::KEY_F7)){
 		irr::scene::ICameraSceneNode* cam = GameEngine::engine.getDevice()->getSceneManager()->getActiveCamera();
 		Box* bx = new Box(
 			GameEngine::Physics::irrVec3ToBtVec3(cam->getAbsolutePosition()),
@@ -116,10 +121,6 @@ bool SanctumOfShadows::update(float delta){
 		irr::core::vector3df end = (cam->getTarget() - start);
 		end.normalize();
 		bx->getRB()->setLinearVelocity(GameEngine::Physics::irrVec3ToBtVec3(end) * 100.0f);
-		b = true;
-	}
-		if(GameEngine::handler.keyUp(irr::KEY_F7)){
-		b = false;
 	}
 
 

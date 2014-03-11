@@ -53,6 +53,7 @@ int main(){
 	while (device->run() && GameEngine::engine.run()){
 		if (device->isWindowActive())
         {
+
 			currtime = device->getTimer()->getRealTime();
 			delta = (currtime - prevTime) / 1000.f; // Time in seconds
 
@@ -91,6 +92,7 @@ int main(){
 				device->setWindowCaption(str.c_str());
 				lastFPS = fps;
 			}
+
 		}
 		else
 		{
