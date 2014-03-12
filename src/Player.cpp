@@ -1,4 +1,6 @@
 #include "Player.h"
+
+#include "SanctumOfShadows.h"
 Player::Player(irr::core::vector3df position): Character(-1,0,"player")
 {
 	_walkVelocity = btScalar(1000);
@@ -13,7 +15,7 @@ Player::Player(irr::core::vector3df position): Character(-1,0,"player")
 	//player camera
 	_camera = GameEngine::engine.getDevice()->getSceneManager()->addCameraSceneNode(_node,irr::core::vector3df(0,0,0));
 	_camera->bindTargetAndRotation(true);
-	_health = 100;
+	_health = 100.0f;
 }
 
 void Player::update(float delta)
@@ -55,6 +57,13 @@ void Player::update(float delta)
 	}
 
 		
+
+	if(_health <= 0.0f)
+	{
+		std::cerr << "player is dead" << std::endl;
+		
+		SanctumOfShadows::GameOver();
+	}
 	
 	if  (GameEngine::handler.keyFired(irr::KEY_SPACE))
 	{
@@ -100,8 +109,9 @@ void Player::unloadContent()
 void Player::handleMessage(const GameEngine::Message& message)
 {
 	//handle incoming message
-	if(message.message == "Attack")
+	if(message.message == "playerHealthDecrease")
 	{
+		_health = _health - 0.05f;
 
 		delete message.data;
 	}

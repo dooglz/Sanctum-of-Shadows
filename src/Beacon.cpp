@@ -1,5 +1,7 @@
 #include "Beacon.h"
 #include "Engine.h"
+#include "Player.h"
+#include "SanctumOfShadows.h"
 
 #include <iostream>
 
@@ -11,7 +13,9 @@ Beacon::Beacon(const irr::core::vector3df& position) : GameEngine::Entity(-1,0,"
 	_node->setPosition(position);
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, true);
 
-	
+	//set a healing range to heal the player
+
+	_range = 150;
 	// create light
 	_light = 0;
 	_light = GameEngine::engine.getDevice()->getSceneManager()->addLightSceneNode();
@@ -168,7 +172,21 @@ bool Beacon::loadContent()
 
 void Beacon::update(float delta)
 {
+	if((SanctumOfShadows::player->getNode()->getPosition() - _node->getPosition()).getLength() < _range)
+	{
+		float a;
+		a = SanctumOfShadows::player->getHealth();
 
+		if( a < 150.0f)
+		{
+			//player getting healed by beacon
+			SanctumOfShadows::player->setHealth( a + (5.0f * delta));
+
+		}
+
+
+
+	}
 }
 
 void Beacon::handleMessage(const GameEngine::Message& message)
