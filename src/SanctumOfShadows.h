@@ -6,6 +6,7 @@
 class SanctumOfShadows:public Game{
 private:
 	void reset();
+	static	bool _gameover;
 public:
 	SanctumOfShadows(){
 		_gameTitle = L"SanctumOfShadows";
@@ -15,4 +16,5 @@ public:
 	~SanctumOfShadows(){};
 	bool init();
 	bool update(float delta);
+	static void GameOver();
 };

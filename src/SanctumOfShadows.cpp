@@ -6,6 +6,8 @@
 #include "Beacon.h"
 #include <btBulletDynamicsCommon.h>
 
+
+bool SanctumOfShadows::_gameover;
 irr::scene::ICameraSceneNode* camera;
 irr::scene::ICameraSceneNode* Flycamera;
 irr::scene::ICameraSceneNode* Menucamera;
@@ -136,4 +138,18 @@ bool SanctumOfShadows::update(float delta){
 
 void SanctumOfShadows::reset(){
 
+}
+
+void SanctumOfShadows::GameOver()
+{
+	if(_gameover == false)
+	{
+	std::cerr << "Game is over" << std::endl;
+	
+	irr::scene::ISceneNode* DeadSpriteNode = GameEngine::engine.getDevice()->getSceneManager()->addBillboardSceneNode(player->getNode(), irr::core::dimension2d<irr::f32>(150, 100),irr::core::vector3df(0,0,1));
+	DeadSpriteNode->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+	DeadSpriteNode->setMaterialType(irr::video::EMT_TRANSPARENT_ADD_COLOR);
+	DeadSpriteNode->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/GameOver.PNG"));
+	}
+	_gameover = true;
 }

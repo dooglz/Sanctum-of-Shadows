@@ -39,5 +39,5 @@ public:
 	void unloadContent();
 	float getHealth() { return _health; }
 	void setHealth(float value) {  _health = value; }
-
+	void die();
 };

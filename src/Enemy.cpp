@@ -1,6 +1,7 @@
 #include "Enemy.h"
 #include "Message.h"
 #include "MessageHandler.h"
+#include "SanctumOfShadows.h"
 Player* Enemy::_player;
 
 Enemy::Enemy(irr::core::vector3df position): Character(-1,0,"Skeletors")
@@ -86,7 +87,22 @@ void Enemy::update(float delta)
 	}
 	walk(delta);
 
-	if(_health==0)
+
+				//check if the current Skeletor is alive. no point checking collision if it isn't 
+	if (SanctumOfShadows::player->isAlive() && (SanctumOfShadows::player->getNode()->getPosition() - _node->getPosition()).getLength() < combatRange)
+				{
+					//checking combat range when space is pressed 
+					std::cerr << "d-d-d-d-d-duel" << std::endl;
+					//create a message 
+					GameEngine::Message message(SanctumOfShadows::player,"playerHealthDecrease",0);
+					//send it via the message handler
+					GameEngine::MessageHandler::sendMessage(message);
+						
+				}					
+			
+
+
+	if(_health <= 0)
 	{
 		std::cerr << "Enemy is dead" << std::endl;
 		die();
