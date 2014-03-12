@@ -14,7 +14,7 @@ Enemy::Enemy(irr::core::vector3df position): Character(-1,0,"Skeletors")
 	_node->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_dev_flurry.jpg"));
 	_node->setScale(enemyScale);
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-	_health = 80;
+	_health = 80.0f;
 }
 
 
@@ -111,8 +111,11 @@ void Enemy::handleMessage(const GameEngine::Message& message)
 	if (message.message == "healthDecrease")
 	{
 		//recieved message to take damamge
-		_health = _health - 20;
+		_health = _health - 20.0f;
+		_characterC->setMaxJumpHeight(80);
+		_characterC->setJumpSpeed(40);
 		_characterC->jump();
+
 
 	}
 }

@@ -13,7 +13,7 @@ Player::Player(irr::core::vector3df position): Character(-1,0,"player")
 	//player camera
 	_camera = GameEngine::engine.getDevice()->getSceneManager()->addCameraSceneNode(_node,irr::core::vector3df(0,0,0));
 	_camera->bindTargetAndRotation(true);
-	_health = 100;
+	_health = 100.0f;
 }
 
 void Player::update(float delta)

@@ -11,7 +11,7 @@ irr::scene::ICameraSceneNode* Flycamera;
 irr::scene::ICameraSceneNode* Menucamera;
 bool _flying;
 Level* level;
-Player* player;
+Player* SanctumOfShadows::player;
 Enemy* enemy;
 bool SanctumOfShadows::init(){
 	std::wcout <<  _gameTitle << " Game code init" << std::endl;
@@ -79,6 +79,11 @@ bool SanctumOfShadows::init(){
 
 bool SanctumOfShadows::update(float delta){
 	//TODO, move some of this to baseclass
+
+	//display player health
+
+	std::cerr << player->getHealth() << std::endl;
+
 
 	if(GameEngine::handler.keyFired(irr::KEY_ESCAPE))
 	{
