@@ -5,7 +5,7 @@ class Beacon : public GameEngine::Entity{
 private:
 	int _range;
 	bool _isLit;
-	irr::scene::ISceneNode* _light;
+	irr::scene::ILightSceneNode* _light;
 public:
 	Beacon (const irr::core::vector3df& position);
 	~Beacon (){};

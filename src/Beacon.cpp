@@ -11,10 +11,30 @@ Beacon::Beacon(const irr::core::vector3df& position) : GameEngine::Entity(-1,0,"
 	_node->setPosition(position);
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, true);
 
-
+	
 	// create light
 	_light = 0;
-	_light = GameEngine::engine.getDevice()->getSceneManager()->addLightSceneNode(_node, irr::core::vector3df(0,7.0f,0), irr::video::SColorf(1.0f, 0.6f, 0.7f, 1.0f), 10000.0f);
+	_light = GameEngine::engine.getDevice()->getSceneManager()->addLightSceneNode();
+	/*
+	_light = GameEngine::engine.getDevice()->getSceneManager()->addLightSceneNode(
+		_node, irr::core::vector3df(0,17.0f,0),			//Parent and offset
+		irr::video::SColorf(1.0f, 0.6f, 0.7f, 1.0f),	//Colour
+		1000.0f);	//Radiius
+		*/
+	
+	irr::video::SLight& sl= _light->getLightData();
+	sl.Type = irr::video::E_LIGHT_TYPE::ELT_SPOT;
+	//rotate this, find out whats going on
+	sl.Direction = irr::core::vector3df(1,-1,0);
+	sl.DiffuseColor = irr::video::SColorf(1.0f, 0.6f, 0.7f, 1.0f);
+	sl.AmbientColor = irr::video::SColorf(1.0f, 0.6f, 0.7f, 1.0f);
+	sl.SpecularColor = irr::video::SColorf(1.0f, 0.6f, 0.7f, 1.0f);
+	sl.InnerCone = 60.0f;
+	sl.OuterCone = 90.0f;
+	sl.Falloff =  1000.0f;
+	_light->setPosition(irr::core::vector3df(0,200.0f,0));
+	
+
 	// attach billboard sprite to light
 	irr::scene::ISceneNode* LightSpriteNode = GameEngine::engine.getDevice()->getSceneManager()->addBillboardSceneNode(_light, irr::core::dimension2d<irr::f32>(50, 50));
 	LightSpriteNode->setMaterialFlag(irr::video::EMF_LIGHTING, false);

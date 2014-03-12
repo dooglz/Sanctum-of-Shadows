@@ -9,6 +9,7 @@
 irr::scene::ICameraSceneNode* camera;
 irr::scene::ICameraSceneNode* Flycamera;
 irr::scene::ICameraSceneNode* Menucamera;
+irr::scene::ILightSceneNode* workLight;
 bool _flying;
 Level* level;
 Player* player;
@@ -35,12 +36,33 @@ bool SanctumOfShadows::init(){
 	Flycamera->setFarValue(10000.0f);
 
 	Menucamera = GameEngine::engine.getDevice()->getSceneManager()->addCameraSceneNode(0,irr::core::vector3df(0,100,223),irr::core::vector3df(0,100,0));
+	workLight = smgr->addLightSceneNode(0, irr::core::vector3df(0,100.0f,0), irr::video::SColorf(1.0f, 0.6f, 0.7f, 1.0f), 3000.0f);
 
+	irr::video::SLight& sl= workLight->getLightData();
+	//constant, linear and quadratic
+	sl.Attenuation = irr::core::vector3df(0,0,0.0000001f);
+	/*
+	sl.Type = irr::video::E_LIGHT_TYPE::ELT_SPOT;
+	//rotate this, find out whats going on
+	sl.Direction = irr::core::vector3df(1,-1,0);
+	sl.DiffuseColor = irr::video::SColorf(1.0f, 0.6f, 0.7f, 1.0f);
+	sl.AmbientColor = irr::video::SColorf(1.0f, 0.6f, 0.7f, 1.0f);
+	sl.SpecularColor = irr::video::SColorf(1.0f, 0.6f, 0.7f, 1.0f);
+	sl.InnerCone = 60.0f;
+	sl.OuterCone = 90.0f;
+	sl.Falloff =  1000.0f;
+	*/
+	std::cout << " Radius: " << sl.Radius << " Type: " << sl.Type << 
+		" Direction: " << sl.Direction.X << ", " << sl.Direction.Y << ", " << sl.Direction.Z << ") "<<
+		" Attenuation: " << sl.Attenuation.X << ", " << sl.Attenuation.Y << ", " << sl.Attenuation.Z << ") " 
+		<<std::endl;  
+	
+	
 	// create light
 	irr::scene::ISceneNode* Lightnode = 0;
 	Lightnode = smgr->addLightSceneNode(0, irr::core::vector3df(0,100,0), irr::video::SColorf(1.0f, 0.6f, 0.7f, 1.0f), 1000.0f);
 	irr::scene::ISceneNodeAnimator* anim = 0;
-	anim = smgr->createFlyCircleAnimator (irr::core::vector3df(0,100,0),200.0f);
+	anim = smgr->createFlyCircleAnimator (irr::core::vector3df(0,100,0),300.0f);
 	Lightnode->addAnimator(anim);
 	anim->drop();
 
@@ -49,12 +71,12 @@ bool SanctumOfShadows::init(){
 	LightSpriteNode->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	LightSpriteNode->setMaterialType(irr::video::EMT_TRANSPARENT_ADD_COLOR);
 	LightSpriteNode->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/particlewhite.bmp"));
-
+	
 
 	player = new Player(irr::core::vector3df(0,200.0f,0));
 	Enemy::setPlayerRef(player);
 	enemy = new Enemy(irr::core::vector3df(400.0f,200.0f,0));
-	new Beacon(irr::core::vector3df(-400.0f,0,0));
+	 Beacon(irr::core::vector3df(0,0,40.0f));
 	//
 
 	/*
@@ -111,13 +133,18 @@ bool SanctumOfShadows::update(float delta){
 	{
 		new Box(btVector3(0,30,0),irr::core::vector3df(10.0f,10.0f,10.0f),10.0f);
 	}
+	//worklight
+	if(GameEngine::handler.keyFired(irr::KEY_F8))
+	{
+		workLight->setVisible(!workLight->isVisible());
+	}
 
 	if(GameEngine::handler.keyFired(irr::KEY_F7)){
 		irr::scene::ICameraSceneNode* cam = GameEngine::engine.getDevice()->getSceneManager()->getActiveCamera();
 		Box* bx = new Box(
 			GameEngine::Physics::irrVec3ToBtVec3(cam->getAbsolutePosition()),
-			irr::core::vector3df(10.0f,10.0f,10.0f),
-			10.0f
+			irr::core::vector3df(100.0f,100.0f,100.0f),
+			100.0f
 		);
 		irr::core::vector3df start = cam->getPosition();
 		irr::core::vector3df end = (cam->getTarget() - start);
