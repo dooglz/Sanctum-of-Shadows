@@ -112,3 +112,14 @@ void Character::unloadContent(){
 	delete _characterC;
 	_characterC = NULL;
 }
+
+void Character::die(){
+	_node->remove();
+	GameEngine::Physics::world->removeCharacter(_characterC);
+	GameEngine::Physics::world->removeCollisionObject(_ghostObject);
+	delete _characterC;
+	_characterC = NULL;
+	delete _ghostObject;
+	_ghostObject = NULL;
+	Entity::die();
+}
