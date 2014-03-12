@@ -1,5 +1,6 @@
 #include "Enemy.h"
-
+#include "Message.h"
+#include "MessageHandler.h"
 Player* Enemy::_player;
 
 Enemy::Enemy(irr::core::vector3df position): Character(-1,0,"Skeletors")
@@ -84,6 +85,13 @@ void Enemy::update(float delta)
 		}
 	}
 	walk(delta);
+
+	if(_health==0)
+	{
+		std::cerr << "Enemy is dead" << std::endl;
+		die();
+	}
+
 }
 
 
@@ -95,4 +103,16 @@ bool Enemy::loadContent()
 void Enemy::unloadContent()
 {
 	Character::unloadContent();
+}
+
+
+void Enemy::handleMessage(const GameEngine::Message& message)
+{
+	if (message.message == "healthDecrease")
+	{
+		//recieved message to take damamge
+		_health = _health - 20;
+		_characterC->jump();
+
+	}
 }

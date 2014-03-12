@@ -15,4 +15,6 @@ public:
 	void unloadContent();
 	void update(float delta);
 	static void setPlayerRef(Player* player){_player = player;}
+	void handleMessage(const GameEngine::Message& message);
+
 };
