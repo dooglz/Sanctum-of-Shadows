@@ -7,34 +7,30 @@
 
 Beacon::Beacon(const irr::core::vector3df& position) : GameEngine::Entity(-1,0,"Beacon")
 {
-	bool particles = false;
+	bool particles = true;
 	bool flame = false;
-	bool light = true;
 	_alive = true;
 
 	//scene node
 	loadContent();
-	_node->setScale(irr::core::vector3df(15,15,15));
-	_node->setPosition(position);
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, true);
+	_node->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
+	irr::core::vector3df scale = irr::core::vector3df(15.0f,15.0f,15.0f);
+	_node->setScale(scale);
+	_node->setPosition(position);
+	
 
 	//set a healing range to heal the player
-	_range = 150;
-
-	
+	_healingRange = 150;
+	_lightRange = 500;
 	
 	// create light
-	if(light)
-	{
-
-	_light = 0;
-	//_light = GameEngine::engine.getDevice()->getSceneManager()->addLightSceneNode();
-	
-	
 	_light = GameEngine::engine.getDevice()->getSceneManager()->addLightSceneNode(
 		_node, irr::core::vector3df(0,7.0f,0),			//Parent and offset
-		irr::video::SColorf(1.0f, 0.6f, 0.7f, 1.0f),	//Colour
-		500.0f);	//Radiius
+		irr::video::SColorf(1.0f, 1.0f, 1.0f, 1.0f),	//Colour
+		_lightRange);	//Radius
+	
+	//_light = GameEngine::engine.getDevice()->getSceneManager()->addLightSceneNode();
 	
 	/*
 	irr::video::SLight& sl= _light->getLightData();
@@ -58,41 +54,49 @@ Beacon::Beacon(const irr::core::vector3df& position) : GameEngine::Entity(-1,0,"
 
 	*/
 
-	/* 
+	
 	//Rigid body
+	btVector3 pos = GameEngine::Physics::irrVec3ToBtVec3(position);
+	irr::core::vector3df a = _node->getTransformedBoundingBox().getExtent();
+	//account for offset origin in model file
+	pos.setY(pos.getY()+(scale.Y*a.Y*0.5f));
 	btTransform transform;
 	transform.setIdentity();
-	transform.setOrigin(position);
-	GameEngine::MotionState* motionstate = new GameEngine::MotionState(btTransform(btQuaternion(0.0, 0.0, 0.0, 1.0), position), _node);
+	transform.setOrigin(pos);
 
 	//setup shape
-	btVector3 halfExtends(scale.X*0.5f,scale.Y*0.5f,scale.Z*0.5f);
+	btVector3 halfExtends(scale.X*a.X*0.5f,scale.Y*a.Y*0.5f,scale.Z*a.Z*0.5f);
 	btCollisionShape* shape = new btBoxShape(halfExtends);
 
-	//calc intertia, based on mass and shape
+	//mass is 0, object is static, default motionstate
 	btVector3 localInertia;
-	shape->calculateLocalInertia(mass,localInertia);
+	shape->calculateLocalInertia(0,localInertia);
+	btMotionState* motionstate = new btDefaultMotionState(transform);
 
 	//create the RB
-	_rigidBody = new btRigidBody(mass,motionstate,shape,localInertia);
+	_rigidBody = new btRigidBody(0,motionstate,shape,localInertia);
 	//add to world
 	GameEngine::Physics::world->addRigidBody(_rigidBody,GameEngine::Physics::E_Actor,GameEngine::Physics::E_ActorGroup);
-	*/
-	}
+	
 
 	if(particles)
 	{
+		float particleRadius = _lightRange / (2.0f*scale.X);
 		 // create a particle system
 		irr::scene::IParticleSystemSceneNode* ps = GameEngine::engine.getDevice()->getSceneManager()->addParticleSystemSceneNode(false,_node);
 		irr::scene::IParticleEmitter* em = ps->createRingEmitter(
 			irr::core::vector3df(0,0,0),
-			6.0f,2.0f,
-			irr::core::vector3df(0.0f,0.06f,0.0f),
-			30,80,
-			irr::video::SColor(0,255,255,255),       // darkest color
+			particleRadius / 2.0f,	//Ring Radius
+			particleRadius,	//Ring thickness
+			irr::core::vector3df(0.0f,0.06f,0.0f), //Direction
+			3,			//Min particles per second
+			80,		//Max particles per second
+			irr::video::SColor(0,128,128,128),       // darkest color
 			irr::video::SColor(0,255,255,255),      // brightest color
-			800,2000,0,								// min and max age, angle
-			irr::core::dimension2df(10.f,10.f),     // min size
+			800,		//Min Age
+			2000,		//Max Age
+			0,			//Angle			
+			irr::core::dimension2df(5.0f,5.0f),     // min size
 			irr::core::dimension2df(20.f,20.f)		// max size
 			);        
 		/*
@@ -161,8 +165,23 @@ Beacon::Beacon(const irr::core::vector3df& position) : GameEngine::Entity(-1,0,"
 			glow->drop();
 		}
 	}
-
+	//set beacon to be unlit innitially
+	light(false);
 }
+
+void Beacon::light(bool onOff)
+{
+	_isLit = onOff;
+	if(_isLit)
+	{
+		_light->setRadius(_lightRange);
+	}
+	else
+	{
+		_light->setRadius(0.25f * _lightRange);
+	}
+}
+
 
 void Beacon::intitalise()
 {
@@ -170,27 +189,37 @@ void Beacon::intitalise()
 
 bool Beacon::loadContent()
 {
-	irr::scene::IAnimatedMesh* cube = GameEngine::engine.getDevice()->getSceneManager()->getMesh("models/beacon.obj");
-	if (!cube)
+	irr::scene::IAnimatedMesh* beaconModel = GameEngine::engine.getDevice()->getSceneManager()->getMesh("models/beacon.obj");
+	if (!beaconModel)
 	{
-		std::cerr << "Error loading Mesh" << std::endl;
+		std::cerr << "Error loading beaconModel" << std::endl;
 		return false;
 	}
-	_node = GameEngine::engine.getDevice()->getSceneManager()->addAnimatedMeshSceneNode(cube);
+	_node = GameEngine::engine.getDevice()->getSceneManager()->addAnimatedMeshSceneNode(beaconModel);
 	return true;
 }
 
 void Beacon::update(float delta)
 {
-	if((SanctumOfShadows::player->getNode()->getPosition() - _node->getPosition()).getLength() < _range)
+	float distanceToPlayer = (SanctumOfShadows::player->getNode()->getPosition() - _node->getPosition()).getLength();
+	if(_isLit)
 	{
-		float a = SanctumOfShadows::player->getHealth();
-		if( a < 150.0f)
+		if(distanceToPlayer < _healingRange)
 		{
-			//player getting healed by beacon
-			SanctumOfShadows::player->setHealth( a + (5.0f * delta));
+			float a = SanctumOfShadows::player->getHealth();
+			if( a < 150.0f)
+			{
+				//player getting healed by beacon
+				SanctumOfShadows::player->setHealth( a + (5.0f * delta));
+			}
 		}
-
+	}
+	else
+	{
+		if(distanceToPlayer < _healingRange)
+		{
+			light(true);
+		}
 	}
 }
 

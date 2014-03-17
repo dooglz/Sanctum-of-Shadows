@@ -79,7 +79,7 @@ bool SanctumOfShadows::init(){
 	player = new Player(irr::core::vector3df(0,200.0f,0));
 	Enemy::setPlayerRef(player);
 	enemy = new Enemy(irr::core::vector3df(400.0f,200.0f,0));
-	new Beacon(irr::core::vector3df(0,0,500.0f));
+	//new Beacon(irr::core::vector3df(0,0,500.0f));
 
 
 	return true;

@@ -1,5 +1,6 @@
 #include "Engine.h"
 #include "Level.h"
+#include "Beacon.h"
 #include <iostream>
 #include "Box.h"
 #include <array>
@@ -23,7 +24,7 @@ bool Level::loadContent()
 	GameEngine::Physics::world->addRigidBody(groundRigidBody,GameEngine::Physics::E_Static,GameEngine::Physics::E_StaticGroup);
 	
 	//Floor plane render node
-	irr::video::ITexture* targetTexture = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_dev_radius.png");
+	irr::video::ITexture* targetTexture = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble.jpg");
 
 	irr::scene::IMeshSceneNode* floorNode;
 	if(!lightedFloor)
@@ -64,7 +65,8 @@ bool Level::loadContent()
 		// We're not done with this selector yet, so don't drop it.
 	}
 	
-	loadGeo();
+	//loadGeo();
+	placeBeacons();
 	return true;
 }
 
@@ -72,6 +74,20 @@ void Level::update(float delta)
 {
 
 
+}
+void Level::placeBeacons()
+{
+	std::array<irr::core::vector3df, 5> positions = {
+		irr::core::vector3df(0,0,800),
+		irr::core::vector3df(0,0,-800),
+		irr::core::vector3df(800,0,0),
+		irr::core::vector3df(-800,0,0),
+		irr::core::vector3df(0,0,0),
+	};
+
+	for (unsigned int i=0; i< positions.size(); i++) {
+		new Beacon(positions[i]);
+	}
 }
 
 void Level::loadGeo()
@@ -143,6 +159,7 @@ void Level::loadGeo()
 		geoNode->setPosition(irr::core::vector3df(200,0,0));
 		geoNode->setScale(irr::core::vector3df(200.0f,400.0f,30.0f));
 		geoNode->setMaterialFlag(irr::video::EMF_LIGHTING, true);
+		geoNode->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
 		geoNode->setMaterialTexture(0,GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_dev_spiral.jpg"));
 	irr::scene::ISceneNodeAnimator* anim = GameEngine::engine.getDevice()->getSceneManager()->
 		createFlyStraightAnimator(irr::core::vector3df(0,0,200),irr::core::vector3df(0,0,1000),6000.0f,true,true);

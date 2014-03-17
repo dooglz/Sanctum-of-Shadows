@@ -11,7 +11,9 @@ Player::Player(irr::core::vector3df position): Character(-1,0,"player")
 	_node = GameEngine::engine.getDevice()->getSceneManager()->addCubeSceneNode(1.0f);
 	_node->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_dev_stone.png"));
 	_node->setScale(playerScale);
-	_node->setMaterialFlag(irr::video::EMF_LIGHTING, true);
+	//The player doesn't need lighting
+	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+	//_node->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
 	//player camera
 	_camera = GameEngine::engine.getDevice()->getSceneManager()->addCameraSceneNode(_node,irr::core::vector3df(0,0,0));
 	_camera->bindTargetAndRotation(true);
