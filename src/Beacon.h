@@ -6,6 +6,7 @@ private:
 	unsigned int _lightRange;
 	unsigned int _healingRange;
 	bool _isLit;
+	std::vector<irr::scene::ISceneNode*> _effects;
 	irr::scene::ILightSceneNode* _light;
 	btRigidBody* _rigidBody;
 public:

@@ -44,28 +44,8 @@ bool SanctumOfShadows::init(){
 
 	Menucamera = GameEngine::engine.getDevice()->getSceneManager()->addCameraSceneNode(0,irr::core::vector3df(0,100,223),irr::core::vector3df(0,100,0));
 	workLight = smgr->addLightSceneNode(0, irr::core::vector3df(0,200.0f,0), irr::video::SColorf(1.0f, 1.0f, 1.0f, 1.0f), 1000.0f);
-
-	irr::video::SLight& sl= workLight->getLightData();
-	//constant, linear and quadratic
-	//sl.Attenuation = irr::core::vector3df(0,0,0.0000001f);
-	/*
-	sl.Type = irr::video::E_LIGHT_TYPE::ELT_SPOT;
-	//rotate this, find out whats going on
-	sl.Direction = irr::core::vector3df(1,-1,0);
-	sl.DiffuseColor = irr::video::SColorf(1.0f, 0.6f, 0.7f, 1.0f);
-	sl.AmbientColor = irr::video::SColorf(1.0f, 0.6f, 0.7f, 1.0f);
-	sl.SpecularColor = irr::video::SColorf(1.0f, 0.6f, 0.7f, 1.0f);
-	sl.InnerCone = 60.0f;
-	sl.OuterCone = 90.0f;
-	sl.Falloff =  1000.0f;
-	*/
-	std::cout << " Radius: " << sl.Radius << " Type: " << sl.Type << 
-		" Direction: " << sl.Direction.X << ", " << sl.Direction.Y << ", " << sl.Direction.Z << ") "<<
-		" Attenuation: " << sl.Attenuation.X << ", " << sl.Attenuation.Y << ", " << sl.Attenuation.Z << ") " 
-		<<std::endl;  
 	
-	
-	// create spiining light
+	// create spinning light
 	spinningLight = smgr->addLightSceneNode(0, irr::core::vector3df(0,50,0), irr::video::SColorf(1.0f, 0.6f, 0.7f, 1.0f), 1000.0f);
 	irr::scene::ISceneNodeAnimator* anim = smgr->createFlyCircleAnimator (irr::core::vector3df(0,50,0),300.0f);
 	spinningLight->addAnimator(anim);
@@ -81,13 +61,11 @@ bool SanctumOfShadows::init(){
 	enemy = new Enemy(irr::core::vector3df(400.0f,200.0f,0));
 	//new Beacon(irr::core::vector3df(0,0,500.0f));
 
-
 	return true;
 }
 
 bool SanctumOfShadows::update(float delta){
-	//TODO, move some of this to baseclass
-
+	//TODO, move some of this to base class
 
 	if(GameEngine::handler.keyFired(irr::KEY_ESCAPE))
 	{

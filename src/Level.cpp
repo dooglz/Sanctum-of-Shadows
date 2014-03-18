@@ -65,7 +65,6 @@ bool Level::loadContent()
 		// We're not done with this selector yet, so don't drop it.
 	}
 	
-	//loadGeo();
 	placeBeacons();
 	return true;
 }
@@ -88,84 +87,4 @@ void Level::placeBeacons()
 	for (unsigned int i=0; i< positions.size(); i++) {
 		new Beacon(positions[i]);
 	}
-}
-
-void Level::loadGeo()
-{
-	//base cubes
-	std::array<irr::core::vector3df, 26> positions = {
-		irr::core::vector3df(-1000,0,-1000), irr::core::vector3df(100.0f,400.0f,100.0f),
-		irr::core::vector3df(-1000,0,1000), irr::core::vector3df(100.0f,400.0f,100.0f),
-		irr::core::vector3df(1000,0,-1000), irr::core::vector3df(100.0f,400.0f,100.0f),
-		irr::core::vector3df(1000,0,1000), irr::core::vector3df(100.0f,400.0f,100.0f),
-
-		irr::core::vector3df(0,0,-1500), irr::core::vector3df(1000.0f,400.0f,100.0f),
-		irr::core::vector3df(0,0,1500), irr::core::vector3df(1000.0f,400.0f,100.0f),
-		irr::core::vector3df(1500,0,0), irr::core::vector3df(100.0f,400.0f,1000.0f),
-		irr::core::vector3df(-1500,0,0), irr::core::vector3df(100.0f,400.0f,1000.0f),
-
-		irr::core::vector3df(-1000,0,0), irr::core::vector3df(30.0f,200.0f,500.0f),
-		irr::core::vector3df(-800,0,0), irr::core::vector3df(30.0f,200.0f,400.0f),
-		irr::core::vector3df(-600,0,0), irr::core::vector3df(30.0f,200.0f,300.0f),
-		irr::core::vector3df(-400,0,0), irr::core::vector3df(30.0f,200.0f,200.0f),
-		irr::core::vector3df(-200,0,0), irr::core::vector3df(30.0f,200.0f,100.0f)
-
-	};
-	for (unsigned int i=0; i< positions.size(); i+=2) {
-		irr::scene::ISceneNode* geoNode = GameEngine::engine.getDevice()->getSceneManager()->addCubeSceneNode(1.0f);
-		geoNode->setPosition(positions[i]);
-		geoNode->setScale(positions[i+1]);
-		geoNode->setMaterialFlag(irr::video::EMF_LIGHTING, true);
-		geoNode->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
-		geoNode->setMaterialTexture(0,GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_dev_spiral.jpg"));
-	}
-
-	std::array<irr::core::vector3df, 10> positions2 = {
-		irr::core::vector3df(1000,-100,0), irr::core::vector3df(30.0f,200.0f,500.0f),
-		irr::core::vector3df(800,-100,0), irr::core::vector3df(30.0f,200.0f,400.0f),
-		irr::core::vector3df(600,-100,0), irr::core::vector3df(30.0f,200.0f,300.0f),
-		irr::core::vector3df(400,-100,0), irr::core::vector3df(30.0f,200.0f,200.0f),
-		irr::core::vector3df(200,-100,0), irr::core::vector3df(30.0f,200.0f,100.0f)
-	};
-
-	irr::scene::IAnimatedMesh* cube = GameEngine::engine.getDevice()->getSceneManager()->getMesh("models/cube1.obj");
-	for (unsigned int i=0; i< positions2.size(); i+=2) {
-		irr::scene::ISceneNode* geoNode = GameEngine::engine.getDevice()->getSceneManager()->addAnimatedMeshSceneNode(cube);
-		geoNode->setPosition(positions2[i]);
-		geoNode->setScale(positions2[i+1]);
-		geoNode->setMaterialFlag(irr::video::EMF_LIGHTING, true);
-		geoNode->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
-	}
-
-	std::array<irr::core::vector3df, 5> positions3 = {
-		irr::core::vector3df(0,0,-1000),
-		irr::core::vector3df(0,0,-800),
-		irr::core::vector3df(0,0,-600),
-		irr::core::vector3df(0,0,-400),
-		irr::core::vector3df(0,0,-200),
-	};
-
-	irr::scene::IAnimatedMesh* beacon = GameEngine::engine.getDevice()->getSceneManager()->getMesh("models/beacon.obj");
-	for (unsigned int i=0; i< positions3.size(); i+=1) {
-		irr::scene::ISceneNode* geoNode = GameEngine::engine.getDevice()->getSceneManager()->addAnimatedMeshSceneNode(beacon);
-		geoNode->setPosition(positions3[i]);
-		geoNode->setScale( irr::core::vector3df(15.0f,15.0f,15.0f));
-		geoNode->setMaterialFlag(irr::video::EMF_LIGHTING, true);
-		geoNode->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
-	}
-
-
-	irr::scene::ISceneNode* geoNode = GameEngine::engine.getDevice()->getSceneManager()->addCubeSceneNode(1.0f);
-		geoNode->setPosition(irr::core::vector3df(200,0,0));
-		geoNode->setScale(irr::core::vector3df(200.0f,400.0f,30.0f));
-		geoNode->setMaterialFlag(irr::video::EMF_LIGHTING, true);
-		geoNode->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
-		geoNode->setMaterialTexture(0,GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_dev_spiral.jpg"));
-	irr::scene::ISceneNodeAnimator* anim = GameEngine::engine.getDevice()->getSceneManager()->
-		createFlyStraightAnimator(irr::core::vector3df(0,0,200),irr::core::vector3df(0,0,1000),6000.0f,true,true);
-	geoNode->addAnimator(anim);
-	//anim->drop();
-
-
-
 }
