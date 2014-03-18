@@ -8,7 +8,7 @@
 Beacon::Beacon(const irr::core::vector3df& position) : GameEngine::Entity(-1,0,"Beacon")
 {
 	bool particles = true;
-	bool flame = false;
+	bool flame = true;
 	_alive = true;
 
 	//scene node
@@ -26,7 +26,7 @@ Beacon::Beacon(const irr::core::vector3df& position) : GameEngine::Entity(-1,0,"
 	
 	// create light
 	_light = GameEngine::engine.getDevice()->getSceneManager()->addLightSceneNode(
-		_node, irr::core::vector3df(0,7.0f,0),			//Parent and offset
+		_node, irr::core::vector3df(0,6.0f,0),			//Parent and offset
 		irr::video::SColorf(1.0f, 1.0f, 1.0f, 1.0f),	//Colour
 		_lightRange);	//Radius
 	
@@ -96,8 +96,8 @@ Beacon::Beacon(const irr::core::vector3df& position) : GameEngine::Entity(-1,0,"
 			800,		//Min Age
 			2000,		//Max Age
 			0,			//Angle			
-			irr::core::dimension2df(5.0f,5.0f),     // min size
-			irr::core::dimension2df(20.f,20.f)		// max size
+			irr::core::dimension2df(2.0f,2.0f),     // min size
+			irr::core::dimension2df(10.f,10.f)		// max size
 			);        
 		/*
 		 irr::scene::IParticleEmitter* em = ps->createBoxEmitter(
@@ -127,7 +127,7 @@ Beacon::Beacon(const irr::core::vector3df& position) : GameEngine::Entity(-1,0,"
 		irr::scene::IParticleRotationAffector* pra = ps->createRotationAffector();
 		pra->setPivotPoint(position);
 		pra->setSpeed(irr::core::vector3df(0,30,10));
-		ps->addAffector(pra);
+		//ps->addAffector(pra);
 		//pra->drop();
 	}
 
