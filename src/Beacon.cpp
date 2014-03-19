@@ -7,129 +7,141 @@
 
 Beacon::Beacon(const irr::core::vector3df& position) : GameEngine::Entity(-1,0,"Beacon")
 {
-	//scene node
-	loadContent();
-	_node->setScale(irr::core::vector3df(15,15,15));
-	_node->setPosition(position);
-	_node->setMaterialFlag(irr::video::EMF_LIGHTING, true);
-
-	//set a healing range to heal the player
-
-	_range = 150;
-
-	// create light
-	_light = 0;
-	_light = GameEngine::engine.getDevice()->getSceneManager()->addLightSceneNode(_node, irr::core::vector3df(0,7.0f,0), irr::video::SColorf(1.0f, 0.6f, 0.7f, 1.0f), 10000.0f);
-	// attach billboard sprite to light
-	irr::scene::ISceneNode* LightSpriteNode = GameEngine::engine.getDevice()->getSceneManager()->addBillboardSceneNode(_light, irr::core::dimension2d<irr::f32>(50, 50));
-	LightSpriteNode->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-	LightSpriteNode->setMaterialType(irr::video::EMT_TRANSPARENT_ADD_COLOR);
-	LightSpriteNode->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/particlewhite.bmp"));
-
-	/* 
-	//Rigid body
-	btTransform transform;
-	transform.setIdentity();
-	transform.setOrigin(position);
-	GameEngine::MotionState* motionstate = new GameEngine::MotionState(btTransform(btQuaternion(0.0, 0.0, 0.0, 1.0), position), _node);
-
-	//setup shape
-	btVector3 halfExtends(scale.X*0.5f,scale.Y*0.5f,scale.Z*0.5f);
-	btCollisionShape* shape = new btBoxShape(halfExtends);
-
-	//calc intertia, based on mass and shape
-	btVector3 localInertia;
-	shape->calculateLocalInertia(mass,localInertia);
-
-	//create the RB
-	_rigidBody = new btRigidBody(mass,motionstate,shape,localInertia);
-	//add to world
-	GameEngine::Physics::world->addRigidBody(_rigidBody,GameEngine::Physics::E_Actor,GameEngine::Physics::E_ActorGroup);
-	*/
-
+	bool particles = true;
+	bool flame = true;
 	_alive = true;
 
-	 // create a particle system
+	//scene node
+	loadContent();
+	_node->setMaterialFlag(irr::video::EMF_LIGHTING, true);
+	_node->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
+	irr::core::vector3df scale = irr::core::vector3df(15.0f,15.0f,15.0f);
+	_node->setScale(scale);
+	_node->setPosition(position);
+	
+	_healingRange = 150;
+	_lightRange = 500;
+	
+	// create light
+	_light = GameEngine::engine.getDevice()->getSceneManager()->addLightSceneNode(
+		_node, irr::core::vector3df(0,6.0f,0),			//Parent and offset
+		irr::video::SColorf(1.0f, 1.0f, 1.0f, 1.0f),	//Colour
+		_lightRange		//Radius
+	);	
 
-    irr::scene::IParticleSystemSceneNode* ps =
-		GameEngine::engine.getDevice()->getSceneManager()->addParticleSystemSceneNode(false,_node);
+	//Rigid body
+	btVector3 pos = GameEngine::Physics::irrVec3ToBtVec3(position);
+	irr::core::vector3df a = _node->getTransformedBoundingBox().getExtent();
+	//account for offset origin in model file
+	pos.setY(pos.getY()+(scale.Y*a.Y*0.5f));
+	btTransform transform;
+	transform.setIdentity();
+	transform.setOrigin(pos);
+
+	//setup shape
+	btVector3 halfExtends(scale.X*a.X*0.5f,scale.Y*a.Y*0.5f,scale.Z*a.Z*0.5f);
+	btCollisionShape* shape = new btBoxShape(halfExtends);
+
+	//mass is 0, object is static, default motionstate
+	btVector3 localInertia;
+	shape->calculateLocalInertia(0,localInertia);
+	btMotionState* motionstate = new btDefaultMotionState(transform);
+
+	//create the RB
+	_rigidBody = new btRigidBody(0,motionstate,shape,localInertia);
+	//add to world
+	GameEngine::Physics::world->addRigidBody(_rigidBody,GameEngine::Physics::E_Actor,GameEngine::Physics::E_ActorGroup);
+	
+	// create a particle system
+	float particleRadius = _lightRange / (2.0f*scale.X);
+	irr::scene::IParticleSystemSceneNode* ps = GameEngine::engine.getDevice()->getSceneManager()->addParticleSystemSceneNode(false,_node);
 	irr::scene::IParticleEmitter* em = ps->createRingEmitter(
 		irr::core::vector3df(0,0,0),
-		6.0f,2.0f,
-		irr::core::vector3df(0.0f,0.06f,0.0f),
-		30,80,
-		irr::video::SColor(0,255,255,255),       // darkest color
-        irr::video::SColor(0,255,255,255),       // brightest color
-        800,2000,0,                         // min and max age, angle
-        irr::core::dimension2df(10.f,10.f),         // min size
-        irr::core::dimension2df(20.f,20.f));        // max size
-/*
-     irr::scene::IParticleEmitter* em = ps->createBoxEmitter(
-        irr::core::aabbox3d<irr::f32>(-7,0,-7,7,1,7), // emitter size
-        irr::core::vector3df(0.0f,0.06f,0.0f),   // initial direction
-        80,100,                             // emit rate
-        irr::video::SColor(0,255,255,255),       // darkest color
-        irr::video::SColor(0,255,255,255),       // brightest color
-        800,2000,0,                         // min and max age, angle
-        irr::core::dimension2df(10.f,10.f),         // min size
-        irr::core::dimension2df(20.f,20.f));        // max size
-		*/
-    ps->setEmitter(em); // this grabs the emitter
-    em->drop(); // so we can drop it here without deleting it
+		particleRadius / 2.0f,					//Ring Radius
+		particleRadius,							//Ring thickness
+		irr::core::vector3df(0.0f,0.06f,0.0f),	//Direction
+		3,										//Min particles per second
+		80,										//Max particles per second
+		irr::video::SColor(0,128,128,128),      //Darkest color
+		irr::video::SColor(0,255,255,255),      //Brightest color
+		800,		//Min Age
+		2000,		//Max Age
+		0,			//Angle			
+		irr::core::dimension2df(2.0f,2.0f),     // Min size
+		irr::core::dimension2df(10.f,10.f)		// max size
+	);        
 
-    irr::scene::IParticleAffector* paf = ps->createFadeOutParticleAffector();
+	ps->setEmitter(em); // this grabs the emitter
+	em->drop(); // so we can drop it here without deleting it
 
-    ps->addAffector(paf); // same goes for the affector
-    paf->drop();
+	irr::scene::IParticleAffector* paf = ps->createFadeOutParticleAffector();
+	ps->addAffector(paf); // same goes for the affector
+	paf->drop();
 
 	ps->setPosition(irr::core::vector3df(0,3.0f,0));
-    ps->setScale(irr::core::vector3df(1,1,1));
-    ps->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-    ps->setMaterialFlag(irr::video::EMF_ZWRITE_ENABLE, false);
+	ps->setScale(irr::core::vector3df(1,1,1));
+	ps->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+	ps->setMaterialFlag(irr::video::EMF_ZWRITE_ENABLE, false);
 	ps->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/particlewhite.bmp"));
-    ps->setMaterialType(irr::video::EMT_TRANSPARENT_ADD_COLOR);
+	ps->setMaterialType(irr::video::EMT_TRANSPARENT_ADD_COLOR);
+	_effects.push_back(ps);
 
-	irr::scene::IParticleRotationAffector* pra = ps->createRotationAffector();
-	pra->setPivotPoint(position);
-	pra->setSpeed(irr::core::vector3df(0,30,10));
-	ps->addAffector(pra);
-	//pra->drop();
-
-
+	//Flame Effect
 	irr::scene::IVolumeLightSceneNode * n = GameEngine::engine.getDevice()->getSceneManager()->addVolumeLightSceneNode(_node, -1,
-            32,                              // Subdivisions on U axis
-            32,                              // Subdivisions on V axis
-            irr::video::SColor(0, 255, 255, 255), // foot color
-            irr::video::SColor(0, 0, 0, 0));      // tail color
-
-    if (n)
-    {
+			32,                              // Subdivisions on U axis
+			32,                              // Subdivisions on V axis
+			irr::video::SColor(0, 255, 255, 255), // foot color
+			irr::video::SColor(0, 0, 0, 0));      // tail color
+	if (n)
+	{
 		n->setScale(irr::core::vector3df(3.0f, 5.0f, 3.0f));
-        n->setPosition(irr::core::vector3df(0,3.0f,0));
+		n->setPosition(irr::core::vector3df(0,3.0f,0));
 
-        // load textures for animation
-       irr::core::array<irr::video::ITexture*> textures;
-        for (irr::s32 g=7; g > 0; --g)
-        {
-            irr::core::stringc tmp;
-            tmp = "textures/portal";
-            tmp += g;
-            tmp += ".bmp";
-            irr::video::ITexture* t = GameEngine::engine.getDevice()->getVideoDriver()->getTexture( tmp.c_str() );
-            textures.push_back(t);
-        }
+		// load textures for animation
+		irr::core::array<irr::video::ITexture*> textures;
+		for (irr::s32 g=7; g > 0; --g)
+		{
+			irr::core::stringc tmp;
+			tmp = "textures/portal";
+			tmp += g;
+			tmp += ".bmp";
+			irr::video::ITexture* t = GameEngine::engine.getDevice()->getVideoDriver()->getTexture( tmp.c_str() );
+			textures.push_back(t);
+		}
 
-        // create texture animator
-        irr::scene::ISceneNodeAnimator* glow = GameEngine::engine.getDevice()->getSceneManager()->createTextureAnimator(textures, 120);
+		// create texture animator
+		irr::scene::ISceneNodeAnimator* glow = GameEngine::engine.getDevice()->getSceneManager()->createTextureAnimator(textures, 120);
 
-        // add the animator
-        n->addAnimator(glow);
+		// add the animator
+		n->addAnimator(glow);
 
-        // drop the animator because it was created with a create() function
-        glow->drop();
-    }
+		// drop the animator because it was created with a create() function
+		glow->drop();
+		_effects.push_back(n);
+	}
 
+	//set beacon to be unlit innitially
+	light(false);
 }
+
+void Beacon::light(bool onOff)
+{
+	_isLit = onOff;
+	//change radius of main Light
+	if(_isLit)
+	{
+		_light->setRadius(_lightRange);
+	}
+	else
+	{
+		_light->setRadius(0.25f * _lightRange);
+	}
+	//toggle all effects
+	for(auto& e : _effects) {
+		e->setVisible(_isLit);
+	}
+}
+
 
 void Beacon::intitalise()
 {
@@ -137,36 +149,37 @@ void Beacon::intitalise()
 
 bool Beacon::loadContent()
 {
-	irr::scene::IAnimatedMesh* cube = GameEngine::engine.getDevice()->getSceneManager()->getMesh("models/beacon.obj");
-	if (!cube)
+	irr::scene::IAnimatedMesh* beaconModel = GameEngine::engine.getDevice()->getSceneManager()->getMesh("models/beacon.obj");
+	if (!beaconModel)
 	{
-		std::cerr << "Error loading Mesh" << std::endl;
+		std::cerr << "Error loading beaconModel" << std::endl;
 		return false;
 	}
-	_node = GameEngine::engine.getDevice()->getSceneManager()->addAnimatedMeshSceneNode(cube);
-	//_node = engine.getDevice()->getSceneManager()->addEmptySceneNode();
-	//_node->setScale(irr::core::vector3df(2.0f, 2.0f, 2.0f));
-	//_node->setPosition(irr::core::vector3df(0, 0.0f, 0));
-	//_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+	_node = GameEngine::engine.getDevice()->getSceneManager()->addAnimatedMeshSceneNode(beaconModel);
 	return true;
 }
 
 void Beacon::update(float delta)
 {
-	if((SanctumOfShadows::player->getNode()->getPosition() - _node->getPosition()).getLength() < _range)
+	float distanceToPlayer = (SanctumOfShadows::player->getNode()->getPosition() - _node->getPosition()).getLength();
+	if(_isLit)
 	{
-		float a;
-		a = SanctumOfShadows::player->getHealth();
-
-		if( a < 150.0f)
+		if(distanceToPlayer < _healingRange)
 		{
-			//player getting healed by beacon
-			SanctumOfShadows::player->setHealth( a + (5.0f * delta));
-
+			float a = SanctumOfShadows::player->getHealth();
+			if( a < 150.0f)
+			{
+				//player getting healed by beacon
+				SanctumOfShadows::player->setHealth( a + (5.0f * delta));
+			}
 		}
-
-
-
+	}
+	else
+	{
+		if(distanceToPlayer < _healingRange)
+		{
+			light(true);
+		}
 	}
 }
 

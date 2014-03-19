@@ -8,7 +8,7 @@ Box::Box (const btVector3& position, const irr::core::vector3df& scale, float ma
 	//scene node
 	loadContent();
 	_node->setScale(scale);
-	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+	_node->setMaterialFlag(irr::video::EMF_LIGHTING, true);
 
 	//Rigid body
 	btTransform transform;

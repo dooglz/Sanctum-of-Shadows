@@ -14,7 +14,8 @@ Enemy::Enemy(irr::core::vector3df position): Character(-1,0,"Skeletors")
 	_node = GameEngine::engine.getDevice()->getSceneManager()->addCubeSceneNode(1.0f);
 	_node->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_dev_flurry.jpg"));
 	_node->setScale(enemyScale);
-	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+	_node->setMaterialFlag(irr::video::EMF_LIGHTING, true);
+	_node->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
 	_health = 80.0f;
 }
 
@@ -87,21 +88,15 @@ void Enemy::update(float delta)
 	}
 	walk(delta);
 
-
-				//check if the current Skeletor is alive. no point checking collision if it isn't 
+	//damage player
 	if (SanctumOfShadows::player->isAlive() && (SanctumOfShadows::player->getNode()->getPosition() - _node->getPosition()).getLength() < combatRange)
-				{
-					//checking combat range when space is pressed 
-					std::cerr << "d-d-d-d-d-duel" << std::endl;
-					//create a message 
-					GameEngine::Message message(SanctumOfShadows::player,"playerHealthDecrease",0);
-					//send it via the message handler
-					GameEngine::MessageHandler::sendMessage(message);
-						
-				}					
+	{
+		//create a message 
+		GameEngine::Message message(SanctumOfShadows::player,"playerHealthDecrease",0);
+		//send it via the message handler
+		GameEngine::MessageHandler::sendMessage(message);
+	}					
 			
-
-
 	if(_health <= 0)
 	{
 		std::cerr << "Enemy is dead" << std::endl;

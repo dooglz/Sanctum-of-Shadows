@@ -3,9 +3,12 @@
 
 class Beacon : public GameEngine::Entity{
 private:
-	int _range;
+	unsigned int _lightRange;
+	unsigned int _healingRange;
 	bool _isLit;
-	irr::scene::ISceneNode* _light;
+	std::vector<irr::scene::ISceneNode*> _effects;
+	irr::scene::ILightSceneNode* _light;
+	btRigidBody* _rigidBody;
 public:
 	Beacon (const irr::core::vector3df& position);
 	~Beacon (){};
@@ -15,4 +18,9 @@ public:
 	void update(float delta);
 	//
 	void handleMessage(const GameEngine::Message& message);
+	bool isLit(){
+		return _isLit;
+	}
+	void light(bool onOff);
+
 };

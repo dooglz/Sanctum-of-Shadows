@@ -4,6 +4,7 @@
 class Level: public GameEngine::Entity{
 private:
 	irr::scene::ITriangleSelector* _selector;
+	void placeBeacons();
 public:
 	Level() :Entity(-1,0,"Level"){}
 	~Level(){};

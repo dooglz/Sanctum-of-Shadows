@@ -11,7 +11,9 @@ Player::Player(irr::core::vector3df position): Character(-1,0,"player")
 	_node = GameEngine::engine.getDevice()->getSceneManager()->addCubeSceneNode(1.0f);
 	_node->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_dev_stone.png"));
 	_node->setScale(playerScale);
+	//The player doesn't need lighting
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+	//_node->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
 	//player camera
 	_camera = GameEngine::engine.getDevice()->getSceneManager()->addCameraSceneNode(_node,irr::core::vector3df(0,0,0));
 	_camera->bindTargetAndRotation(true);
@@ -26,9 +28,6 @@ void Player::update(float delta)
 	walkforward = false;
 	walkback = false;
 	Character::update(delta);
-	
-
-
 
 	if (GameEngine::handler.keyDown(irr::KEY_KEY_A))
 	{
@@ -56,12 +55,8 @@ void Player::update(float delta)
 		_camera->setTarget( _node->getPosition()+GameEngine::Physics::btVecToirrVec3(_forwardDir) );
 	}
 
-		
-
 	if(_health <= 0.0f)
 	{
-		std::cerr << "player is dead" << std::endl;
-		
 		SanctumOfShadows::GameOver();
 	}
 	
@@ -76,13 +71,10 @@ void Player::update(float delta)
 				//check if the current Skeletor is alive. no point checking collision if it isn't 
 				if ((*iter)->isAlive() && ((*iter)->getNode()->getPosition() - _node->getPosition()).getLength() < combatRange)
 				{
-					//checking combat range when space is pressed 
-					std::cerr << "d-d-d-d-d-duel" << std::endl;
 					//create a message 
 					GameEngine::Message message((*iter),"healthDecrease",0);
 					//send it via the message handler
 					GameEngine::MessageHandler::sendMessage(message);
-						
 				}					
 			}
 		}
@@ -112,7 +104,6 @@ void Player::handleMessage(const GameEngine::Message& message)
 	if(message.message == "playerHealthDecrease")
 	{
 		_health = _health - 0.05f;
-
 		delete message.data;
 	}
 }
