@@ -22,6 +22,7 @@ protected:
 	btVector3 _forwardDir;
 	btVector3 _upDir;
 	btVector3 _strafeDir;
+	irr::core::vector3df _position;
 	btScalar _walkVelocity;
 	//
 	btPairCachingGhostObject* _ghostObject;
@@ -40,4 +41,5 @@ public:
 	float getHealth() { return _health; }
 	void setHealth(float value) {  _health = value; }
 	void die();
+	void setPosition(irr::core::vector3df value) { _position = value; }
 };

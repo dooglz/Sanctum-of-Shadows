@@ -11,13 +11,18 @@ bool SanctumOfShadows::_gameover;
 irr::scene::ICameraSceneNode* camera;
 irr::scene::ICameraSceneNode* Flycamera;
 irr::scene::ICameraSceneNode* Menucamera;
+irr::scene::ISceneNode* SanctumOfShadows::DeadSpriteNode;
 bool _flying;
 Level* level;
 Player* SanctumOfShadows::player;
 Enemy* enemy;
+
+
 bool SanctumOfShadows::init(){
 	std::wcout <<  _gameTitle << " Game code init" << std::endl;
-	
+
+
+
 	if (!GameEngine::engine.loadContent()){
 		return false;
 	}
@@ -74,7 +79,11 @@ bool SanctumOfShadows::init(){
 	GameEngine::Physics::world->addRigidBody(fallRigidBody);
 	*/
 	//
-
+	DeadSpriteNode = GameEngine::engine.getDevice()->getSceneManager()->addBillboardSceneNode(player->getNode(), irr::core::dimension2d<irr::f32>(150, 100),irr::core::vector3df(0,0,1));
+	DeadSpriteNode->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+	DeadSpriteNode->setMaterialType(irr::video::EMT_TRANSPARENT_ADD_COLOR);
+	DeadSpriteNode->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/GameOver.PNG"));
+    DeadSpriteNode->setVisible(false);
 
 	return true;
 }
@@ -85,6 +94,18 @@ bool SanctumOfShadows::update(float delta){
 	//display player health
 
 	std::cerr << player->getHealth() << std::endl;
+
+	if(_gameover == true && GameEngine::handler.keyFired(irr::KEY_KEY_R))
+	{
+		//reset player position and health
+		player->setHealth(100.0f);
+		player->getController()->warp(btVector3(0,10,0));
+		//delete the "game over" picture
+		DeadSpriteNode->setVisible(false);
+		_gameover = false;
+
+
+	}
 
 
 	if(GameEngine::handler.keyFired(irr::KEY_ESCAPE))
@@ -136,7 +157,8 @@ bool SanctumOfShadows::update(float delta){
 	return true;
 }
 
-void SanctumOfShadows::reset(){
+void SanctumOfShadows::reset()
+{
 
 }
 
@@ -146,10 +168,8 @@ void SanctumOfShadows::GameOver()
 	{
 	std::cerr << "Game is over" << std::endl;
 	
-	irr::scene::ISceneNode* DeadSpriteNode = GameEngine::engine.getDevice()->getSceneManager()->addBillboardSceneNode(player->getNode(), irr::core::dimension2d<irr::f32>(150, 100),irr::core::vector3df(0,0,1));
-	DeadSpriteNode->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-	DeadSpriteNode->setMaterialType(irr::video::EMT_TRANSPARENT_ADD_COLOR);
-	DeadSpriteNode->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/GameOver.PNG"));
+	DeadSpriteNode->setVisible(true);
+	
 	}
 	_gameover = true;
 }
