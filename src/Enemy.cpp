@@ -123,8 +123,9 @@ void Enemy::handleMessage(const GameEngine::Message& message)
 	{
 		//recieved message to take damamge
 		_health = _health - 20.0f;
-		_characterC->setMaxJumpHeight(80);
-		_characterC->setJumpSpeed(40);
+		_characterC->setMaxJumpHeight(20);
+		_characterC->setFallSpeed(200);
+		_characterC->setJumpSpeed(20);
 		_characterC->jump();
 
 

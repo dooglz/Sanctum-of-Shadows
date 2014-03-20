@@ -3,6 +3,9 @@
 #include "SanctumOfShadows.h"
 Player::Player(irr::core::vector3df position): Character(-1,0,"player")
 {
+	_Lanternradius= 300;
+	fuelLevels = true;
+
 	_walkVelocity = btScalar(1000);
 	irr::core::vector3df playerScale = irr::core::vector3df(60.0f,100.0f,60.0f);
 	//Physics Kinematic caracter Object
@@ -18,6 +21,11 @@ Player::Player(irr::core::vector3df position): Character(-1,0,"player")
 	_camera = GameEngine::engine.getDevice()->getSceneManager()->addCameraSceneNode(_node,irr::core::vector3df(0,0,0));
 	_camera->bindTargetAndRotation(true);
 	_health = 100.0f;
+	_Lanternlight = GameEngine::engine.getDevice()->getSceneManager()->addLightSceneNode(
+	_node, irr::core::vector3df(0,0,0),			//Parent and offset
+	irr::video::SColorf(1.0f, 1.0f, 1.0f, 1.0f),	//Colour
+	_Lanternradius);//Radius
+
 }
 
 void Player::update(float delta)
@@ -58,6 +66,10 @@ void Player::update(float delta)
 	if(_health <= 0.0f)
 	{
 		SanctumOfShadows::GameOver();
+	}
+	if(GameEngine::handler.keyFired(irr::KEY_KEY_Q))
+	{
+		Player::fuel();
 	}
 	
 	if  (GameEngine::handler.keyFired(irr::KEY_SPACE))
@@ -110,3 +122,17 @@ void Player::handleMessage(const GameEngine::Message& message)
 
 
 
+void Player::fuel()
+{
+	
+		if(fuelLevels)
+		{
+			Player::setRadius(0);
+			fuelLevels = false;
+		}
+		else 
+		{
+			Player::setRadius(300);
+			fuelLevels = true;
+		}
+	}
