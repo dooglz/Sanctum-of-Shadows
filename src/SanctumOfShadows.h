@@ -7,6 +7,7 @@ class SanctumOfShadows:public Game{
 private:
 	void reset();
 	static	bool _gameover;
+	bool _showText;
 public:
 	
 	SanctumOfShadows(){
@@ -21,3 +22,5 @@ public:
 	static void GameOver();
 	
 };
+
+

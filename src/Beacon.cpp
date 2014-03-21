@@ -26,7 +26,7 @@ Beacon::Beacon(const irr::core::vector3df& position) : GameEngine::Entity(-1,0,"
 	_light = GameEngine::engine.getDevice()->getSceneManager()->addLightSceneNode(
 		_node, irr::core::vector3df(0,6.0f,0),			//Parent and offset
 		irr::video::SColorf(1.0f, 1.0f, 1.0f, 1.0f),	//Colour
-		_lightRange		//Radius
+		(irr::f32)_lightRange		//Radius
 	);	
 
 	//Rigid body
@@ -130,7 +130,7 @@ void Beacon::light(bool onOff)
 	//change radius of main Light
 	if(_isLit)
 	{
-		_light->setRadius(_lightRange);
+		_light->setRadius((irr::f32)_lightRange);
 	}
 	else
 	{

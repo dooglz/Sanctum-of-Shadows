@@ -66,10 +66,7 @@ bool Level::loadContent()
 		q3node->setTriangleSelector(selector);
 		// We're not done with this selector yet, so don't drop it.
 	}
-	srand(time(0));
-	generateLevel();
-	generateLevel();
-	generateLevel();
+	srand((int)time(0));
 	generateLevel();
 	placeBeacons();
 

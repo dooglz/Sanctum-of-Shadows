@@ -13,6 +13,7 @@
 #include "EntityManager.h"
 #include "MeshManager.h"
 #include "Physics.h"
+#include "Utilities.h"
 #include "BulletDebugDraw.h"
 
 namespace GameEngine{
@@ -62,4 +63,5 @@ namespace GameEngine{
 	extern Engine engine;
 	extern KeyHandler handler;
 	extern MeshManager meshManager;
+	extern UI util_UI;
 }

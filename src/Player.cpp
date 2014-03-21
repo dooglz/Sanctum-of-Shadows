@@ -22,9 +22,10 @@ Player::Player(irr::core::vector3df position): Character(-1,0,"player")
 	_camera->bindTargetAndRotation(true);
 	_health = 100.0f;
 	_Lanternlight = GameEngine::engine.getDevice()->getSceneManager()->addLightSceneNode(
-	_node, irr::core::vector3df(0,0,0),			//Parent and offset
-	irr::video::SColorf(1.0f, 1.0f, 1.0f, 1.0f),	//Colour
-	_Lanternradius);//Radius
+		_node, irr::core::vector3df(0,0,0),			//Parent and offset
+		irr::video::SColorf(1.0f, 1.0f, 1.0f, 1.0f),	//Colour
+		(irr::f32)_Lanternradius//Radius
+	);
 
 }
 

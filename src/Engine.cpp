@@ -12,6 +12,7 @@ namespace GameEngine{
 
 	Engine engine = Engine();
 	KeyHandler handler = KeyHandler();
+	UI util_UI;
 	const bool debug_draw_bullet = false;	
 	irr::video::SMaterial debugMat;
 	DebugDraw* debugDraw;
@@ -60,7 +61,7 @@ namespace GameEngine{
 		}
 
 
-
+		util_UI = UI(_device);
 		return true;
 	}
 
@@ -74,6 +75,7 @@ namespace GameEngine{
 
 	bool Engine::update(float delta){
 		handler.update();
+		util_UI.update();
 		if(!EntityManager::update(delta))
 		{
 			return false;
@@ -102,6 +104,9 @@ namespace GameEngine{
 			_device->getVideoDriver()->setTransform(irr::video::ETS_WORLD, irr::core::IdentityMatrix);
 			Physics::world->debugDrawWorld();
 		}
+
+		//Render UI
+		util_UI.render();
 
 		if (!_device->getVideoDriver()->endScene()){
 			return false;

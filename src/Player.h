@@ -18,7 +18,7 @@ public:
 	void intitalise(){};
 	void Player::handleMessage(const GameEngine::Message& message);
 	void fuel();
-	void setRadius(int value) { _Lanternradius = value;_Lanternlight->setRadius(_Lanternradius); }
+	void setRadius(int value) { _Lanternradius = value;_Lanternlight->setRadius((irr::f32)_Lanternradius); }
 
 };
 
