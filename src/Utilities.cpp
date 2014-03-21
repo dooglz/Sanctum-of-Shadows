@@ -27,28 +27,30 @@ namespace GameEngine{
 	UI::~UI()
 	{
 		_font->drop();
+		_textMessages.clear();
 	}
 	
-	void UI::displayTextMessage(const std::string& message, const unsigned int time){
+	void UI::displayTextMessage(const irr::core::stringw& message, const unsigned int time){
 		TextMessage m;
 		m.message = message;
 		m.timeLeft = time;
 		_textMessages.push_back(m);
 	}
 	void UI::update(){
-		for (auto & message : _textMessages) {
-			//Do domething
+		std::vector<UI::TextMessage>::iterator it = _textMessages.begin();
+		for ( ; it !=  _textMessages.end(); ) {
+			if (it->timeLeft <= 0) {
+				it =  _textMessages.erase(it);
+			  } else {
+				it->timeLeft --;
+				++it;
+			  }
 		}
 	}
 	void UI::render(){
-		for (auto & message : _textMessages) {
-			//Do domething
+		for (unsigned int i=0; i<_textMessages.size(); i++) {
+			_font->draw(_textMessages[i].message,irr::core::rect<irr::s32>(130,10+(i*35),300,50+(i*35)),_colour);
 		}
-		
-		_font->draw(
-			L"I Spent 7 Fucking Hours Getting this text To Render",
-            irr::core::rect<irr::s32>(130,10,300,50),_colour
-		);
 	}
 
 	// -------------------------------------------

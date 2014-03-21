@@ -70,7 +70,6 @@ bool SanctumOfShadows::init(){
     DeadSpriteNode->setVisible(false);
 
 	//new Beacon(irr::core::vector3df(0,0,500.0f));
-	 _showText = true;
 
 	return true;
 }
@@ -80,7 +79,8 @@ bool SanctumOfShadows::update(float delta){
 	//TODO, move some of this to baseclass
 
 	//display player health
-	//std::cerr << player->getHealth() << std::endl;
+	irr::core::stringw str = "Player Health: ";
+	str += player->getHealth();
 
 	if(_gameover == true && GameEngine::handler.keyFired(irr::KEY_KEY_R))
 	{
@@ -90,8 +90,6 @@ bool SanctumOfShadows::update(float delta){
 		//delete the "game over" picture
 		DeadSpriteNode->setVisible(false);
 		_gameover = false;
-
-
 	}
 
 	if(GameEngine::handler.keyFired(irr::KEY_ESCAPE))
@@ -149,15 +147,6 @@ bool SanctumOfShadows::update(float delta){
 		spinningLight->setVisible(!spinningLight->isVisible());
 	}
 
-	if( _showText)
-	{
-		GameEngine::engine.getDevice()->getGUIEnvironment()->getBuiltInFont()->
-			draw(L"This demo shows that Irrlicht is also capable of drawing 2D graphics.",
-                    irr::core::rect<irr::s32>(130,10,300,50),
-                    irr::video::SColor(255,255,255,255));
-	}
-
-	//debug text
 	return true;
 }
 

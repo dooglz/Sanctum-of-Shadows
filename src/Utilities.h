@@ -1,5 +1,4 @@
 #include <irrlicht.h>
-#include <string>
 #include <vector>
 #include "CGUITTFont.h"
 
@@ -9,7 +8,7 @@ namespace GameEngine{
 
 	public:
 		struct TextMessage {
-		  std::string message;
+		  irr::core::stringw message;
 		  unsigned int timeLeft;
 		};
 	private:
@@ -23,7 +22,7 @@ namespace GameEngine{
 		~UI();
 		UI(irr::IrrlichtDevice* dev);
 		//Time = amount of frames to keep text onscreen
-		static void displayTextMessage(const std::string& message,const unsigned int time);
+		static void displayTextMessage(const irr::core::stringw& message,const unsigned int time);
 		//We don't care about time inbetween frames atm
 		//TODO make text messages time based
 		static void update();
