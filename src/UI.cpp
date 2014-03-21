@@ -1,4 +1,4 @@
-#include "Utilities.h"
+#include "UI.h"
 
 namespace GameEngine{
 	//UI -------------------------------------------
@@ -17,6 +17,7 @@ namespace GameEngine{
 		 *	Load TrueType Font to CGUITTFace
 		 */
 		irr::gui::IGUIEnvironment* env = dev->getGUIEnvironment();
+		//TODO scale fontsize with resolution.
 		_font =  irr::gui::CGUITTFont::createTTFont(env, "fonts/kochi-gothic-subst.ttf", 30);
 		// Set the font.
 		irr::gui::IGUISkin* skin = env->getSkin();

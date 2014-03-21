@@ -81,6 +81,8 @@ bool SanctumOfShadows::update(float delta){
 	//display player health
 	irr::core::stringw str = "Player Health: ";
 	str += player->getHealth();
+	GameEngine::UI::displayTextMessage(str,0);
+
 
 	if(_gameover == true && GameEngine::handler.keyFired(irr::KEY_KEY_R))
 	{
@@ -90,6 +92,8 @@ bool SanctumOfShadows::update(float delta){
 		//delete the "game over" picture
 		DeadSpriteNode->setVisible(false);
 		_gameover = false;
+
+
 	}
 
 	if(GameEngine::handler.keyFired(irr::KEY_ESCAPE))
