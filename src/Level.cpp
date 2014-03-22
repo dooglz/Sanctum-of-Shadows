@@ -68,8 +68,8 @@ bool Level::loadContent()
 	}
 	srand((int)time(0));
 	generateLevel();
-	createLevel();
-	//placeBeacons();
+	//createLevel();
+	placeBeacons();
 
 
 	return true;
@@ -186,6 +186,46 @@ void Level::createLevel()
 	irr::scene::IAnimatedMesh*  planeMesh = GameEngine::engine.getDevice()->getSceneManager()->addHillPlaneMesh(
 		"plane", irr::core::dimension2df(2.0f,2.0f), irr::core::dimension2du(4,4));
 
+
+
+
+	irr::scene::IMeshSceneNode* room;
+	if (cube)
+	{
+		// The Room mesh doesn't have proper Texture Mapping on the
+		// floor, so we can recreate them on et
+		
+		GameEngine::engine.getDevice()->getSceneManager()
+			->getMeshManipulator()->makePlanarTextureMapping(
+				cube->getMesh(0), 0.003f);
+
+
+		irr::video::ITexture* normalMap = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble_bump.jpg");
+
+		if (normalMap)
+			GameEngine::engine.getDevice()->getVideoDriver()->makeNormalMapTexture(normalMap, 9.0f);
+
+		irr::scene::IMesh* tangentMesh = GameEngine::engine.getDevice()->getSceneManager()->getMeshManipulator()->
+				createMeshWithTangents(cube->getMesh(0));
+
+		room = GameEngine::engine.getDevice()->getSceneManager()->addMeshSceneNode(tangentMesh);
+		room->setMaterialTexture(0,
+				GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble_1024.jpg"));
+		room->setMaterialTexture(1, normalMap);
+
+		// Stones don't glitter..
+		room->getMaterial(0).SpecularColor.set(0,0,0,0);
+		room->getMaterial(0).Shininess = 0.f;
+
+		room->setMaterialFlag(irr::video::EMF_FOG_ENABLE, true);
+		room->setMaterialType(irr::video::EMT_PARALLAX_MAP_SOLID);
+		// adjust height for parallax effect
+		room->getMaterial(0).MaterialTypeParam = 1.f / 64.f;
+
+		// drop mesh because we created it with a create.. call.
+		tangentMesh->drop();
+	}
+	/*
 	std::array<irr::scene::IMeshSceneNode*, (_gridSize*_gridSize)> floorTiles;
 	unsigned int a =0;
 	float startingPos = (-1.0f * (0.5f*(500 * _gridSize))) +(0.5f*500);
@@ -203,7 +243,8 @@ void Level::createLevel()
 			node->getMaterial(0).EmissiveColor.set(255,0,0,0);
 			
 			node->setMaterialFlag(irr::video::EMF_FOG_ENABLE, false);
-			node->setMaterialType(irr::video::EMT_SOLID);
+			//node->setMaterialType(irr::video::EMT_SOLID);
+			node->setMaterialType(irr::video::EMT_PARALLAX_MAP_SOLID);
 			node->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
 			node->setMaterialFlag(irr::video::EMF_LIGHTING, true);
 
@@ -228,4 +269,5 @@ void Level::createLevel()
 			a++;
 		}
 	}
+	*/
 }

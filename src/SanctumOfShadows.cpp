@@ -171,7 +171,7 @@ void SanctumOfShadows::reset()
 	_gameover = false;
 	player->setAlive(true);
 	//Fade In
-    fader->fadeIn(8000);
+  //  fader->fadeIn(8000);
 	//fader->drop();
 }
 
