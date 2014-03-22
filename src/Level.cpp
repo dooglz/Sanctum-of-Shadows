@@ -4,6 +4,8 @@
 #include <iostream>
 #include "Box.h"
 #include <array>
+std::array<std::array<Level::tile,Level::_gridSize>, Level::_gridSize> Level::_grid;
+
 void Level::intitalise()
 {
 	_selector = 0;
@@ -64,8 +66,11 @@ bool Level::loadContent()
 		q3node->setTriangleSelector(selector);
 		// We're not done with this selector yet, so don't drop it.
 	}
-	
+	srand((int)time(0));
+	generateLevel();
 	placeBeacons();
+
+
 	return true;
 }
 
@@ -87,4 +92,85 @@ void Level::placeBeacons()
 	for (unsigned int i=0; i< positions.size(); i++) {
 		new Beacon(positions[i]);
 	}
+}
+
+void Level::generateLevel()
+{
+	int pass = 0;
+	bool full = false;
+	bool done = false;
+	//saves redundant array lookups within the loop
+	tile curentTile;
+	for(unsigned int col = 0; col < _grid.size(); col ++)
+	{
+		for(unsigned int row = 0; row < _grid[col].size(); row ++)
+		{
+			if(col < _darkPadding || col == (_gridSize - _darkPadding) || row < _darkPadding || row == (_gridSize - _darkPadding))
+			{
+				_grid[col][row] = BADLANDS;
+			}
+			else if(row == col && col == ((_gridSize-1)/2))
+			{
+				_grid[col][row] = BEACON;
+			}
+			else
+			{
+				_grid[col][row] = EMPTY;
+			}
+		}
+	}
+
+	int beacons = 0;
+	int spaces = 0;
+	while (!full)
+	{
+		spaces = 0;
+		for(unsigned int col = 0; col < _grid.size(); col ++)
+		{
+			for(unsigned int row = 0; row < _grid[col].size(); row ++)
+			{
+				curentTile = _grid[col][row];
+				//We can't go out of range due to padding.
+				if(curentTile == EMPTY)
+				{
+					if(_grid[col - 1][row - 1] != BEACON && _grid[col - 1][row] != BEACON && _grid[col - 1][row + 1] != BEACON
+						&& _grid[col][row -1] != BEACON && _grid[col][row +1] != BEACON
+						&& _grid[col + 1][row -1] != BEACON && _grid[col + 1][row] != BEACON &&  _grid[col + 1][row + 1] != BEACON)
+					{
+						//No beacons in surrounding area
+						spaces++;
+						if (rand() % 100 < 10) {
+							_grid[col][row] = BEACON;
+							beacons++;
+						}
+					}
+				}
+			}
+		}
+		full = true;
+		if(spaces == 0)
+		{
+			full = true;
+		}
+		//Runway loop protection
+		if(pass > 40)
+		{
+			full = true;
+		}
+	}
+	for(unsigned int col = 0; col < _grid.size(); col ++)
+	{
+		for(unsigned int row = 0; row < _grid[col].size(); row ++)
+		{
+			if(_grid[col][row] == BADLANDS){
+				std::cout << char(178);
+			}else if(_grid[col][row] == EMPTY){
+				std::cout << char(176);
+			}else{
+				std::cout << char(233);
+			}
+		}
+		std::cout << std::endl;
+	}
+
 }

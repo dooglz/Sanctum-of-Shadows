@@ -13,6 +13,7 @@ namespace GameEngine{
 		irr::scene::ISceneNode* _node;
 		bool _alive;
 		bool _shouldRemove;
+		//TODO call this something different
 		virtual void die();
 
 	public:

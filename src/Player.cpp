@@ -23,14 +23,21 @@ Player::Player(irr::core::vector3df position): Character(-1,0,"player")
 	_camera->bindTargetAndRotation(true);
 	_health = 100.0f;
 	_Lanternlight = GameEngine::engine.getDevice()->getSceneManager()->addLightSceneNode(
-	_node, irr::core::vector3df(0,0,0),			//Parent and offset
-	irr::video::SColorf(1.0f, 1.0f, 1.0f, 1.0f),	//Colour
-	_Lanternradius);//Radius
+		_node, irr::core::vector3df(0,0,0),			//Parent and offset
+		irr::video::SColorf(1.0f, 1.0f, 1.0f, 1.0f),	//Colour
+		(irr::f32)_Lanternradius//Radius
+	);
 
 }
 
 void Player::update(float delta)
 {	
+	if(_health <= 0.0f)
+	{
+		handleDeath();
+		return;
+	}
+
 	float combatRange = 130.0f;
 	walkleft = false;
 	walkright = false;
@@ -71,10 +78,6 @@ void Player::update(float delta)
 		_camera->setTarget( _node->getPosition()+GameEngine::Physics::btVecToirrVec3(_forwardDir) );
 	}
 
-	if(_health <= 0.0f)
-	{
-		SanctumOfShadows::GameOver();
-	}
 	if(GameEngine::handler.keyFired(irr::KEY_KEY_Q))
 	{
 		Player::fuel(delta);
@@ -123,10 +126,14 @@ void Player::handleMessage(const GameEngine::Message& message)
 	//handle incoming message
 	if(message.message == "playerHealthDecrease")
 	{
-		_health = _health - 0.05f;
+		if(_health >= 0)
+		{
+			_health = _health - 0.05f;
+		}
 		delete message.data;
 	}
 }
+
 
 
 
@@ -143,4 +150,10 @@ void Player::fuel(float delta)
 			_Lanternlight->setVisible(true);
 			LanternOn = true;
 		}
-	}
+}
+
+void Player::handleDeath()
+{
+	_alive = false;
+	SanctumOfShadows::GameOver();
+}

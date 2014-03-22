@@ -103,7 +103,8 @@ int main(){
 			device->yield();
 		}
 	}
-
+	delete game;
+	game = NULL;
 	GameEngine::engine.unloadContent();
 	GameEngine::engine.shutdown();
 }

@@ -8,11 +8,12 @@
 
 #include <string>
 #include <irrlicht.h>
-
+#include <iostream>
 #include "KeyboardHandler.h"
 #include "EntityManager.h"
 #include "MeshManager.h"
 #include "Physics.h"
+#include "UI.h"
 #include "BulletDebugDraw.h"
 
 namespace GameEngine{
@@ -62,4 +63,5 @@ namespace GameEngine{
 	extern Engine engine;
 	extern KeyHandler handler;
 	extern MeshManager meshManager;
+	extern UI ui;
 }
