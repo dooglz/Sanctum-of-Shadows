@@ -6,6 +6,7 @@
 ===============================================================================*/
 #pragma once
 
+#include "driverChoice.h"
 #include <string>
 #include <irrlicht.h>
 #include <iostream>

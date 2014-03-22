@@ -3,7 +3,7 @@
 //this makes a geneirc character with a blank render object
 void Character::intitalise(irr::core::vector3df position, irr::core::vector3df size)
 {
-	_walkVelocity = btScalar(600);
+	_walkVelocity = btScalar(300);
 	if(size.getLengthSQ() == 0)
 	{
 		size = irr::core::vector3df(50.0f,80.0f,50.0f);

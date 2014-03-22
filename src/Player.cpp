@@ -7,7 +7,7 @@ Player::Player(irr::core::vector3df position): Character(-1,0,"player")
 	_Lanternmaxradius= 300.0f;
 	LanternOn = true;
 
-	_walkVelocity = btScalar(1000);
+	_walkVelocity = btScalar(300);
 	irr::core::vector3df playerScale = irr::core::vector3df(60.0f,100.0f,60.0f);
 	//Physics Kinematic caracter Object
 	_characterC = addCharacter((btScalar)1.0f, &btVector3(position.X, position.Y, position.Z), (btScalar)50, (btScalar)30);

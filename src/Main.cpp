@@ -15,13 +15,13 @@
 	#pragma comment(lib, "LinearMath")
 #endif
 
-
 #include "Engine.h"
 #include "Game.h"
 #include "SanctumOfShadows.h"
 #include <iostream>
 
 int main(){
+
 
 	//initilisation
 	Game * game = new SanctumOfShadows();

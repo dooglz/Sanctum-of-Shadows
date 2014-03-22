@@ -6,7 +6,7 @@ Player* Enemy::_player;
 
 Enemy::Enemy(irr::core::vector3df position): Character(-1,0,"Skeletors")
 {
-	_walkVelocity = btScalar(600);
+	_walkVelocity = btScalar(200);
 	irr::core::vector3df enemyScale = irr::core::vector3df(50.0f,80.0f,50.0f);
 	//Physics Kinematic caracter Object
 	_characterC = addCharacter((btScalar)1.0f, &btVector3(position.X, position.Y, position.Z), (btScalar)enemyScale.Y/2, (btScalar)enemyScale.X/2);

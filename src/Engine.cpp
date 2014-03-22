@@ -17,9 +17,15 @@ namespace GameEngine{
 	DebugDraw* debugDraw;
 
 	bool Engine::initialise(){
+
+		// ask user for driver
+		irr::video::E_DRIVER_TYPE driverType=irr::driverChoiceConsole();
+		if (driverType==irr::video::EDT_COUNT)
+			return 1;
+
 		_run = true;
 		_device = irr::createDevice(
-			irr::video::EDT_DIRECT3D9, _dimensions, 16, false, true, false, &handler);
+			driverType, _dimensions, 16, false, true, false, &handler);
 		//TODO investigate if vsync can be toggled
 		if (!_device){
 			std::cerr << "Error creating device" << std::endl;
