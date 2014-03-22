@@ -13,6 +13,7 @@ irr::scene::ICameraSceneNode* Flycamera;
 irr::scene::ICameraSceneNode* Menucamera;
 
 irr::scene::ISceneNode* SanctumOfShadows::DeadSpriteNode;
+irr::gui::IGUIInOutFader* fader;
 
 //debug lights
 irr::scene::ILightSceneNode* workLight;
@@ -62,6 +63,7 @@ bool SanctumOfShadows::init(){
 	player = new Player(irr::core::vector3df(0,200.0f,0));
 	Enemy::setPlayerRef(player);
 	enemy = new Enemy(irr::core::vector3df(400.0f,200.0f,0));
+	//
 
 	DeadSpriteNode = GameEngine::engine.getDevice()->getSceneManager()->addBillboardSceneNode(player->getNode(), irr::core::dimension2d<irr::f32>(150, 100),irr::core::vector3df(0,0,1));
 	DeadSpriteNode->setMaterialFlag(irr::video::EMF_LIGHTING, false);
@@ -70,6 +72,14 @@ bool SanctumOfShadows::init(){
     DeadSpriteNode->setVisible(false);
 
 	//new Beacon(irr::core::vector3df(0,0,500.0f));
+	irr::core::stringw str = "Game Initialised";
+	GameEngine::UI::displayTextMessage(str,2000);
+
+	//fader
+	fader = GameEngine::engine.getDevice()->getGUIEnvironment()->addInOutFader();
+    fader->setColor(irr::video::SColor(0,0,0,0));
+
+	reset();
 
 	return true;
 }
@@ -84,16 +94,9 @@ bool SanctumOfShadows::update(float delta){
 	GameEngine::UI::displayTextMessage(str,0);
 
 
-	if(_gameover == true && GameEngine::handler.keyFired(irr::KEY_KEY_R))
+	if(GameEngine::handler.keyFired(irr::KEY_KEY_R))
 	{
-		//reset player position and health
-		player->setHealth(100.0f);
-		player->getController()->warp(btVector3(0,10,0));
-		//delete the "game over" picture
-		DeadSpriteNode->setVisible(false);
-		_gameover = false;
-
-
+		reset();
 	}
 
 	if(GameEngine::handler.keyFired(irr::KEY_ESCAPE))
@@ -156,17 +159,56 @@ bool SanctumOfShadows::update(float delta){
 
 void SanctumOfShadows::reset()
 {
+	std::cerr << "Game reset" << std::endl;
+	irr::core::stringw str = "Game reset";
+	GameEngine::UI::displayTextMessage(str,2000);
 
+	//reset player position and health
+	player->setHealth(100.0f);
+	player->getController()->warp(btVector3(0,10,0));
+
+	//TODO Reset all game Entities
+	_gameover = false;
+
+	//Fade In
+    fader->fadeIn(8000);
+	//fader->drop();
 }
 
 void SanctumOfShadows::GameOver()
 {
 	if(_gameover == false)
 	{
-	std::cerr << "Game is over" << std::endl;
-	
-	DeadSpriteNode->setVisible(true);
-	
+		std::cerr << "Game is over" << std::endl;
+		irr::core::stringw str = "Game is over";
+		GameEngine::UI::displayTextMessage(str,2000);
+
+
+		fader->fadeOut(1000);
+		//DeadSpriteNode->setVisible(true);
+		/*
+		GameEngine::engine.getDevice()->getGUIEnvironment()->addImage(
+			GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/GameOver.PNG"),
+			irr::core::position2d<irr::s32>(10,20)
+		);*/
 	}
 	_gameover = true;
+}
+
+SanctumOfShadows::~SanctumOfShadows()
+{
+	fader->drop();
+	fader = NULL;
+	camera->drop();
+	Flycamera->drop();
+	Menucamera->drop();
+	SanctumOfShadows::DeadSpriteNode->drop();
+	workLight->drop();
+	spinningLight->drop();
+	// TODO remove drop these
+	/*
+	Level* level;
+	Player* SanctumOfShadows::player;
+	Enemy* enemy;
+	*/
 }

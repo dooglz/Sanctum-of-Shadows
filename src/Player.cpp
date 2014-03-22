@@ -31,6 +31,12 @@ Player::Player(irr::core::vector3df position): Character(-1,0,"player")
 
 void Player::update(float delta)
 {	
+	if(_health <= 0.0f)
+	{
+		handleDeath();
+		return;
+	}
+
 	float combatRange = 130.0f;
 	walkleft = false;
 	walkright = false;
@@ -64,10 +70,6 @@ void Player::update(float delta)
 		_camera->setTarget( _node->getPosition()+GameEngine::Physics::btVecToirrVec3(_forwardDir) );
 	}
 
-	if(_health <= 0.0f)
-	{
-		SanctumOfShadows::GameOver();
-	}
 	if(GameEngine::handler.keyFired(irr::KEY_KEY_Q))
 	{
 		Player::fuel();
@@ -116,7 +118,10 @@ void Player::handleMessage(const GameEngine::Message& message)
 	//handle incoming message
 	if(message.message == "playerHealthDecrease")
 	{
-		_health = _health - 0.05f;
+		if(_health >= 0)
+		{
+			_health = _health - 0.05f;
+		}
 		delete message.data;
 	}
 }
@@ -124,16 +129,21 @@ void Player::handleMessage(const GameEngine::Message& message)
 
 
 void Player::fuel()
-{
-	
-		if(fuelLevels)
-		{
-			Player::setRadius(0);
-			fuelLevels = false;
-		}
-		else 
-		{
-			Player::setRadius(300);
-			fuelLevels = true;
-		}
+{	
+	if(fuelLevels)
+	{
+		Player::setRadius(0);
+		fuelLevels = false;
 	}
+	else 
+	{
+		Player::setRadius(300);
+		fuelLevels = true;
+	}
+}
+
+void Player::handleDeath()
+{
+	_alive = false;
+	SanctumOfShadows::GameOver();
+}

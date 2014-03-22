@@ -56,7 +56,10 @@ namespace GameEngine{
 			}
 			else
 			{
-				iter->second->update(delta);
+				if(iter->second->isAlive())
+				{
+					iter->second->update(delta);
+				}
 				++iter;
 			}
 		}

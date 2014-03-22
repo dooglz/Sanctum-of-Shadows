@@ -2,6 +2,7 @@
 #include <irrlicht.h>
 #include "Character.h"
 
+
 class Player:public Character{
 private:
 	irr::scene::ICameraSceneNode* _camera;
@@ -19,6 +20,6 @@ public:
 	void Player::handleMessage(const GameEngine::Message& message);
 	void fuel();
 	void setRadius(int value) { _Lanternradius = value;_Lanternlight->setRadius((irr::f32)_Lanternradius); }
-
+	void handleDeath();
 };
 

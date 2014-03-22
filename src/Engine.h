@@ -8,6 +8,7 @@
 
 #include <string>
 #include <irrlicht.h>
+#include <iostream>
 #include "KeyboardHandler.h"
 #include "EntityManager.h"
 #include "MeshManager.h"
