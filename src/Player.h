@@ -7,7 +7,7 @@ class Player:public Character{
 private:
 	irr::scene::ICameraSceneNode* _camera;
 	irr::scene::ILightSceneNode* _Lanternlight;
-	float _Lanternradius;
+	float _Lanternmaxradius;
 	bool LanternOn;
 	float fuelLevel;
 public:
@@ -20,7 +20,7 @@ public:
 	void intitalise(){};
 	void Player::handleMessage(const GameEngine::Message& message);
 	void fuel(float delta);
-	void setRadius(int value) { _Lanternlight->setRadius((irr::f32)_Lanternradius); }
+
 	void handleDeath();
 
 };

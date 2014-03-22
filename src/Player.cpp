@@ -4,7 +4,7 @@
 Player::Player(irr::core::vector3df position): Character(-1,0,"player")
 {
 	fuelLevel = 1.0f;
-	_Lanternradius= 300.0f;
+	_Lanternmaxradius= 300.0f;
 	LanternOn = true;
 
 	_walkVelocity = btScalar(1000);
@@ -25,7 +25,7 @@ Player::Player(irr::core::vector3df position): Character(-1,0,"player")
 	_Lanternlight = GameEngine::engine.getDevice()->getSceneManager()->addLightSceneNode(
 		_node, irr::core::vector3df(0,0,0),			//Parent and offset
 		irr::video::SColorf(1.0f, 1.0f, 1.0f, 1.0f),	//Colour
-		(irr::f32)_Lanternradius//Radius
+		(irr::f32)_Lanternmaxradius//Radius
 	);
 
 }
@@ -50,9 +50,10 @@ void Player::update(float delta)
 	{
 		    fuelLevel -= 0.01*delta;
 			irr::core::stringw str = "Lantern fuel: ";
-			str += fuelLevel * _Lanternradius;
+			str += _Lanternlight->getRadius();
 			GameEngine::UI::displayTextMessage(str,0);
-			Player::setRadius(fuelLevel * _Lanternradius);
+			_Lanternlight->setRadius(fuelLevel * _Lanternmaxradius);
+		
 	}
 
 	if (GameEngine::handler.keyDown(irr::KEY_KEY_A))
@@ -144,7 +145,7 @@ void Player::fuel(float delta)
 {
 		if(LanternOn)
 		{
-			//Player::setRadius(0);
+			
 			_Lanternlight->setVisible(false);
 			LanternOn = false;
 		}
