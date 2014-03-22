@@ -6,8 +6,9 @@ class Player:public Character{
 private:
 	irr::scene::ICameraSceneNode* _camera;
 	irr::scene::ILightSceneNode* _Lanternlight;
-	int _Lanternradius;
-	bool fuelLevels;
+	float _Lanternradius;
+	bool LanternOn;
+	float fuelLevel;
 public:
 	Player(irr::core::vector3df position);
 	~Player(){};
@@ -17,8 +18,8 @@ public:
 	irr::scene::ICameraSceneNode* getCamera() { return _camera; }
 	void intitalise(){};
 	void Player::handleMessage(const GameEngine::Message& message);
-	void fuel();
-	void setRadius(int value) { _Lanternradius = value;_Lanternlight->setRadius(_Lanternradius); }
+	void fuel(float delta);
+	void setRadius(float value) { _Lanternradius = value;_Lanternlight->setRadius(_Lanternradius); }
 
 };
 

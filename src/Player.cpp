@@ -3,8 +3,9 @@
 #include "SanctumOfShadows.h"
 Player::Player(irr::core::vector3df position): Character(-1,0,"player")
 {
-	_Lanternradius= 300;
-	fuelLevels = true;
+	fuelLevel = 1.0f;
+	_Lanternradius= 300.0f;
+	LanternOn = true;
 
 	_walkVelocity = btScalar(1000);
 	irr::core::vector3df playerScale = irr::core::vector3df(60.0f,100.0f,60.0f);
@@ -36,6 +37,13 @@ void Player::update(float delta)
 	walkforward = false;
 	walkback = false;
 	Character::update(delta);
+
+
+	if(LanternOn && fuelLevel > 0 )
+	{
+		    fuelLevel -= 0.00001*delta;
+			Player::setRadius(fuelLevel * _Lanternradius);
+	}
 
 	if (GameEngine::handler.keyDown(irr::KEY_KEY_A))
 	{
@@ -69,7 +77,7 @@ void Player::update(float delta)
 	}
 	if(GameEngine::handler.keyFired(irr::KEY_KEY_Q))
 	{
-		Player::fuel();
+		Player::fuel(delta);
 	}
 	
 	if  (GameEngine::handler.keyFired(irr::KEY_SPACE))
@@ -122,17 +130,17 @@ void Player::handleMessage(const GameEngine::Message& message)
 
 
 
-void Player::fuel()
+void Player::fuel(float delta)
 {
-	
-		if(fuelLevels)
+		if(LanternOn)
 		{
-			Player::setRadius(0);
-			fuelLevels = false;
+			//Player::setRadius(0);
+			_Lanternlight->setVisible(false);
+			LanternOn = false;
 		}
 		else 
 		{
-			Player::setRadius(300);
-			fuelLevels = true;
+			_Lanternlight->setVisible(true);
+			LanternOn = true;
 		}
 	}
