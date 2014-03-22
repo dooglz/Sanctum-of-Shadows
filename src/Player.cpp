@@ -48,7 +48,10 @@ void Player::update(float delta)
 
 	if(LanternOn && fuelLevel > 0 )
 	{
-		    fuelLevel -= 0.00001*delta;
+		    fuelLevel -= 0.01*delta;
+			irr::core::stringw str = "Lantern fuel: ";
+			str += fuelLevel * _Lanternradius;
+			GameEngine::UI::displayTextMessage(str,0);
 			Player::setRadius(fuelLevel * _Lanternradius);
 	}
 

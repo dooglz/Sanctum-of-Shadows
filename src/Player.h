@@ -20,7 +20,7 @@ public:
 	void intitalise(){};
 	void Player::handleMessage(const GameEngine::Message& message);
 	void fuel(float delta);
-	void setRadius(int value) { _Lanternradius = value;_Lanternlight->setRadius((irr::f32)_Lanternradius); }
+	void setRadius(int value) { _Lanternlight->setRadius((irr::f32)_Lanternradius); }
 	void handleDeath();
 
 };
