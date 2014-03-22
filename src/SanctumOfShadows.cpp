@@ -50,7 +50,7 @@ bool SanctumOfShadows::init(){
 	workLight = smgr->addLightSceneNode(0, irr::core::vector3df(0,200.0f,0), irr::video::SColorf(1.0f, 1.0f, 1.0f, 1.0f), 1000.0f);
 	
 	// create spinning light
-	spinningLight = smgr->addLightSceneNode(0, irr::core::vector3df(0,50,0), irr::video::SColorf(1.0f, 0.6f, 0.7f, 1.0f), 1000.0f);
+	spinningLight = smgr->addLightSceneNode(0, irr::core::vector3df(0,300.0f,0), irr::video::SColorf(1.0f, 0.6f, 0.7f, 1.0f), 1000.0f);
 	irr::scene::ISceneNodeAnimator* anim = smgr->createFlyCircleAnimator (irr::core::vector3df(0,50,0),300.0f);
 	spinningLight->addAnimator(anim);
 	anim->drop();

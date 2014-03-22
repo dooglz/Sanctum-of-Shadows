@@ -8,7 +8,7 @@ private:
 	void placeBeacons();
 	void generateLevel();
 	//level gen stuff
-	static const unsigned int _gridSize = 79;	//Has to be an odd number
+	static const unsigned int _gridSize = 7;	//Has to be an odd number
 	static const unsigned int _darkPadding = 1;	//amount of dark tiles lining the edge
 	static const unsigned int _maxObstacles = 2; // Max obstacles to spawn around a beacon
 	//Init grid, add border
@@ -20,6 +20,7 @@ public:
 	~Level(){};
 	void intitalise();
 	bool loadContent();
+	void createLevel();
 	void unloadContent(){};
 	void update(float delta);
 	irr::scene::ITriangleSelector* getSelector(){

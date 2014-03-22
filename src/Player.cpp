@@ -12,6 +12,7 @@ Player::Player(irr::core::vector3df position): Character(-1,0,"player")
 	//Physics Kinematic caracter Object
 	_characterC = addCharacter((btScalar)1.0f, &btVector3(position.X, position.Y, position.Z), (btScalar)50, (btScalar)30);
 	//player render node
+	//_node = GameEngine::engine.getDevice()->getSceneManager()->addEmptySceneNode();
 	_node = GameEngine::engine.getDevice()->getSceneManager()->addCubeSceneNode(1.0f);
 	_node->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_dev_stone.png"));
 	_node->setScale(playerScale);
@@ -23,7 +24,7 @@ Player::Player(irr::core::vector3df position): Character(-1,0,"player")
 	_camera->bindTargetAndRotation(true);
 	_health = 100.0f;
 	_Lanternlight = GameEngine::engine.getDevice()->getSceneManager()->addLightSceneNode(
-		_node, irr::core::vector3df(0,0,0),			//Parent and offset
+		_node, irr::core::vector3df(0,1.0f,0),			//Parent and offset
 		irr::video::SColorf(1.0f, 1.0f, 1.0f, 1.0f),	//Colour
 		(irr::f32)_Lanternradius//Radius
 	);

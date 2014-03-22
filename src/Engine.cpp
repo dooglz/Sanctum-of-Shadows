@@ -26,7 +26,7 @@ namespace GameEngine{
 			return false;
 		}
 		_device->setWindowCaption(_caption.c_str());
-
+		_device->getVideoDriver()->setTextureCreationFlag(irr::video::ETCF_ALWAYS_32_BIT, true);
 		//init ent mgmt
 		if(!MessageHandler::initialise())
 		{

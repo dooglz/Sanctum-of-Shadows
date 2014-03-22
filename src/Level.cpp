@@ -68,7 +68,8 @@ bool Level::loadContent()
 	}
 	srand((int)time(0));
 	generateLevel();
-	placeBeacons();
+	createLevel();
+	//placeBeacons();
 
 
 	return true;
@@ -139,7 +140,7 @@ void Level::generateLevel()
 					{
 						//No beacons in surrounding area
 						spaces++;
-						if (rand() % 100 < 10) {
+						if (rand() % 100 < 30) {
 							_grid[col][row] = BEACON;
 							beacons++;
 						}
@@ -173,4 +174,58 @@ void Level::generateLevel()
 		std::cout << std::endl;
 	}
 
+}
+
+void Level::createLevel()
+{
+
+	irr::video::ITexture* targetTexture = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble.jpg");
+	irr::scene::IAnimatedMesh* cube = GameEngine::engine.getDevice()->getSceneManager()->getMesh("models/cube1.obj");
+
+
+	irr::scene::IAnimatedMesh*  planeMesh = GameEngine::engine.getDevice()->getSceneManager()->addHillPlaneMesh(
+		"plane", irr::core::dimension2df(2.0f,2.0f), irr::core::dimension2du(4,4));
+
+	std::array<irr::scene::IMeshSceneNode*, (_gridSize*_gridSize)> floorTiles;
+	unsigned int a =0;
+	float startingPos = (-1.0f * (0.5f*(500 * _gridSize))) +(0.5f*500);
+
+	for(unsigned int col = 0; col < _grid.size(); col ++)
+	{
+		for(unsigned int row = 0; row < _grid[col].size(); row ++)
+		{
+			irr::scene::IMeshSceneNode* node;
+			node = GameEngine::engine.getDevice()->getSceneManager()->addCubeSceneNode(1.0f);
+			//node = GameEngine::engine.getDevice()->getSceneManager()->addMeshSceneNode(cube);
+			//node = GameEngine::engine.getDevice()->getSceneManager()->addMeshSceneNode(planeMesh->getMesh(0));
+
+			node->getMaterial(0).SpecularColor.set(0,0,0,0);
+			node->getMaterial(0).EmissiveColor.set(255,0,0,0);
+			
+			node->setMaterialFlag(irr::video::EMF_FOG_ENABLE, false);
+			node->setMaterialType(irr::video::EMT_SOLID);
+			node->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
+			node->setMaterialFlag(irr::video::EMF_LIGHTING, true);
+
+			node->setScale(irr::core::vector3df(500.0f,2.0f,500.0f));
+			node->setPosition(irr::core::vector3df(startingPos + (col*500),2,startingPos + (row*500)));
+			
+			if(_grid[col][row] == BEACON)
+			{
+				node->setMaterialTexture(0, targetTexture);
+			}
+			else if(_grid[col][row] == EMPTY)
+			{
+				//node = GameEngine::engine.getDevice()->getSceneManager()->addMeshSceneNode(floorMesh->getMesh(0));
+			//	node->setMaterialTexture(0, targetTexture);
+			}
+			else
+			{
+			//	node = GameEngine::engine.getDevice()->getSceneManager()->addMeshSceneNode(floorMesh->getMesh(0));
+			//	node->setMaterialTexture(0, targetTexture);
+			}
+			floorTiles[a] = node;
+			a++;
+		}
+	}
 }
