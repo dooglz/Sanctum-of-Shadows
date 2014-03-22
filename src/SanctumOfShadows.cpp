@@ -169,7 +169,7 @@ void SanctumOfShadows::reset()
 
 	//TODO Reset all game Entities
 	_gameover = false;
-
+	player->setAlive(true);
 	//Fade In
     fader->fadeIn(8000);
 	//fader->drop();
@@ -205,7 +205,7 @@ SanctumOfShadows::~SanctumOfShadows()
 	SanctumOfShadows::DeadSpriteNode->drop();
 	workLight->drop();
 	spinningLight->drop();
-	// TODO remove drop these
+	// TODO drop these
 	/*
 	Level* level;
 	Player* SanctumOfShadows::player;
