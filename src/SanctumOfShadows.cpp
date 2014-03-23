@@ -28,10 +28,6 @@ bool SanctumOfShadows::init(){
 
 	std::wcout <<  _gameTitle << " Game code init" << std::endl;
 
-	if (!GameEngine::engine.loadContent()){
-		return false;
-	}
-
 	irr::scene::ISceneManager* smgr = GameEngine::engine.getDevice()->getSceneManager();
 
 	//load the level

@@ -70,14 +70,6 @@ namespace GameEngine{
 		return true;
 	}
 
-	bool Engine::loadContent(){
-		if(!EntityManager::loadContent())
-		{
-			return false;
-		}
-		return true;
-	}
-
 	bool Engine::update(float delta){
 		handler.update();
 		ui.update();

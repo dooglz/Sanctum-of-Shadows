@@ -1,9 +1,12 @@
 #include "Character.h"
 
-//this makes a geneirc character with a blank render object
+//! Creates the controller and adds a blank scene node.
 void Character::intitalise(irr::core::vector3df position, irr::core::vector3df size)
 {
+	_position = position;
 	_walkVelocity = btScalar(300);
+	_rotateSpeed = 3.0f;
+
 	if(size.getLengthSQ() == 0)
 	{
 		size = irr::core::vector3df(50.0f,80.0f,50.0f);
@@ -16,12 +19,13 @@ void Character::intitalise(irr::core::vector3df position, irr::core::vector3df s
 	_node = GameEngine::engine.getDevice()->getSceneManager()->addEmptySceneNode();
 }
 
+//! Recalculate position transforms and direction vectors, call this before Walk.
 void Character::update(float delta)
 {
 	_xform = _ghostObject->getWorldTransform ();
 
 	_forwardDir = _xform.getBasis()[2];
-	_forwardDir.setX(-1.0f * _forwardDir.getX());//Some crazy bullet stuff results in this needing done.
+	_forwardDir.setX(-1.0f * _forwardDir.getX());
 	_upDir = _xform.getBasis()[1];
 	_strafeDir = _xform.getBasis()[0];
 
@@ -30,6 +34,7 @@ void Character::update(float delta)
 	_strafeDir.normalize ();
 }
 
+//! Move based on the walk flags.
 void Character::walk(float delta)
 {	
 	if(_ghostObject )
@@ -41,14 +46,14 @@ void Character::walk(float delta)
 		if (walkleft == true)
 		{
 			btMatrix3x3 orn = _ghostObject->getWorldTransform().getBasis();
-			orn *= btMatrix3x3(btQuaternion(btVector3(0,1,0),-2.0f*delta));
+			orn *= btMatrix3x3(btQuaternion(btVector3(0,1,0),-1.0f * _rotateSpeed * delta));
 			_ghostObject->getWorldTransform ().setBasis(orn);
 		}
 
 		if (walkright == true)
 		{
 			btMatrix3x3 orn = _ghostObject->getWorldTransform().getBasis();
-			orn *= btMatrix3x3(btQuaternion(btVector3(0,1,0),5.0f*delta));
+			orn *= btMatrix3x3(btQuaternion(btVector3(0,1,0), _rotateSpeed *delta));
 			_ghostObject->getWorldTransform ().setBasis(orn);
 		}
 
@@ -61,10 +66,11 @@ void Character::walk(float delta)
 		{
 			walkDirection -= _forwardDir;	
 		}
+
 		_characterC->setWalkDirection(walkDirection*walkSpeed);
 
 		//Set the render node's position and rotation to match _ghostObject's
-		//btMotionState is currently only available for rigid bodies and not Ghost Objects apperently
+		//btMotionState is currently only available for rigid bodies and not Ghost Objects
 		if(_node)
 		{
 			btTransform worldTrans;
@@ -73,11 +79,12 @@ void Character::walk(float delta)
 			worldTrans.getOpenGLMatrix(matr.pointer());
 			_node->setRotation(matr.getRotationDegrees());
 			_node->setPosition(matr.getTranslation());
-		
+			_position = matr.getTranslation();
 		}
 	}
 }
 
+//! Create a new btKinematicCharacterController*.
 btKinematicCharacterController*  Character::addCharacter(btScalar stepHeight,btVector3* characterPosition, btScalar characterHeight, btScalar characterWidth)
 {
 	_ghostObject = new btPairCachingGhostObject();
@@ -88,10 +95,10 @@ btKinematicCharacterController*  Character::addCharacter(btScalar stepHeight,btV
 	btTransform trans;
 
 	trans.setIdentity();
+	//I have absolutly no idea why this line is nessisary
 	btScalar physicsWorldScaling2 = 0.1f;
 
 	trans.setOrigin(*characterPosition);
-
 	_ghostObject->setWorldTransform(trans);
 
 	_ghostObject->setCollisionShape(characterShape);

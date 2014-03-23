@@ -2,16 +2,16 @@
 
 namespace GameEngine{
 
-	//init our static attributes
+	// The next availbe ID to assign to an Entity.
 	int EntityManager::_nextID = 0;
-	//Entities holds a pointer to ALL entities.
-	std::unordered_map<int,Entity*> EntityManager::_entities = std::unordered_map<int,Entity*>();
-	//namedEntites holds a copy of a pointer to all ents with a set name.
-	std::unordered_map<std::string, std::list<Entity*>> EntityManager::_namedEntities = std::unordered_map<std::string,std::list<Entity*>>();
-	//blank con/destructor
-	EntityManager::EntityManager(){}
-	EntityManager::~EntityManager(){}
 
+	// A Map of every Entity, identified by ID.
+	std::unordered_map<int,Entity*> EntityManager::_entities = std::unordered_map<int,Entity*>();
+
+	// A Map contating lists of named entities, identified by Name.
+	std::unordered_map<std::string, std::list<Entity*>> EntityManager::_namedEntities = std::unordered_map<std::string,std::list<Entity*>>();
+
+	// Call initialise() on all Entities.
 	bool EntityManager::initialise()
 	{
 		std::unordered_map<int,Entity*>::iterator iter = _entities.begin();
@@ -22,6 +22,7 @@ namespace GameEngine{
 		return true;
 	}
 
+	// Call loadContent() on all Entities.
 	bool EntityManager::loadContent()
 	{
 		std::unordered_map<int,Entity*>::iterator iter = _entities.begin();
@@ -35,6 +36,7 @@ namespace GameEngine{
 		return true;
 	}
 
+	// Call unloadContent() on all Entities.
 	void EntityManager::unloadContent()
 	{
 		std::unordered_map<int,Entity*>::iterator iter = _entities.begin();
@@ -44,9 +46,9 @@ namespace GameEngine{
 		}
 	}
 
+	// Call update() on all live Entities.
 	bool EntityManager::update(float delta)
 	{
-		//we don't update named entites???
 		std::unordered_map<int,Entity*>::iterator iter = _entities.begin();
 		for(; iter != _entities.end();)
 		{
@@ -66,7 +68,6 @@ namespace GameEngine{
 		return true;
 	}
 
-
 	void EntityManager::shutdown()
 	{
 		std::unordered_map<int,Entity*>::iterator iter = _entities.begin();
@@ -81,6 +82,7 @@ namespace GameEngine{
 		_namedEntities.clear();
 	}
 
+	// Registers the pointer ot the entitiy in the relevant lists.
 	void EntityManager::registerEntity(Entity* newEntity)
 	{
 		if(newEntity->getID() == -1)
@@ -118,15 +120,7 @@ namespace GameEngine{
 		}
 	}
 
-	void EntityManager::removeEntity(Entity* entity)
-	{
-		auto found = _entities.find(entity->getID());
-		if(found != _entities.end())
-		{
-			_entities.erase(found);
-		}
-	}
-
+	//! Finds an entity in _entities, then passes the iterator to the main remove function
 	bool EntityManager::remove(Entity* entity)
 	{
 		std::unordered_map<int,Entity*>::iterator found = _entities.find(entity->getID());
@@ -137,6 +131,7 @@ namespace GameEngine{
 		return false;
 	}
 
+	//! Takes an iterator from _entities, Removes an entity from _entities and _namedentities if nessisiary, increments iterator.
 	bool EntityManager::remove(std::unordered_map<int,Entity*>::iterator &iter)
 	{
 		std::cout << "Removing Entity: ID:"<<iter->first << " Name: " << iter->second->getName() << std::endl;
@@ -156,12 +151,13 @@ namespace GameEngine{
 		}
 		//Delete the entity itsef, calling it's destructor then freeing the memory.
 		delete iter->second;
-		//Delete the pointer to the Entity from the main list.
+		//Delete the pointer to the Entity from the main list. The iterator gets incremented
 		iter = _entities.erase(iter);
 		std::cout << _entities.size() << std::endl;
 		return true;
 	}
 
+	// Get Entity by ID.
 	Entity* EntityManager::getEntity(int id)
 	{
 		auto found = _entities.find(id);
@@ -172,6 +168,7 @@ namespace GameEngine{
 		return 0;
 	}
 
+	// Returns a list of named entities
 	std::list<Entity*>* EntityManager::getNamedEntity(const std::string& name)
 	{
 		auto found = _namedEntities.find(name);
@@ -185,6 +182,7 @@ namespace GameEngine{
 		}
 	}
 
+	// Print debug info to std::out.
 	void EntityManager::debug()
 	{
 		std::string str;
@@ -201,4 +199,4 @@ namespace GameEngine{
 		}
 	}
 
-	}
+}

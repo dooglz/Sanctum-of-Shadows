@@ -55,11 +55,11 @@ void Enemy::update(float delta)
 	float distanceToPlayer = (_player->getNode()->getPosition() - _node->getPosition()).getLength();
 	if(distanceToPlayer < visibleRange )
 	{
-		if(crossToplayer < -0.1f)
+		if(crossToplayer < -0.15f)
 		{
 			walkleft=true;
 		}
-		else if(crossToplayer > 0.1f)
+		else if(crossToplayer > 0.15f)
 		{
 			walkright = true;
 		}

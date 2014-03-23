@@ -1,3 +1,8 @@
+/**
+ * \defgroup Game Game Specific Classes
+ * \ingroup Game
+ */
+
 #pragma once
 #include "Engine.h"
 #include "Game.h"

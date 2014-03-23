@@ -11,3 +11,4 @@ bin/*/
 *.filters
 *.obj
 !resources/models/*.obj
+docs/html/
