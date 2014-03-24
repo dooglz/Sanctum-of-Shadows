@@ -3,6 +3,9 @@
 #include <irrlicht.h>
 
 namespace GameEngine{
+	/*! \brief Creates the bullet physics world.
+	 *  \ingroup Game
+	 */
 	class Physics{
 
 	private:
@@ -12,15 +15,23 @@ namespace GameEngine{
 	public:
 		static btBroadphaseInterface* broadPhase;
 		static btDiscreteDynamicsWorld* world;
-		static bool initialise();
+
+		// Initialise all the physics properties.
+		static void initialise();
+
+		//! Remove all Physics.
 		static void shutdown();
-		//TODO actually do this properly
+		
+		//! Convert a Irrlicht Vector3 to a Bullet Vector3.
 		static btVector3 irrVec3ToBtVec3(irr::core::vector3df iVec){
 			return btVector3(iVec.X,iVec.Y,iVec.Z);
 		}
+		//! Convert a Bullet Vector3 to an Irrlicht Vector3.
 		static irr::core::vector3df btVecToirrVec3(const btVector3& bVec){
 			return irr::core::vector3df((float)bVec.getX(),(float)bVec.getY(),(float)bVec.getZ());
 		}
+
+		//! Collision Masks
 		enum EPhysicsCollisionMask {
 			E_Static   = 1 << 0,
 			E_Riggid   = 1 << 1,
@@ -36,7 +47,9 @@ namespace GameEngine{
 		};
 	};
 
-
+	/*! \brief a MotionState automatically syncs Irrlicht and bullet objects.
+	 *  \ingroup Game
+	 */
 	class MotionState : public btMotionState
 	{
 	public:

@@ -1,5 +1,7 @@
 #include "MeshManager.h"
 
+//This class is under construction, mind the girders.
+
 namespace GameEngine{
 
 	void MeshManager::analyse(irr::scene::IMesh* mesh, bool deepscan)

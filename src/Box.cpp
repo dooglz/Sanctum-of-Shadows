@@ -14,18 +14,18 @@ Box::Box (const btVector3& position, const irr::core::vector3df& scale, float ma
 	btTransform transform;
 	transform.setIdentity();
 	transform.setOrigin(position);
-	GameEngine::MotionState* motionstate = new GameEngine::MotionState(btTransform(btQuaternion(0.0, 0.0, 0.0, 1.0), position), _node);
+	_motionstate = new GameEngine::MotionState(btTransform(btQuaternion(0.0, 0.0, 0.0, 1.0), position), _node);
 
 	//setup shape
 	btVector3 halfExtends(scale.X*0.5f,scale.Y*0.5f,scale.Z*0.5f);
 	btCollisionShape* shape = new btBoxShape(halfExtends);
 
-	//calc intertia, based on mass and shape
+	//calc inertia, based on mass and shape
 	btVector3 localInertia;
 	shape->calculateLocalInertia(mass,localInertia);
 
 	//create the RB
-	_rigidBody = new btRigidBody(mass,motionstate,shape,localInertia);
+	_rigidBody = new btRigidBody(mass,_motionstate,shape,localInertia);
 	//add to world
 	GameEngine::Physics::world->addRigidBody(_rigidBody,GameEngine::Physics::E_Actor,GameEngine::Physics::E_ActorGroup);
 
@@ -58,15 +58,7 @@ bool Box::loadContent()
 
 void Box::update(float delta)
 {
-	PhysicalEntity::update(delta);
-	if(_alive)
-	{
-		if(rand() % 10000 == 1)
-		{
-			//fire();
-		}
-	//	_node->setPosition(_node->getPosition() + _velocity * delta);
-	}
+	PhysicalEntity::update();
 }
 
 void Box::handleMessage(const GameEngine::Message& message)
@@ -77,3 +69,4 @@ void Box::handleMessage(const GameEngine::Message& message)
 		_node->setVisible(false);
 	}
 }
+

@@ -33,12 +33,7 @@ namespace GameEngine{
 		}
 		_device->setWindowCaption(_caption.c_str());
 		_device->getVideoDriver()->setTextureCreationFlag(irr::video::ETCF_ALWAYS_32_BIT, true);
-		//init ent mgmt
-		if(!MessageHandler::initialise())
-		{
-			return false;
-		}
-
+		
 		if(!EntityManager::initialise())
 		{
 			return false;
@@ -127,11 +122,5 @@ namespace GameEngine{
 	void Engine::stop(){
 		_run = false;
 	}
-	bool Engine::run(){
-		return _run;
-	}
 
-	void Engine::debug(){
-		EntityManager::debug();
-	}
 }

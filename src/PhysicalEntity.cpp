@@ -3,38 +3,36 @@
 
 namespace GameEngine{
 
-	void PhysicalEntity::update(float delta)
+	//! Updates _btposition, Checks to see if out of bounds 
+	void PhysicalEntity::update()
 	{
-		btVector3 point = _rigidBody->getWorldTransform().getOrigin();
+		_btposition = _rigidBody->getWorldTransform().getOrigin();
+
 		//have we fallen out of world?
-		if(point.getY() < -200.0f)
+		if(_btposition.getY() < -200.0f)
 		{
 			die();
 			return;
 		}
-		//If the position hasn't changed, don't bother poking irrlicht
-		if(false && point == _position)
-		{
-			return;
-		}
-		/*
-		else
-		{
-			_position = point;
+	}
 
-			_node->setPosition(irr::core::vector3df((float)point.getX(),(float)point.getY(),(float)point.getZ()));
+	//! Sync Bullet object to irrlicht scene node, only use if no Motionstate available.
+	void PhysicalEntity::sync(float delta)
+	{
+		btVector3 point = _rigidBody->getWorldTransform().getOrigin();
+		_btposition = point;
 
-			const btQuaternion& quat = _rigidBody->getOrientation();
-			irr::core::quaternion q(quat.getX(),quat.getY(),quat.getZ(),quat.getW());
+		_node->setPosition(irr::core::vector3df((float)point.getX(),(float)point.getY(),(float)point.getZ()));
 
-			irr::core::vector3df euler;
-			q.toEuler(euler);
+		const btQuaternion& quat = _rigidBody->getOrientation();
+		irr::core::quaternion q(quat.getX(),quat.getY(),quat.getZ(),quat.getW());
 
-			euler *= irr::core::RADTODEG;
+		irr::core::vector3df euler;
+		q.toEuler(euler);
 
-			_node->setRotation(euler);
-		}
-		*/
+		euler *= irr::core::RADTODEG;
+
+		_node->setRotation(euler);
 	}
 
 

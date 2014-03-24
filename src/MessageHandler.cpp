@@ -1,7 +1,6 @@
 #include "MessageHandler.h"
 #include "Entity.h"
 
-//TODO make all messages an enum.
 namespace GameEngine{
 	std::queue<Message> MessageHandler::_messages = std::queue<Message>();
 
@@ -9,14 +8,13 @@ namespace GameEngine{
 	{
 		while(!_messages.empty())
 		{
+			//message data could be on the heap, remove
+			delete _messages.front().data;
 			_messages.pop();
 		}
 	}
-	bool MessageHandler::initialise()
-	{
-		//TODO
-		return true;
-	}
+
+	//! Process message queue.
 	bool MessageHandler::update()
 	{
 		while(!_messages.empty())
@@ -30,6 +28,7 @@ namespace GameEngine{
 		return true;
 	}
 
+	//! Queue a new message to be sent.
 	void MessageHandler::sendMessage(const Message& message)
 	{
 		_messages.push(message);

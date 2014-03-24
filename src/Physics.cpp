@@ -9,15 +9,15 @@ namespace GameEngine{
 	btBroadphaseInterface* Physics::broadPhase;
 	btSequentialImpulseConstraintSolver* Physics::_solver;
 
-	bool Physics::initialise(){
+	void Physics::initialise(){
 		_collisionConfig = new btDefaultCollisionConfiguration();
 		_dispatcher = new btCollisionDispatcher(_collisionConfig);
 		broadPhase = new btAxisSweep3(btVector3(-1000,1000,1000), btVector3(1000,1000,1000));
 		_solver= new btSequentialImpulseConstraintSolver();
 		Physics::world = new btDiscreteDynamicsWorld(_dispatcher,broadPhase,_solver,_collisionConfig);
-		return true;
 	}
 
+	//TODO investigate if this clears everything, and if it should be a destructor instead.
 	void Physics::shutdown(){
 		delete Physics::world;
 		delete _solver;

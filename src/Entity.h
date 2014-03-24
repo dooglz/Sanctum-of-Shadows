@@ -10,7 +10,7 @@ namespace GameEngine{
 	 */
 	class Entity{
 		protected:
-			//A unique int assigned by entityManager for identification.
+			//! A unique int assigned by entityManager for identification.
 			int _id;
 
 			//! A string used for collecting and finding entities
