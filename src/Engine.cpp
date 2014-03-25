@@ -39,10 +39,8 @@ namespace GameEngine{
 			return false;
 		}
 		
-		if(!Physics::initialise())
-		{
-			return false;
-		}
+		Physics::initialise();
+
 		if(debug_draw_bullet)
 		{
 			//physics debug

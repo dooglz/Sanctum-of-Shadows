@@ -50,10 +50,11 @@ int main(){
 	int lastFPS = -1;
 	while (device->run() && GameEngine::engine.run())
 	{
+		currtime = device->getTimer()->getRealTime();
+		delta = (currtime - prevTime) / 1000.f; // Time in seconds
+
 		if (device->isWindowActive())
         {
-			currtime = device->getTimer()->getRealTime();
-			delta = (currtime - prevTime) / 1000.f; // Time in seconds
 
 			if(delta > 1.0f)
 			{
