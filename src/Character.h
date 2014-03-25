@@ -15,7 +15,7 @@ class Character: public GameEngine::Entity{
 		bool walkback;
 		bool walkleft;
 		bool walkright;
-		 //@}
+		//@}
 
 		//@{
 		btVector3 _forwardDir;
@@ -72,9 +72,9 @@ class Character: public GameEngine::Entity{
 		//! Creates the controller and adds a blank scene node.
 		void intitalise(){};
 
+		//! Returns _health.
 		float getHealth() { return _health; }
 
+		//! Sets _health.
 		void setHealth(float value) {  _health = value; }
-		
-		void setPosition(irr::core::vector3df value) { _position = value; }
 };

@@ -19,9 +19,6 @@ Beacon::Beacon(const irr::core::vector3df& position) : GameEngine::Entity(-1,0,"
 	_node->setScale(scale);
 	_node->setPosition(position);
 	
-	_healingRange = 150;
-	_lightRange = 500;
-	
 	// create light
 	_light = GameEngine::engine.getDevice()->getSceneManager()->addLightSceneNode(
 		_node, irr::core::vector3df(0,6.0f,0),			//Parent and offset
@@ -124,6 +121,8 @@ Beacon::Beacon(const irr::core::vector3df& position) : GameEngine::Entity(-1,0,"
 	light(false);
 }
 
+
+// Toggle state, lights and effects.
 void Beacon::light(bool onOff)
 {
 	_isLit = onOff;
@@ -143,9 +142,6 @@ void Beacon::light(bool onOff)
 }
 
 
-void Beacon::intitalise()
-{
-}
 
 bool Beacon::loadContent()
 {
@@ -159,6 +155,7 @@ bool Beacon::loadContent()
 	return true;
 }
 
+// Check player location, turn on, Heal player.
 void Beacon::update(float delta)
 {
 	float distanceToPlayer = (SanctumOfShadows::player->getNode()->getPosition() - _node->getPosition()).getLength();
@@ -190,3 +187,9 @@ void Beacon::handleMessage(const GameEngine::Message& message)
 		_isLit = true;
 	}
 }
+
+void Beacon::intitalise(){
+	_alive = true;
+	light(false);
+}
+

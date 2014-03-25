@@ -36,10 +36,6 @@ Box::Box (const btVector3& position, const irr::core::vector3df& scale, float ma
 	_alive = true;
 }
 
-void Box::intitalise()
-{
-}
-
 bool Box::loadContent()
 {
 	irr::scene::IAnimatedMesh* cube = GameEngine::engine.getDevice()->getSceneManager()->getMesh("models/cube1.obj");
@@ -58,7 +54,7 @@ bool Box::loadContent()
 
 void Box::update(float delta)
 {
-	PhysicalEntity::update();
+	PhysicalEntity::update(delta);
 }
 
 void Box::handleMessage(const GameEngine::Message& message)

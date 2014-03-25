@@ -1,11 +1,13 @@
 #include "Player.h"
-
 #include "SanctumOfShadows.h"
+
+// The Maximum radius of the lanterns effects.
+const float Player::_Lanternmaxradius = 300.0f;
+
 Player::Player(irr::core::vector3df position): Character(-1,0,"player")
 {
-	fuelLevel = 1.0f;
-	_Lanternmaxradius= 300.0f;
-	LanternOn = true;
+	_fuelLevel = 1.0f;
+	_LanternOn = true;
 
 	_walkVelocity = btScalar(6);
 	_rotateSpeed = 5.0f;
@@ -51,14 +53,19 @@ void Player::update(float delta)
 	Character::update(delta);
 
 
-	if(LanternOn && fuelLevel > 0 )
+	if(_LanternOn)
 	{
-		    fuelLevel -= 0.01f*delta;
+		 if (_fuelLevel > 0){ 
+		    _fuelLevel -= 0.01f*delta;
 			irr::core::stringw str = "Lantern fuel: ";
 			str += _Lanternlight->getRadius();
 			GameEngine::UI::displayTextMessage(str,0);
-			_Lanternlight->setRadius(fuelLevel * _Lanternmaxradius);
-		
+			_Lanternlight->setRadius(_fuelLevel * _Lanternmaxradius);
+		 }
+		 else
+		 {
+			 toggleLantern(false);
+		 }
 	}
 
 	if (GameEngine::handler.keyDown(irr::KEY_KEY_A))
@@ -89,7 +96,7 @@ void Player::update(float delta)
 
 	if(GameEngine::handler.keyFired(irr::KEY_KEY_Q))
 	{
-		Player::fuel(delta);
+		Player::toggleLantern(!_LanternOn);
 	}
 	
 	if  (GameEngine::handler.keyFired(irr::KEY_SPACE))
@@ -114,9 +121,26 @@ void Player::update(float delta)
 
 }
 
-bool Player::loadContent()
+//! Set the state of the lantern, will not light if no fuel.
+void Player::toggleLantern(bool onoff)
 {
-	return true;
+	if(onoff && _fuelLevel > 0)
+	{
+		_Lanternlight->setVisible(true);
+		_LanternOn = true;
+	}
+	else
+	{
+		_Lanternlight->setVisible(false);
+		_LanternOn = false;
+	}
+}
+
+//! called when health <= 0
+void Player::handleDeath()
+{
+	_alive = false;
+	SanctumOfShadows::GameOver();
 }
 
 void Player::handleMessage(const GameEngine::Message& message)
@@ -132,31 +156,6 @@ void Player::handleMessage(const GameEngine::Message& message)
 	}
 }
 
-
-
-
-void Player::fuel(float delta)
-{
-		if(LanternOn)
-		{
-			
-			_Lanternlight->setVisible(false);
-			LanternOn = false;
-		}
-		else 
-		{
-			_Lanternlight->setVisible(true);
-			LanternOn = true;
-		}
-}
-
-void Player::handleDeath()
-{
-	_alive = false;
-	SanctumOfShadows::GameOver();
-}
-
-
 Player::~Player()
 {
 	if(_camera)
@@ -165,3 +164,4 @@ Player::~Player()
 		_camera = 0;
 	}
 }
+

@@ -39,19 +39,26 @@ namespace gui
 //! Manages the FT_Face cache
 struct SGUITTFace : public virtual irr::IReferenceCounted
 {
+	//! Constructor
 	SGUITTFace() : face_buffer(0), face_buffer_size(0)
 	{
 		memset((void*)&face, 0, sizeof(FT_Face));
 	}
 
+	//! Destructor
 	~SGUITTFace()
 	{
 		FT_Done_Face(face);
 		delete[] face_buffer;
 	}
 
+	//! ~
 	FT_Face face;
+
+	//! ~
 	FT_Byte* face_buffer;
+
+	//! ~
 	FT_Long face_buffer_size;
 };
 

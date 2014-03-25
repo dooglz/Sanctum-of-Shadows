@@ -3,17 +3,24 @@
 #include "Character.h"
 #include "Player.h"
 
+/*! \brief An Enemy.
+ * \ingroup Game
+ */
 class Enemy:public Character{
-private:
-	//This will not be nessisary once these are true entities again.
-	static Player* _player;
-public:
-	Enemy(irr::core::vector3df position);
-	~Enemy(){};
-	void intitalise(){};
-	bool loadContent();
-	void update(float delta);
-	static void setPlayerRef(Player* player){_player = player;}
-	void handleMessage(const GameEngine::Message& message);
+
+	public:
+		//! Constructor
+		Enemy(irr::core::vector3df position);
+		
+		//! Destructor
+		~Enemy(){};
+
+		void intitalise(){};
+		
+		bool loadContent(){return true;};
+		
+		void update(float delta);
+		
+		void handleMessage(const GameEngine::Message& message);
 
 };

@@ -4,7 +4,7 @@
 namespace GameEngine{
 
 	//! Updates _btposition, Checks to see if out of bounds 
-	void PhysicalEntity::update()
+	void PhysicalEntity::update(float delta)
 	{
 		_btposition = _rigidBody->getWorldTransform().getOrigin();
 

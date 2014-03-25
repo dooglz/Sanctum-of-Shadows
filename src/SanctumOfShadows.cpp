@@ -32,6 +32,7 @@ bool SanctumOfShadows::init(){
 	//load the level
 	level = new Level();
 	level->loadContent();
+	level->intitalise();
 
 	//Cameras
 	Flycamera = GameEngine::engine.getDevice()->getSceneManager()->addCameraSceneNodeFPS();
@@ -53,7 +54,6 @@ bool SanctumOfShadows::init(){
 	
 	//Game Entities
 	player = new Player(irr::core::vector3df(0,200.0f,0));
-	Enemy::setPlayerRef(player);
 	enemy = new Enemy(irr::core::vector3df(400.0f,200.0f,0));
 	//
 

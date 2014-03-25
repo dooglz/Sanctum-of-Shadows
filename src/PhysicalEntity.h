@@ -15,6 +15,7 @@ namespace GameEngine{
 			//! Position in bullet space
 			btVector3 _btposition;
 
+			//! Reference to the Motionstate in use.
 			GameEngine::MotionState* _motionstate;
 
 			//! TODO
@@ -27,7 +28,7 @@ namespace GameEngine{
 			~PhysicalEntity(){}
 
 			//! Updates _btposition, Checks to see if out of bounds.
-			void update();
+			void update(float delta);
 
 			//! Sync Bullet object to irrlicht scene node, only use if no Motionstate available.
 			void sync(float delta);

@@ -5,7 +5,7 @@
 #include "EntityManager.h"
 
 namespace GameEngine{
-	/*! \brief An entity has its update function called by entitymanager if it is alive, it also has a scenenode attached.
+	/*! \brief An entity has its update function called by EntityManager if it is alive, it also has a scene node attached.
 	 *  \ingroup  Engine
 	 */
 	class Entity{
@@ -16,7 +16,7 @@ namespace GameEngine{
 			//! A string used for collecting and finding entities
 			std::string _name;
 
-			//! An irrlicht scene node assosiated with this entity
+			//! An irrlicht scene node associated with this entity
 			irr::scene::ISceneNode* _node;
 
 			//! If _alive = false, EnityManager will not call update(), the node will still be rendered however.
@@ -36,7 +36,8 @@ namespace GameEngine{
 			//! Destructor.
 			virtual ~Entity(){}
 
-			virtual void update(float deltaTime) = 0;
+			//! Process pre frame logic.
+			virtual void update(float delta) = 0;
 
 			//! Set all values to a default state, can be called multiple times. 
 			virtual void intitalise() = 0;
@@ -47,42 +48,43 @@ namespace GameEngine{
 			//! Receive and process a message.
 			virtual void handleMessage(const Message& message){}
 
-			//Getters and setters
+			//! Returns _node.
 			irr::scene::ISceneNode* getNode()
 			{
 				return _node;
 			}
-
+			
+			//! Returns _alive.
 			bool isAlive()
 			{
 				return _alive;
 			}
-
+			
+			//! Sets _alive.
 			void setAlive(bool b)
 			{
 				_alive = b;
 			}
-
+			
+			//! Returns _id.
 			int getID()
 			{
 				return _id;	
 			}
-
+			
+			//! Sets _id.
 			void setID(int id)
 			{
 				_id = id;
 			}
-
+			
+			//! Returns _name.
 			std::string getName()
 			{
 				return _name;	
 			}
-
-			void setID(std::string name)
-			{
-				_name = name;
-			}
-
+			
+			//! Returns _shouldRemove.
 			bool shouldRemove()
 			{
 				return _shouldRemove;

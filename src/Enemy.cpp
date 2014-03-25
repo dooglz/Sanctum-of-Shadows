@@ -2,7 +2,6 @@
 #include "Message.h"
 #include "MessageHandler.h"
 #include "SanctumOfShadows.h"
-Player* Enemy::_player;
 
 Enemy::Enemy(irr::core::vector3df position): Character(-1,0,"Skeletors")
 {
@@ -24,6 +23,7 @@ Enemy::Enemy(irr::core::vector3df position): Character(-1,0,"Skeletors")
 
 void Enemy::update(float delta)
 {	
+	Player* player = SanctumOfShadows::player;
 	//int n1 = rand() % 100;
 	//int n2 = rand() % 250;
 	//int n3 = rand() % 100;
@@ -34,7 +34,7 @@ void Enemy::update(float delta)
 	Character::update(delta);
 
 	//get dotProduct of the look vector and player position vector
-	float angleToplayer =  _forwardDir.angle(GameEngine::Physics::irrVec3ToBtVec3 ((_player->getNode()->getPosition() - _node->getPosition())));
+	float angleToplayer =  _forwardDir.angle(GameEngine::Physics::irrVec3ToBtVec3 ((player->getNode()->getPosition() - _node->getPosition())));
 	//clamp
 	if(angleToplayer > 1)
 	{
@@ -48,13 +48,13 @@ void Enemy::update(float delta)
 	angleToplayer = acos(angleToplayer);
 
 	//get The Y component of the crossproduct between the look vector and player position vector
-	float crossToplayer = _forwardDir.cross(GameEngine::Physics::irrVec3ToBtVec3 ((_player->getNode()->getPosition() - _node->getPosition()))).getY(); 
+	float crossToplayer = _forwardDir.cross(GameEngine::Physics::irrVec3ToBtVec3 ((player->getNode()->getPosition() - _node->getPosition()))).getY(); 
 	
 	//TODO put these in a header, with other things when enemies get more complicated
 	float visibleRange = 300.0f;
 	float combatRange = 130.0f;
 
-	float distanceToPlayer = (_player->getNode()->getPosition() - _node->getPosition()).getLength();
+	float distanceToPlayer = (player->getNode()->getPosition() - _node->getPosition()).getLength();
 	if(distanceToPlayer < visibleRange )
 	{
 		if(crossToplayer < -10.5f)
@@ -91,10 +91,10 @@ void Enemy::update(float delta)
 	walk(delta);
 
 	//damage player
-	if (SanctumOfShadows::player->isAlive() && (SanctumOfShadows::player->getNode()->getPosition() - _node->getPosition()).getLength() < combatRange)
+	if (player->isAlive() && (player->getNode()->getPosition() - _node->getPosition()).getLength() < combatRange)
 	{
 		//create a message 
-		GameEngine::Message message(SanctumOfShadows::player,"playerHealthDecrease",0);
+		GameEngine::Message message(player,"playerHealthDecrease",0);
 		//send it via the message handler
 		GameEngine::MessageHandler::sendMessage(message);
 	}					
@@ -107,12 +107,6 @@ void Enemy::update(float delta)
 
 }
 
-
-bool Enemy::loadContent()
-{
-	return true;
-}
-
 void Enemy::handleMessage(const GameEngine::Message& message)
 {
 	if (message.message == "healthDecrease")
@@ -123,7 +117,6 @@ void Enemy::handleMessage(const GameEngine::Message& message)
 		_characterC->setFallSpeed(200);
 		_characterC->setJumpSpeed(20);
 		_characterC->jump();
-
-
 	}
+
 }

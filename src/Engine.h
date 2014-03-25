@@ -51,33 +51,38 @@ namespace GameEngine{
 			//! Set's run to false.
 			void stop();
 
-			//getsets
+			//! Returns _run.
 			bool run()
 			{
 				return _run;
 			}
 
+			//! Returns_device.
 			irr::IrrlichtDevice* getDevice()
 			{ 
 				return _device; 
 			}
 
+			//! Returns _caption.
 			std::wstring getCaption() const 
 			{ 
 				return _caption; 
 			}
-
+			
+			//! Sets the Window caption.
 			void setCaption(const std::wstring& value)
 			{
 				_caption = value;
 				//_device->setWindowCaption(_caption.c_str());
 			}
-
+			
+			//! Returns _dimensions.
 			irr::core::dimension2d<irr::u32> getDimensions() const
 			{
 				return _dimensions;
 			}
-
+			
+			//! Sets _dimensions.
 			void setDimensions(const irr::core::dimension2d<irr::u32>& value)
 			{
 				_dimensions = value;

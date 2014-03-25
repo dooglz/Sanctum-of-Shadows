@@ -49,6 +49,7 @@ namespace gui
 	{
 		public:
 			template <class T, typename TAlloc>
+			//! ~
 			static void Delete(core::array<T, TAlloc>& a)
 			{
 				TAlloc allocator;
@@ -105,7 +106,9 @@ namespace gui
 	class CGUITTGlyphPage
 	{
 		public:
+			//! Constructor
 			CGUITTGlyphPage(video::IVideoDriver* Driver, const io::path& texture_name) :texture(0), available_slots(0), used_slots(0), dirty(false), driver(Driver), name(texture_name) {}
+			//! Destructor
 			~CGUITTGlyphPage()
 			{
 				if (texture)
@@ -184,17 +187,26 @@ namespace gui
 				dirty = false;
 			}
 
+			//! ~
 			video::ITexture* texture;
+			//! ~
 			u32 available_slots;
+			//! ~
 			u32 used_slots;
+			//! ~
 			bool dirty;
 
+			//! ~
 			core::array<core::vector2di> render_positions;
+			//! ~
 			core::array<core::recti> render_source_rects;
 
 		private:
+			//! ~
 			core::array<const SGUITTGlyph*> glyph_to_be_paged;
+			//! ~
 			video::IVideoDriver* driver;
+			//! ~
 			io::path name;
 	};
 
@@ -202,6 +214,7 @@ namespace gui
 	class CGUITTFont : public IGUIFont
 	{
 		public:
+			//@{
 			//! Creates a new TrueType font and returns a pointer to it.  The pointer must be drop()'ed when finished.
 			//! \param env The IGUIEnvironment the font loads out of.
 			//! \param filename The filename of the font.
@@ -209,10 +222,17 @@ namespace gui
 			//! \param antialias set the use_monochrome (opposite to antialias) flag
 			//! \param transparency set the use_transparency flag
 			//! \return Returns a pointer to a CGUITTFont.  Will return 0 if the font failed to load.
-			static CGUITTFont* createTTFont(IGUIEnvironment *env, const io::path& filename, const u32 size, const bool antialias = true, const bool transparency = true);
-			static CGUITTFont* createTTFont(IrrlichtDevice *device, const io::path& filename, const u32 size, const bool antialias = true, const bool transparency = true);
-			static CGUITTFont* create(IGUIEnvironment *env, const io::path& filename, const u32 size, const bool antialias = true, const bool transparency = true);
-			static CGUITTFont* create(IrrlichtDevice *device, const io::path& filename, const u32 size, const bool antialias = true, const bool transparency = true);
+				static CGUITTFont* createTTFont(IGUIEnvironment *env, const io::path& filename, const u32 size, const bool antialias = true, const bool transparency = true);
+			
+				//! Creates a new TrueType font and returns a pointer to it.  The pointer must be drop()'ed when finished.
+				static CGUITTFont* createTTFont(IrrlichtDevice *device, const io::path& filename, const u32 size, const bool antialias = true, const bool transparency = true);
+			
+				//! Creates a new TrueType font and returns a pointer to it.  The pointer must be drop()'ed when finished.
+				static CGUITTFont* create(IGUIEnvironment *env, const io::path& filename, const u32 size, const bool antialias = true, const bool transparency = true);
+			
+				//! Creates a new TrueType font and returns a pointer to it.  The pointer must be drop()'ed when finished.
+				static CGUITTFont* create(IrrlichtDevice *device, const io::path& filename, const u32 size, const bool antialias = true, const bool transparency = true);
+			//@}
 
 			//! Destructor
 			virtual ~CGUITTFont();
@@ -266,10 +286,14 @@ namespace gui
 
 			//! Returns the dimension of a text string.
 			virtual core::dimension2d<u32> getDimension(const wchar_t* text) const;
+			
+			//! Returns the dimension of a text string.
 			virtual core::dimension2d<u32> getDimension(const core::ustring& text) const;
 
 			//! Calculates the index of the character in the text which is on a specific position.
 			virtual s32 getCharacterFromPos(const wchar_t* text, s32 pixel_x) const;
+
+			//! Calculates the index of the character in the text which is on a specific position.
 			virtual s32 getCharacterFromPos(const core::ustring& text, s32 pixel_x) const;
 
 			//! Sets global kerning width for the font.
@@ -280,6 +304,8 @@ namespace gui
 
 			//! Gets kerning values (distance between letters) for the font. If no parameters are provided,
 			virtual s32 getKerningWidth(const wchar_t* thisLetter=0, const wchar_t* previousLetter=0) const;
+
+			//! Gets kerning values (distance between letters) for the font. If no parameters are provided,
 			virtual s32 getKerningWidth(const uchar32_t thisLetter=0, const uchar32_t previousLetter=0) const;
 
 			//! Returns the distance between letters
@@ -287,6 +313,8 @@ namespace gui
 
 			//! Define which characters should not be drawn by the font.
 			virtual void setInvisibleCharacters(const wchar_t *s);
+
+			//! Define which characters should not be drawn by the font.
 			virtual void setInvisibleCharacters(const core::ustring& s);
 
 			//! Get the last glyph page if there's still available slots.
@@ -316,20 +344,31 @@ namespace gui
 				 const video::SColor& color = video::SColor(255, 0, 0, 0), bool center = false );
 
 		protected:
+			//! ~
 			bool use_monochrome;
+			//! ~
 			bool use_transparency;
+			//! ~
 			bool use_hinting;
+			//! ~
 			bool use_auto_hinting;
+			//! ~
 			u32 size;
+			//! ~
 			u32 batch_load_size;
+			//! ~
 			core::dimension2du max_page_texture_size;
 
 		private:
 			// Manages the FreeType library.
 			static FT_Library c_library;
+			//! ~
 			static core::map<io::path, SGUITTFace*> c_faces;
+			//! ~
 			static bool c_libraryLoaded;
+			//! ~
 			static scene::IMesh* shared_plane_ptr_;
+			//! ~
 			static scene::SMesh  shared_plane_;
 
 			CGUITTFont(IGUIEnvironment *env);

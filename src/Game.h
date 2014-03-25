@@ -26,11 +26,12 @@ public:
 	//! Run per-frame game logic.
 	virtual bool update(float delta) = 0;
 
-	//getsets
+	//! Returns _gameTitle. 
 	std::wstring getGametitle(){
 		return _gameTitle;
 	}
 
+	//! Returns _resolution. 
 	irr::core::dimension2d<irr::u32> getResolution(){
 		return _resolution;
 	}
