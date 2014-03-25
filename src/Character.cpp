@@ -5,7 +5,7 @@ void Character::intitalise(irr::core::vector3df position, irr::core::vector3df s
 {
 	_position = position;
 	_walkVelocity = btScalar(6);
-	_rotateSpeed = 0.003f;
+	_rotateSpeed = 5.0f;
 
 	if(size.getLengthSQ() == 0)
 	{
@@ -42,18 +42,18 @@ void Character::walk(float delta)
 		btVector3 walkDirection = btVector3(0.0, 0.0, 0.0);
 		btScalar walkSpeed = _walkVelocity;
 		
-		//rotate
+		//rotate (needs delta as it transforms directly)
 		if (walkleft == true)
 		{
 			btMatrix3x3 orn = _ghostObject->getWorldTransform().getBasis();
-			orn *= btMatrix3x3(btQuaternion(btVector3(0,1,0),-1.0f * _rotateSpeed));
+			orn *= btMatrix3x3(btQuaternion(btVector3(0,1,0),-1.0f * _rotateSpeed * delta));
 			_ghostObject->getWorldTransform ().setBasis(orn);
 		}
 
 		if (walkright == true)
 		{
 			btMatrix3x3 orn = _ghostObject->getWorldTransform().getBasis();
-			orn *= btMatrix3x3(btQuaternion(btVector3(0,1,0), _rotateSpeed));
+			orn *= btMatrix3x3(btQuaternion(btVector3(0,1,0), _rotateSpeed * delta));
 			_ghostObject->getWorldTransform ().setBasis(orn);
 		}
 

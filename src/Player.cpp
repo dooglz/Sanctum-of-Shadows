@@ -8,7 +8,7 @@ Player::Player(irr::core::vector3df position): Character(-1,0,"player")
 	LanternOn = true;
 
 	_walkVelocity = btScalar(6);
-	_rotateSpeed = 0.003f;
+	_rotateSpeed = 5.0f;
 
 	irr::core::vector3df playerScale = irr::core::vector3df(60.0f,100.0f,60.0f);
 	//Physics Kinematic caracter Object
@@ -51,7 +51,7 @@ void Player::update(float delta)
 
 	if(LanternOn && fuelLevel > 0 )
 	{
-		    fuelLevel -= 0.01*delta;
+		    fuelLevel -= 0.01f*delta;
 			irr::core::stringw str = "Lantern fuel: ";
 			str += _Lanternlight->getRadius();
 			GameEngine::UI::displayTextMessage(str,0);

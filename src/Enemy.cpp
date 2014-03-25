@@ -7,10 +7,10 @@ Player* Enemy::_player;
 Enemy::Enemy(irr::core::vector3df position): Character(-1,0,"Skeletors")
 {
 	_walkVelocity = btScalar(4.5);
-	_rotateSpeed = 0.003f;
+	_rotateSpeed = 5.0f;
 
 	irr::core::vector3df enemyScale = irr::core::vector3df(50.0f,80.0f,50.0f);
-	//Physics Kinematic caracter Object
+	//Physics Kinematic character Object
 	_characterC = addCharacter((btScalar)1.0f, &btVector3(position.X, position.Y, position.Z), (btScalar)enemyScale.Y/2, (btScalar)enemyScale.X/2);
 	//Render node
 	_node = GameEngine::engine.getDevice()->getSceneManager()->addCubeSceneNode(1.0f);
@@ -47,7 +47,7 @@ void Enemy::update(float delta)
 	//cos^-1 to get angle
 	angleToplayer = acos(angleToplayer);
 
-	//get The Y component of the croosproduct between the look vector and player position vector
+	//get The Y component of the crossproduct between the look vector and player position vector
 	float crossToplayer = _forwardDir.cross(GameEngine::Physics::irrVec3ToBtVec3 ((_player->getNode()->getPosition() - _node->getPosition()))).getY(); 
 	
 	//TODO put these in a header, with other things when enemies get more complicated
@@ -57,18 +57,18 @@ void Enemy::update(float delta)
 	float distanceToPlayer = (_player->getNode()->getPosition() - _node->getPosition()).getLength();
 	if(distanceToPlayer < visibleRange )
 	{
-		if(crossToplayer < -0.15f)
+		if(crossToplayer < -10.5f)
 		{
 			walkleft=true;
 		}
-		else if(crossToplayer > 0.15f)
+		else if(crossToplayer > 10.5f)
 		{
 			walkright = true;
 		}
 
 		if(distanceToPlayer > combatRange)
 		{
-			//move towards player, if he is infront of us
+			//move towards player, if he is in front of us
 			if(angleToplayer < 60)
 			{
 				walkforward = true;
@@ -123,7 +123,7 @@ void Enemy::handleMessage(const GameEngine::Message& message)
 {
 	if (message.message == "healthDecrease")
 	{
-		//recieved message to take damamge
+		//received message to take damage
 		_health = _health - 20.0f;
 		_characterC->setMaxJumpHeight(20);
 		_characterC->setFallSpeed(200);
