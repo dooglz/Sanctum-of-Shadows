@@ -44,9 +44,6 @@ namespace GameEngine{
 			//! All resources (textures/meshes) should be loaded and assigned in this function.
 			virtual bool loadContent() = 0;
 
-			//TODO Not nessisary, migrate to destructor
-			virtual void unloadContent() = 0;
-
 			//! Receive and process a message.
 			virtual void handleMessage(const Message& message){}
 

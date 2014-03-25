@@ -38,10 +38,7 @@ namespace GameEngine{
 			//! Call update() on all live Entities.
 			static bool update(float delta);
 
-			//! Call unloadContent() on all Entities.
-			static void unloadContent();
-
-			//! Registers the pointer ot the entitiy in the relevant lists.
+			//! Registers the pointer ot the entity in the relevant lists.
 			static void registerEntity(Entity* entity);
 			
 			//! Finds an entity in _entities, then passes the iterator to the main remove function.

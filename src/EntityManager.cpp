@@ -36,15 +36,6 @@ namespace GameEngine{
 		return true;
 	}
 
-	// Call unloadContent() on all Entities.
-	void EntityManager::unloadContent()
-	{
-		std::unordered_map<int,Entity*>::iterator iter = _entities.begin();
-		for(; iter != _entities.end(); ++iter)
-		{
-			iter->second->unloadContent();
-		}
-	}
 
 	// Call update() on all live Entities.
 	bool EntityManager::update(float delta)

@@ -12,9 +12,8 @@ private:
 	float fuelLevel;
 public:
 	Player(irr::core::vector3df position);
-	~Player(){};
+	~Player();
 	bool loadContent();
-	void unloadContent();
 	void update(float delta);
 	irr::scene::ICameraSceneNode* getCamera() { return _camera; }
 	void intitalise(){};

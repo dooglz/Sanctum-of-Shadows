@@ -113,12 +113,6 @@ bool Enemy::loadContent()
 	return true;
 }
 
-void Enemy::unloadContent()
-{
-	Character::unloadContent();
-}
-
-
 void Enemy::handleMessage(const GameEngine::Message& message)
 {
 	if (message.message == "healthDecrease")

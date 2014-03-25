@@ -11,16 +11,18 @@ Player::Player(irr::core::vector3df position): Character(-1,0,"player")
 	_rotateSpeed = 5.0f;
 
 	irr::core::vector3df playerScale = irr::core::vector3df(60.0f,100.0f,60.0f);
-	//Physics Kinematic caracter Object
+	
+	//Physics Kinematic character Object
 	_characterC = addCharacter((btScalar)1.0f, &btVector3(position.X, position.Y, position.Z), (btScalar)50, (btScalar)30);
+	
 	//player render node
-	//_node = GameEngine::engine.getDevice()->getSceneManager()->addEmptySceneNode();
 	_node = GameEngine::engine.getDevice()->getSceneManager()->addCubeSceneNode(1.0f);
 	_node->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_dev_stone.png"));
 	_node->setScale(playerScale);
+
 	//The player doesn't need lighting
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-	//_node->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
+	_node->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
 	//player camera
 	_camera = GameEngine::engine.getDevice()->getSceneManager()->addCameraSceneNode(_node,irr::core::vector3df(0,0,0));
 	_camera->bindTargetAndRotation(true);
@@ -117,17 +119,6 @@ bool Player::loadContent()
 	return true;
 }
 
-void Player::unloadContent()
-{
-	if(_camera)
-	{
-		_camera->drop();
-		_camera = 0;
-	}
-	Character::unloadContent();
-}
-
-
 void Player::handleMessage(const GameEngine::Message& message)
 {
 	//handle incoming message
@@ -163,4 +154,14 @@ void Player::handleDeath()
 {
 	_alive = false;
 	SanctumOfShadows::GameOver();
+}
+
+
+Player::~Player()
+{
+	if(_camera)
+	{
+		_camera->drop();
+		_camera = 0;
+	}
 }

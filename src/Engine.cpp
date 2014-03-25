@@ -1,10 +1,3 @@
-/*===============================================================================
-  Class:   Engine
-  Inherits from:  None
-  Author:   Sam Serrels
-  Purpose:  0000
-===============================================================================*/
-
 #include "Engine.h"
 
 namespace GameEngine{
@@ -16,6 +9,7 @@ namespace GameEngine{
 	irr::video::SMaterial debugMat;
 	DebugDraw* debugDraw;
 
+	// Calls initialise() on various components and creates the irrlicht device.
 	bool Engine::initialise(){
 
 		// ask user for driver
@@ -63,6 +57,7 @@ namespace GameEngine{
 		return true;
 	}
 
+	// Updates engine functions and physics
 	bool Engine::update(float delta){
 		handler.update();
 		ui.update();
@@ -81,6 +76,7 @@ namespace GameEngine{
 		return true;
 	}
 
+	// Render the frame.
 	bool Engine::render(){
 		if (!_device->getVideoDriver()->beginScene()){
 			return false;
@@ -104,10 +100,7 @@ namespace GameEngine{
 		return true;
 	}
 
-	void Engine::unloadContent(){
-		EntityManager::unloadContent();
-	}
-
+	//Shuts down components and closes the irrlicht device.
 	void Engine::shutdown(){
 		EntityManager::shutdown();
 		if(_device)
@@ -117,6 +110,7 @@ namespace GameEngine{
 		}
 	}
 
+	// Set's run to false.
 	void Engine::stop(){
 		_run = false;
 	}

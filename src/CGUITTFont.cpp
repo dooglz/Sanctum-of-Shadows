@@ -36,7 +36,7 @@ namespace irr
 namespace gui
 {
 
-// Manages the FT_Face cache.
+//! Manages the FT_Face cache
 struct SGUITTFace : public virtual irr::IReferenceCounted
 {
 	SGUITTFace() : face_buffer(0), face_buffer_size(0)

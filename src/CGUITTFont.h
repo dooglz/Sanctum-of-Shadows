@@ -39,7 +39,9 @@ namespace irr
 {
 namespace gui
 {
+	//! Manages the FT_Face cache
 	struct SGUITTFace;
+	
 	class CGUITTFont;
 
 	//! Class to assist in deleting glyphs.

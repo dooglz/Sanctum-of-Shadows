@@ -99,6 +99,5 @@ int main(){
 	}
 	delete game;
 	game = NULL;
-	GameEngine::engine.unloadContent();
 	GameEngine::engine.shutdown();
 }

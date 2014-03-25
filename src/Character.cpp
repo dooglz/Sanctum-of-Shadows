@@ -115,11 +115,6 @@ btKinematicCharacterController*  Character::addCharacter(btScalar stepHeight,btV
 	return character;
 };
 
-void Character::unloadContent(){
-	delete _characterC;
-	_characterC = NULL;
-}
-
 void Character::die(){
 	_node->remove();
 	GameEngine::Physics::world->removeCharacter(_characterC);

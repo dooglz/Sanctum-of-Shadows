@@ -13,7 +13,7 @@
 * \defgroup Engine Game Engine Classes
 */
 namespace GameEngine{
-	/*! \brief Hanldes initialising and running engine components and base Irrlicht functionality
+	/*! \brief Handles initialising and running engine components and base Irrlicht functionality
 	 *  \ingroup  Engine
 	 */
 	class Engine{
@@ -42,15 +42,13 @@ namespace GameEngine{
 			//! Updates engine functions and physics
 			bool update(float delta);
 
+			//! Render the frame.
 			bool render();
 
-			//todo remove
-			void unloadContent();
-
-			//! shuts down components and closes the irrlicht device
+			//! Shuts down components and closes the irrlicht device.
 			void shutdown();
 
-			//! Set's run to false;
+			//! Set's run to false.
 			void stop();
 
 			//getsets
@@ -86,8 +84,15 @@ namespace GameEngine{
 			}
 	};
 
+	//! The primary Engine instance.
 	extern Engine engine;
+
+	//! The keyboard handler
 	extern KeyHandler handler;
+
+	//! The MeshManager
 	extern MeshManager meshManager;
+
+	//! The UI Manager
 	extern UI ui;
 }

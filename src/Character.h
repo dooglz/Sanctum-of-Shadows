@@ -67,13 +67,14 @@ class Character: public GameEngine::Entity{
 		//! Recalculate position transforms and direction vectors, call this before Walk.
 		void update(float delta);
 
-		//TODO investiate if nessisary to overide?
-		//! Return the irrlicht scene node.
-		irr::scene::ISceneNode* getNode() { return _node; }
-		void intitalise(){};
-		void unloadContent();
-		float getHealth() { return _health; }
-		void setHealth(float value) {  _health = value; }
 		void die();
+
+		//! Creates the controller and adds a blank scene node.
+		void intitalise(){};
+
+		float getHealth() { return _health; }
+
+		void setHealth(float value) {  _health = value; }
+		
 		void setPosition(irr::core::vector3df value) { _position = value; }
 };
