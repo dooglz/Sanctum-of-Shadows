@@ -57,7 +57,8 @@ bool SanctumOfShadows::init(){
 	enemy = new Enemy(irr::core::vector3df(400.0f,200.0f,0));
 	//
 
-	//new Beacon(irr::core::vector3df(0,0,500.0f));
+	//Beacon* b = new Beacon(irr::core::vector3df(0,0,500.0f));
+	
 	irr::core::stringw str = "Game Initialised";
 	GameEngine::UI::displayTextMessage(str,2000);
 

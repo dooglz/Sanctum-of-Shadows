@@ -4,7 +4,7 @@
 #include "Engine.h"
 
 namespace GameEngine{
-	/*! \brief An Entity that uses Bullet for motion
+	/*! \brief An Entity that uses Bullet for motion and collision.
 	 *  \ingroup Game
 	 */
 	class PhysicalEntity: public Entity{

@@ -1,9 +1,11 @@
 #include "Engine.h"
 #include "Level.h"
 #include "Beacon.h"
+#include "Obstacle.h"
 #include <iostream>
 #include "Box.h"
 #include <array>
+
 std::array<std::array<Level::tile,Level::_gridSize>, Level::_gridSize> Level::_grid;
 
 // Generate and Create level.
@@ -88,14 +90,7 @@ void Level::createLevel()
 			}
 			else if(_grid[col][row] == OBSTACLE)
 			{
-				irr::scene::IMeshSceneNode* floorNode = GameEngine::engine.getDevice()->getSceneManager()->addMeshSceneNode(cubeMesh);
-				floorNode->setScale(irr::core::vector3df(tileSize,tileSize,tileSize));
-				floorNode->setPosition(origin);
-				floorNode->setMaterialFlag(irr::video::EMF_FOG_ENABLE, true);
-				floorNode->setMaterialFlag(irr::video::EMF_LIGHTING, true);
-				floorNode->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
-				floorNode->setMaterialTexture(0, darkTex );
-
+				new Obstacle(origin,irr::core::vector3df(tileSize,tileSize,tileSize));
 				node->setMaterialTexture(0, cobbleTex);
 			}
 			else if(_grid[col][row] == EMPTY)

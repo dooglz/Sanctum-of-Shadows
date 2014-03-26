@@ -15,4 +15,13 @@ namespace GameEngine{
 	{
 		_shouldRemove = true;
 	}
+
+	Entity::~Entity()
+	{
+		if(_node)
+		{
+			_node->drop();
+		}
+		_node = NULL;
+	}
 }

@@ -1,10 +1,14 @@
 #pragma once
-#include "PhysicalEntity.h"
+#include "StaticPhysicalEntity.h"
+#include "Engine.h"
+#include "Player.h"
+#include "SanctumOfShadows.h"
+#include <iostream>
 
 /*! \brief A Beacon, can be lit, doesn't move. 
  * \ingroup Game
  */
-class Beacon : public GameEngine::Entity{
+class Beacon : public GameEngine::StaticPhysicalEntity{
 
 	private:
 
@@ -22,9 +26,6 @@ class Beacon : public GameEngine::Entity{
 
 		//! The light scene node
 		irr::scene::ILightSceneNode* _light;
-
-		//! The bullet Rigidbody for the beacon.
-		btRigidBody* _rigidBody;
 
 	public:
 

@@ -1,11 +1,6 @@
 #include "Beacon.h"
-#include "Engine.h"
-#include "Player.h"
-#include "SanctumOfShadows.h"
 
-#include <iostream>
-
-Beacon::Beacon(const irr::core::vector3df& position) : GameEngine::Entity(-1,0,"Beacon")
+Beacon::Beacon(const irr::core::vector3df& position) : GameEngine::StaticPhysicalEntity(-1,0,"Beacon")
 {
 	bool particles = true;
 	bool flame = true;
@@ -26,29 +21,9 @@ Beacon::Beacon(const irr::core::vector3df& position) : GameEngine::Entity(-1,0,"
 		(irr::f32)_lightRange		//Radius
 	);	
 
-	//Rigid body
-	btVector3 pos = GameEngine::Physics::irrVec3ToBtVec3(position);
-	irr::core::vector3df a = _node->getTransformedBoundingBox().getExtent();
-	//account for offset origin in model file
-	pos.setY(pos.getY()+(scale.Y*a.Y*0.5f));
-	btTransform transform;
-	transform.setIdentity();
-	transform.setOrigin(pos);
+	_rigidBody = createBoundingBoxRB( _node, irr::core::vector3df(0,scale.Y*0.5f*_node->getTransformedBoundingBox().getExtent().Y,0) );
+	GameEngine::Physics::world->addRigidBody(_rigidBody);
 
-	//setup shape
-	btVector3 halfExtends(scale.X*a.X*0.5f,scale.Y*a.Y*0.5f,scale.Z*a.Z*0.5f);
-	btCollisionShape* shape = new btBoxShape(halfExtends);
-
-	//mass is 0, object is static, default motionstate
-	btVector3 localInertia;
-	shape->calculateLocalInertia(0,localInertia);
-	btMotionState* motionstate = new btDefaultMotionState(transform);
-
-	//create the RB
-	_rigidBody = new btRigidBody(0,motionstate,shape,localInertia);
-	//add to world
-	GameEngine::Physics::world->addRigidBody(_rigidBody,GameEngine::Physics::E_Actor,GameEngine::Physics::E_ActorGroup);
-	
 	// create a particle system
 	float particleRadius = _lightRange / (2.0f*scale.X);
 	irr::scene::IParticleSystemSceneNode* ps = GameEngine::engine.getDevice()->getSceneManager()->addParticleSystemSceneNode(false,_node);
@@ -142,7 +117,6 @@ void Beacon::light(bool onOff)
 }
 
 
-
 bool Beacon::loadContent()
 {
 	irr::scene::IAnimatedMesh* beaconModel = GameEngine::engine.getDevice()->getSceneManager()->getMesh("models/beacon.obj");
@@ -191,5 +165,5 @@ void Beacon::handleMessage(const GameEngine::Message& message)
 void Beacon::intitalise(){
 	_alive = true;
 	light(false);
-}
 
+}

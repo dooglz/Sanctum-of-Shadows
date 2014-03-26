@@ -6,7 +6,7 @@ namespace GameEngine{
 	Engine engine = Engine();
 	KeyHandler handler = KeyHandler();
 	UI ui;
-	const bool debug_draw_bullet = false;	
+	const bool debug_draw_bullet = true;	
 	irr::video::SMaterial debugMat;
 	DebugDraw* debugDraw;
 

@@ -34,7 +34,7 @@ namespace GameEngine{
 			Entity(int id, irr::scene::ISceneNode* node,const std::string& name);
 
 			//! Destructor.
-			virtual ~Entity(){}
+			virtual ~Entity();
 
 			//! Process pre frame logic.
 			virtual void update(float delta) = 0;
