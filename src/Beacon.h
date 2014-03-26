@@ -9,7 +9,7 @@ class Beacon : public GameEngine::Entity{
 	private:
 
 		//! Radius of light, when lit.
-		static const unsigned int _lightRange = 500;
+		static const unsigned int _lightRange = 400;
 
 		//! Radius of player healing, when lit.
 		static const unsigned int _healingRange = 150;

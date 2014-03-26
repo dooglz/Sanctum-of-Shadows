@@ -24,7 +24,7 @@ void Level::intitalise()
 	createLevel();
 
 	//Populate
-	placeBeacons();
+	//placeBeacons();
 }
 
 // Place beacons in the level.
@@ -46,40 +46,57 @@ void Level::placeBeacons()
 // Spawn the entities and geometry as laid out by generateLevel().
 void Level::createLevel()
 {
+	GameEngine::engine.getDevice()->getVideoDriver()->setFog(irr::video::SColor(0,0,0,0), irr::video::EFT_FOG_LINEAR, 250, 1000, .003f, true, false);	
 
+	float tileSize = (float)_tileSize;
 	irr::video::ITexture* cobbleTex = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble_1024.jpg");
 	irr::video::ITexture* darkTex = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble_d_1024.jpg");
 	irr::video::ITexture* lightTex = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble_l_1024.jpg");
-	irr::scene::IAnimatedMesh* planeMesh = GameEngine::engine.getDevice()->getSceneManager()->addHillPlaneMesh("floormesh", irr::core::dimension2df(500,500), irr::core::dimension2du(1,1));
+	irr::scene::IAnimatedMesh* planeMesh = GameEngine::engine.getDevice()->getSceneManager()->addHillPlaneMesh("floormesh", irr::core::dimension2df(tileSize,tileSize), irr::core::dimension2du(1,1));
 	irr::scene::IAnimatedMesh* cubeMesh = GameEngine::engine.getDevice()->getSceneManager()->getMesh("models/cube1.obj");
 	
 	std::array<irr::scene::IMeshSceneNode*, (_gridSize*_gridSize)> floorTiles;
 
 	unsigned int a =0;
-	float startingPos = (-1.0f * (0.5f*(500 * _gridSize))) +(0.5f*500);
+	float startingPos = (-1.0f * (0.5f*(tileSize * _gridSize))) +(0.5f*tileSize);
 
 	for(unsigned int col = 0; col < _grid.size(); col ++)
 	{
 		for(unsigned int row = 0; row < _grid[col].size(); row ++)
 		{
+			irr::core::vector3df origin = irr::core::vector3df(startingPos + (col*tileSize),0,startingPos + (row*tileSize));
+
 			irr::scene::IMeshSceneNode* node;
 			node = GameEngine::engine.getDevice()->getSceneManager()->addMeshSceneNode(planeMesh->getMesh(0));
 
 			//node->getMaterial(0).SpecularColor.set(0,0,0,0);
 			//node->getMaterial(0).EmissiveColor.set(255,0,0,0);
 			
-			node->setMaterialFlag(irr::video::EMF_FOG_ENABLE, false);
-			node->setMaterialType(irr::video::EMT_SOLID);
-			node->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
+			node->setMaterialFlag(irr::video::EMF_FOG_ENABLE, true);
+			//node->setMaterialType(irr::video::EMT_SOLID);
+			node->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, false);
 			node->setMaterialFlag(irr::video::EMF_LIGHTING, true);
 
 			//node->setScale(irr::core::vector3df(500.0f,2.0f,500.0f));
-			node->setPosition(irr::core::vector3df(startingPos + (col*500),2,startingPos + (row*500)));
+			node->setPosition(origin);
 			
 
 			if(_grid[col][row] == BEACON)
 			{
 				node->setMaterialTexture(0, lightTex);
+				new Beacon(origin);
+			}
+			else if(_grid[col][row] == OBSTACLE)
+			{
+				irr::scene::IMeshSceneNode* floorNode = GameEngine::engine.getDevice()->getSceneManager()->addMeshSceneNode(cubeMesh);
+				floorNode->setScale(irr::core::vector3df(tileSize,tileSize,tileSize));
+				floorNode->setPosition(origin);
+				floorNode->setMaterialFlag(irr::video::EMF_FOG_ENABLE, true);
+				floorNode->setMaterialFlag(irr::video::EMF_LIGHTING, true);
+				floorNode->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
+				floorNode->setMaterialTexture(0, darkTex );
+
+				node->setMaterialTexture(0, cobbleTex);
 			}
 			else if(_grid[col][row] == EMPTY)
 			{
@@ -123,43 +140,57 @@ void Level::generateLevel()
 	}
 
 	int beacons = 0;
+	int obstacles = 0;
 	int spaces = 0;
-	while (!full)
+
+	//Beacons
+	for(unsigned int col = 0; col < _grid.size(); col ++)
 	{
-		spaces = 0;
-		for(unsigned int col = 0; col < _grid.size(); col ++)
+		for(unsigned int row = 0; row < _grid[col].size(); row ++)
 		{
-			for(unsigned int row = 0; row < _grid[col].size(); row ++)
+			curentTile = _grid[col][row];
+			//We can't go out of range due to padding.
+			if(curentTile == EMPTY)
 			{
-				curentTile = _grid[col][row];
-				//We can't go out of range due to padding.
-				if(curentTile == EMPTY)
+				if(_grid[col - 1][row - 1] != BEACON && _grid[col - 1][row] != BEACON && _grid[col - 1][row + 1] != BEACON
+					&& _grid[col][row -1] != BEACON && _grid[col][row +1] != BEACON
+					&& _grid[col + 1][row -1] != BEACON && _grid[col + 1][row] != BEACON &&  _grid[col + 1][row + 1] != BEACON)
 				{
-					if(_grid[col - 1][row - 1] != BEACON && _grid[col - 1][row] != BEACON && _grid[col - 1][row + 1] != BEACON
-						&& _grid[col][row -1] != BEACON && _grid[col][row +1] != BEACON
-						&& _grid[col + 1][row -1] != BEACON && _grid[col + 1][row] != BEACON &&  _grid[col + 1][row + 1] != BEACON)
-					{
-						//No beacons in surrounding area
-						spaces++;
-						if (rand() % 100 < 30) {
-							_grid[col][row] = BEACON;
-							beacons++;
-						}
+					//No beacons in surrounding area
+					if (rand() % 100 < _beaconPercent) {
+						_grid[col][row] = BEACON;
+						beacons++;
 					}
 				}
 			}
 		}
-		full = true;
-		if(spaces == 0)
+	}
+
+	//Obstacles
+	for(unsigned int col = 0; col < _grid.size(); col ++)
+	{
+		for(unsigned int row = 0; row < _grid[col].size(); row ++)
 		{
-			full = true;
-		}
-		//Runway loop protection
-		if(pass > 40)
-		{
-			full = true;
+			curentTile = _grid[col][row];
+			//We can't go out of range due to padding.
+			if(curentTile == EMPTY)
+			{
+				if(_grid[col - 1][row - 1] != OBSTACLE && _grid[col - 1][row] != OBSTACLE && _grid[col - 1][row + 1] != OBSTACLE
+					&& _grid[col][row -1] != OBSTACLE && _grid[col][row +1] != OBSTACLE
+					&& _grid[col + 1][row -1] != OBSTACLE && _grid[col + 1][row] != OBSTACLE &&  _grid[col + 1][row + 1] != OBSTACLE)
+				{
+					//No beacons in surrounding area
+					if (rand() % 100 < _obstaclePercent) {
+						_grid[col][row] = OBSTACLE;
+						obstacles++;
+					}
+				}
+			}
 		}
 	}
+
+	
+	//print
 	for(unsigned int col = 0; col < _grid.size(); col ++)
 	{
 		for(unsigned int row = 0; row < _grid[col].size(); row ++)
@@ -168,7 +199,10 @@ void Level::generateLevel()
 				std::cout << char(178);
 			}else if(_grid[col][row] == EMPTY){
 				std::cout << char(176);
-			}else{
+			}else if(_grid[col][row] == OBSTACLE){
+				std::cout << char(254);
+			}
+			else{
 				std::cout << char(233);
 			}
 		}

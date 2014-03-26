@@ -12,11 +12,19 @@ class Level: public GameEngine::Entity{
 		//level gen stuff
 		//@{
 			//! Grid size, X by X, has to be an odd number.
-			static const unsigned int _gridSize = 7;
+			static const unsigned int _gridSize = 15;
 			//! amount of dark tiles lining the edge.
 			static const unsigned int _darkPadding = 1;
 			//! Max obstacles to spawn around a beacon.
 			static const unsigned int _maxObstacles = 2; 
+			//! Physical size of each tile in the grid.
+			static const unsigned int _tileSize = 800; 
+			//! Chance of placing a beacon in an available slot
+			static const unsigned int _beaconPercent = 10; 
+			//! Should all avaiable slots for beacons be filled?
+			static const bool _beaconFill = false; 
+			//! Chance of placing a beacon in an available slot
+			static const unsigned int _obstaclePercent = 80; 
 		//@}
 
 		//! The tiles types that make up a level.
