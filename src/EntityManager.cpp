@@ -64,10 +64,13 @@ namespace GameEngine{
 		std::unordered_map<int,Entity*>::iterator iter = _entities.begin();
 		for(; iter != _entities.end(); ++iter)
 		{
-			//delete ent, free memeory
-			delete iter->second;
-			//set pointer to null
-			iter->second = 0;
+			//delete ent, free memory
+			if(iter->second != nullptr )
+			{
+				iter->second->setID(-1);
+				delete iter->second;
+				iter->second = NULL;
+			}
 		}
 		_entities.clear();
 		_namedEntities.clear();
@@ -122,7 +125,7 @@ namespace GameEngine{
 		return false;
 	}
 
-	//! Takes an iterator from _entities, Removes an entity from _entities and _namedentities if nessisiary, increments iterator.
+	// Takes an iterator from _entities, Removes entity from _entities and _namedentities, increments iterator, Does not delete the actual entity.
 	bool EntityManager::remove(std::unordered_map<int,Entity*>::iterator &iter)
 	{
 		std::cout << "Removing Entity: ID:"<<iter->first << " Name: " << iter->second->getName() << std::endl;
@@ -140,8 +143,10 @@ namespace GameEngine{
 				std::cout << found->second.size()<< std::endl;
 			}
 		}
-		//Delete the entity itsef, calling it's destructor then freeing the memory.
-		delete iter->second;
+
+		//Tell the entity it is no longer tracked
+		iter->second->setID(-1);
+
 		//Delete the pointer to the Entity from the main list. The iterator gets incremented
 		iter = _entities.erase(iter);
 		std::cout << _entities.size() << std::endl;

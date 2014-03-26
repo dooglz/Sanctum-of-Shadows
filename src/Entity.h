@@ -48,6 +48,10 @@ namespace GameEngine{
 			//! Receive and process a message.
 			virtual void handleMessage(const Message& message){}
 
+			void remove(){
+				die();
+			}
+
 			//! Returns _node.
 			irr::scene::ISceneNode* getNode()
 			{

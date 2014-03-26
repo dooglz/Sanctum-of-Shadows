@@ -182,14 +182,19 @@ SanctumOfShadows::~SanctumOfShadows()
 {
 	fader->drop();
 	fader = NULL;
-	Flycamera->drop();
+	
 	Menucamera->drop();
 	workLight->drop();
 	spinningLight->drop();
-	// TODO drop these
-	/*
-	Level* level;
-	Player* SanctumOfShadows::player;
-	Enemy* enemy;
-	*/
+
+	delete level;
+	level = NULL;
+
+	delete player;
+	player = NULL;
+
+	delete enemy;
+	enemy = NULL;
+
+	Flycamera->drop();
 }

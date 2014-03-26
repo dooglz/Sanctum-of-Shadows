@@ -19,7 +19,7 @@ namespace GameEngine{
 			//! A Map contating lists of named entities, identified by Name.
 			static std::unordered_map<std::string, std::list<Entity*>> _namedEntities;
 
-			//! Takes an iterator from _entities, Removes an entity from _entities and _namedentities if nessisiary, increments iterator.
+			//! Takes an iterator from _entities, Removes entity from _entities and _namedentities, increments iterator, Does not delete the actual entity.
 			static bool remove(std::unordered_map<int,Entity*>::iterator&);
 
 			//! Constructor.

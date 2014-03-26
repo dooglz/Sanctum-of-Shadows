@@ -18,10 +18,16 @@ namespace GameEngine{
 
 	Entity::~Entity()
 	{
-		if(_node)
+		//IF id != 1, the manager is still tracking us
+		if(_id != -1)
+		{
+			GameEngine::EntityManager::remove(this);
+		}
+
+		if(_node != nullptr )
 		{
 			_node->drop();
+			_node = NULL;
 		}
-		_node = NULL;
 	}
 }

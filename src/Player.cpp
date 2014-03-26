@@ -167,10 +167,10 @@ void Player::handleMessage(const GameEngine::Message& message)
 
 Player::~Player()
 {
-	if(_camera)
+	if(_camera != nullptr )
 	{
 		_camera->drop();
-		_camera = 0;
+		_camera = NULL;
 	}
 }
 

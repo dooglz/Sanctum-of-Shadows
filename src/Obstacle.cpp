@@ -14,6 +14,10 @@ Obstacle::Obstacle (const irr::core::vector3df& position, const irr::core::vecto
 	_node->setMaterialTexture(0, _texture);
 	_node->setScale(size);
 	_node->setPosition(position);
+
+	//Collision
+	_rigidBody = createBoundingBoxRB( _node, irr::core::vector3df(0,size.Y*0.5f*_node->getTransformedBoundingBox().getExtent().Y,0) );
+	GameEngine::Physics::world->addRigidBody(_rigidBody);
 }
 
 
@@ -43,11 +47,9 @@ bool Obstacle::loadContent()
 }
 
 Obstacle::~Obstacle(){
-
-	if(_mesh){
+	
+	if(_mesh != nullptr ){
 		_mesh->drop();
-	}
-	if(_texture){
-		_texture->drop();
+		_mesh = NULL;
 	}
 }
