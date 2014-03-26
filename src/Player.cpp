@@ -150,7 +150,16 @@ void Player::handleMessage(const GameEngine::Message& message)
 	{
 		if(_health >= 0)
 		{
-			_health = _health - 0.05f;
+			//play sound for enemy taking damage
+			GameEngine::Engine::soundengine->play2D("sounds/damage.wav", false);
+			
+			//"bob" the player to notify damage taken
+			_characterC->setMaxJumpHeight(20);
+			_characterC->setJumpSpeed(20);
+			_characterC->setGravity(100);
+			_characterC->jump();
+
+			_health = _health - 10.0f;
 		}
 		delete message.data;
 	}

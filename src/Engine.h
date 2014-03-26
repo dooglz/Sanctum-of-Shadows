@@ -9,6 +9,8 @@
 #include "Physics.h"
 #include "UI.h"
 #include "BulletDebugDraw.h"
+#include "irrKlang.h"
+#pragma comment(lib, "irrKlang.lib")
 /**
 * \defgroup Engine Game Engine Classes
 */
@@ -36,6 +38,8 @@ namespace GameEngine{
 			//! destructor
 			~Engine(){}
 
+			//! the sound engine
+			 static irrklang::ISoundEngine* soundengine;
 			//! Calls initialise() on various components and creates the irrlicht device.
 			bool initialise();
 

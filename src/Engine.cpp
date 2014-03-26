@@ -1,7 +1,8 @@
 #include "Engine.h"
 
-namespace GameEngine{
 
+namespace GameEngine{
+	irrklang::ISoundEngine* Engine::soundengine;
 	Engine engine = Engine();
 	KeyHandler handler = KeyHandler();
 	UI ui;
@@ -34,7 +35,7 @@ namespace GameEngine{
 		}
 		
 		Physics::initialise();
-
+		soundengine = irrklang::createIrrKlangDevice();
 		if(debug_draw_bullet)
 		{
 			//physics debug
