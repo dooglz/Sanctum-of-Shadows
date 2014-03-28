@@ -1,7 +1,12 @@
+/*
 #include "Level.h"
 #include <ctime>
 
 std::array<std::array<Level::tile,Level::_gridSize>, Level::_gridSize> Level::_grid;
+
+Level::Level(GameState* parentState):Entity(parentState,0,"Level")
+{
+}
 
 // Generate and Create level.
 void Level::intitalise()
@@ -247,3 +252,5 @@ void Level::toggleLighting(bool a)
 		j->getNode()->setMaterialFlag(irr::video::EMF_FOG_ENABLE, a);
 	}
 }
+
+*/

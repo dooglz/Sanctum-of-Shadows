@@ -1,9 +1,14 @@
+/*
 #pragma once
 #include "StaticPhysicalEntity.h"
 
 /*! \brief A solid Peice of Map Geometry.
  * \ingroup Game
  */
+
+
+/*
+
 class Obstacle : public GameEngine::StaticPhysicalEntity{
 
 	private:
@@ -14,7 +19,7 @@ class Obstacle : public GameEngine::StaticPhysicalEntity{
 	public:
 
 		//! Constructor.
-		Obstacle (const irr::core::vector3df& position, const irr::core::vector3df size);
+		Obstacle (GameState* parentState,const irr::core::vector3df& position, const irr::core::vector3df size);
 
 		//! Destructor.
 		~Obstacle();
@@ -25,3 +30,5 @@ class Obstacle : public GameEngine::StaticPhysicalEntity{
 
 		bool loadContent();
 };
+
+*/

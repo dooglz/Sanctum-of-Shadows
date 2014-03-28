@@ -1,3 +1,4 @@
+/*
 #pragma once
 #include <irrlicht.h>
 #include "Character.h"
@@ -6,6 +7,10 @@
 /*! \brief An Enemy.
  * \ingroup Game
  */
+
+
+/*
+
 class Enemy:public Character{
 
 	public:
@@ -24,3 +29,5 @@ class Enemy:public Character{
 		void handleMessage(const GameEngine::Message& message);
 
 };
+
+*/

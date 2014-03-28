@@ -1,9 +1,10 @@
+/*
 #include "Box.h"
 #include "Engine.h"
 
 #include <iostream>
 
-Box::Box (const btVector3& position, const irr::core::vector3df& scale, float mass) : GameEngine::PhysicalEntity(-1,0,"box")
+Box::Box (GameState* parentState, const btVector3& position, const irr::core::vector3df& scale, float mass) : GameEngine::PhysicalEntity(parentState,0,"box")
 {
 	//scene node
 	loadContent();
@@ -66,3 +67,4 @@ void Box::handleMessage(const GameEngine::Message& message)
 	}
 }
 
+*/

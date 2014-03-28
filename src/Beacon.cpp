@@ -1,6 +1,6 @@
 #include "Beacon.h"
-
-Beacon::Beacon(const irr::core::vector3df& position) : GameEngine::StaticPhysicalEntity(-1,0,"Beacon")
+/*
+Beacon::Beacon(GameState* parentState, const irr::core::vector3df& position) : GameEngine::StaticPhysicalEntity(parentState,0,"Beacon")
 {
 	bool particles = true;
 	bool flame = true;
@@ -167,3 +167,4 @@ void Beacon::intitalise(){
 	light(false);
 
 }
+*/

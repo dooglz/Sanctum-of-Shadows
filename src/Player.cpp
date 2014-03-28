@@ -1,10 +1,11 @@
+/*
 #include "Player.h"
 #include "SanctumOfShadows.h"
 
 // The Maximum radius of the lanterns effects.
 const float Player::_Lanternmaxradius = 300.0f;
 
-Player::Player(irr::core::vector3df position): Character(-1,0,"player")
+Player::Player(GameState* parentState, irr::core::vector3df position): Character(parentState,0,"player")
 {
 	_fuelLevel = 1.0f;
 	_LanternOn = true;
@@ -101,7 +102,7 @@ void Player::update(float delta)
 	
 	if  (GameEngine::handler.keyFired(irr::KEY_SPACE))
 	{
-		std::list<Entity*>* entities = GameEngine::EntityManager::getNamedEntity("Skeletors");
+		std::list<Entity*>* entities = _parentstate->getEntityManager()->getNamedEntity("Skeletors");
 		//if the list isn't empty, then we check if we have hit something 
 		if(entities->size() > 0)
 		{
@@ -174,3 +175,4 @@ Player::~Player()
 	}
 }
 
+*/

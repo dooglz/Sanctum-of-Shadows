@@ -1,3 +1,4 @@
+/*
 #pragma once
 #include "PhysicalEntity.h"
 
@@ -5,6 +6,10 @@
  *
  *  \ingroup Game
  */
+
+
+/*
+
 class Box : public GameEngine::PhysicalEntity{
 	public:
 
@@ -12,7 +17,7 @@ class Box : public GameEngine::PhysicalEntity{
 		Box (const btVector3& position, const irr::core::vector3df& scale, float mass);
 
 		//! Destructor
-		~Box (){};
+		~Box (GameState* parentState){};
 
 		void intitalise(){};
 
@@ -22,3 +27,5 @@ class Box : public GameEngine::PhysicalEntity{
 
 		void handleMessage(const GameEngine::Message& message);
 };
+
+*/

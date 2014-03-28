@@ -1,5 +1,6 @@
 #pragma once
 #include "GameState.h"
+#include "EntityManager.h"
 
 /*! \brief Primary Game logic for Sanctum of Shadows
  * \ingroup Game

@@ -1,3 +1,4 @@
+/*
 #include "Enemy.h"
 #include "Message.h"
 #include "MessageHandler.h"
@@ -8,7 +9,7 @@
 
 
 
-Enemy::Enemy(irr::core::vector3df position): Character(-1,0,"Skeletors")
+Enemy::Enemy(GameState* parentState, irr::core::vector3df position): Character(parentState,0,"Skeletors")
 {
 	// start the sound engine with default parameters
 	
@@ -140,3 +141,5 @@ void Enemy::handleMessage(const GameEngine::Message& message)
 	}
 
 }
+
+*/

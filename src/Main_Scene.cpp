@@ -1,9 +1,11 @@
 #pragma once
 #include "Main_Scene.h"
+#include <iostream>
 
 Main_Scene::Main_Scene():GameState("main")
 {
 	std::cout << "Main_Scene constructor" << std::endl;
+	_entityManager = new GameEngine::EntityManager();
 }
 
 Main_Scene::~Main_Scene()

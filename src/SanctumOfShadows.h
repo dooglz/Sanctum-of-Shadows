@@ -5,7 +5,7 @@
 #pragma once
 #include "Engine.h"
 #include "Game.h"
-#include "Player.h"
+//#include "Player.h"
 
 /*! \brief Primary Game logic for Sanctum of Shadows
  * \ingroup Game
@@ -29,6 +29,7 @@ class SanctumOfShadows:public Game{
 		static bool _gameover;
 
 	public:
+		static GameEngine::GameState* gameState;
 
 		//! Constructor.
 		SanctumOfShadows(){
@@ -40,7 +41,7 @@ class SanctumOfShadows:public Game{
 		~SanctumOfShadows();
 
 		//! The Player Entity.
-		static Player* player;
+	//	static Player* player;
 
 		//! Creates Required Entities.
 		bool init();
@@ -51,10 +52,8 @@ class SanctumOfShadows:public Game{
 		//! Move to Gameover State.
 		static void GameOver();
 
-		//! Returns the current game state.
-		state getState(){
-			return _state;
-		}
+
+
 
 };
 

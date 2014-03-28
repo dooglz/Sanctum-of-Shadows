@@ -86,7 +86,7 @@ int main(){
 				str += "] FPS:";
 				str += fps;
 				str += " Ents:";
-				str += GameEngine::EntityManager::entityCount();
+				str +=  game->getActiveState()->getEntityManager()->entityCount();
 				device->setWindowCaption(str.c_str());
 				lastFPS = fps;
 			}

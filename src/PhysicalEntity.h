@@ -22,7 +22,7 @@ namespace GameEngine{
 			void die();
 		public:
 			//! Constructor.
-			PhysicalEntity(int id, irr::scene::ISceneNode* node,const std::string& name):Entity(id,node,name){}
+			PhysicalEntity(GameState* parentState, irr::scene::ISceneNode* node,const std::string& name):Entity(parentState,node,name){}
 
 			//! Destructor.
 			~PhysicalEntity(){}

@@ -5,7 +5,10 @@
 #include "Enemy.h"
 #include "Beacon.h"
 #include <btBulletDynamicsCommon.h>
+#include "Main_Scene.h"
 
+
+GameEngine::GameState* SanctumOfShadows::gameState;
 
 bool SanctumOfShadows::_gameover;
 irr::scene::ICameraSceneNode* Flycamera;
@@ -18,20 +21,27 @@ irr::scene::ILightSceneNode* workLight;
 irr::scene::ILightSceneNode* spinningLight;
 
 bool _flying;
+/*
 Player* SanctumOfShadows::player;
 Enemy* enemy;
 Level* level;
+*/
 
 // Creates Required Entities.
 bool SanctumOfShadows::init(){
+
+
+	gameState = new Main_Scene();
+	_activeState = gameState;
+
 	std::wcout <<  _gameTitle << " Game code init" << std::endl;
 
 	irr::scene::ISceneManager* smgr = GameEngine::engine.getDevice()->getSceneManager();
 
 	//load the level
-	level = new Level();
-	level->loadContent();
-	level->intitalise();
+	//level = new Level();
+	//level->loadContent();
+	//level->intitalise();
 
 	//Cameras
 	Flycamera = GameEngine::engine.getDevice()->getSceneManager()->addCameraSceneNodeFPS();
@@ -55,8 +65,8 @@ bool SanctumOfShadows::init(){
 	LightSpriteNode->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/particlewhite.bmp"));
 	
 	//Game Entities
-	player = new Player(irr::core::vector3df(0,200.0f,0));
-	enemy = new Enemy(irr::core::vector3df(400.0f,200.0f,0));
+	//player = new Player(irr::core::vector3df(0,200.0f,0));
+	//enemy = new Enemy(irr::core::vector3df(400.0f,200.0f,0));
 	//
 
 	//Beacon* b = new Beacon(irr::core::vector3df(0,0,500.0f));
@@ -79,7 +89,7 @@ bool SanctumOfShadows::update(float delta){
 
 	//display player health
 	irr::core::stringw str = "Player Health: ";
-	str += player->getHealth();
+	//str += player->getHealth();
 	GameEngine::UI::displayTextMessage(str,0);
 
 
@@ -96,7 +106,7 @@ bool SanctumOfShadows::update(float delta){
 	//Debug Camera commands
 	if(GameEngine::handler.keyFired(irr::KEY_F1))
 	{
-		GameEngine::engine.getDevice()->getSceneManager()->setActiveCamera(player->getCamera());
+		//GameEngine::engine.getDevice()->getSceneManager()->setActiveCamera(player->getCamera());
 	}
 	if(GameEngine::handler.keyFired(irr::KEY_F2))
 	{
@@ -111,13 +121,14 @@ bool SanctumOfShadows::update(float delta){
 	//debug physics objects
 	if(GameEngine::handler.keyDown(irr::KEY_F5))
 	{
-		new Box(btVector3(-75.0f + ((((float) rand()) / ((float) RAND_MAX))*150.0f),100.0f,-75.0f + ((((float) rand()) / ((float) RAND_MAX))*150.0f)),irr::core::vector3df(10.0f,10.0f,10.0f),10.0f);
+	//	new Box(btVector3(-75.0f + ((((float) rand()) / ((float) RAND_MAX))*150.0f),100.0f,-75.0f + ((((float) rand()) / ((float) RAND_MAX))*150.0f)),irr::core::vector3df(10.0f,10.0f,10.0f),10.0f);
 	}
 	if(GameEngine::handler.keyFired(irr::KEY_F6))
 	{
-		new Box(btVector3(0,30,0),irr::core::vector3df(10.0f,10.0f,10.0f),10.0f);
+		//new Box(btVector3(0,30,0),irr::core::vector3df(10.0f,10.0f,10.0f),10.0f);
 	}
 	if(GameEngine::handler.keyFired(irr::KEY_F7)){
+		/*
 		irr::scene::ICameraSceneNode* cam = GameEngine::engine.getDevice()->getSceneManager()->getActiveCamera();
 		Box* bx = new Box(
 			GameEngine::Physics::irrVec3ToBtVec3(cam->getAbsolutePosition()),
@@ -128,6 +139,8 @@ bool SanctumOfShadows::update(float delta){
 		irr::core::vector3df end = (cam->getTarget() - start);
 		end.normalize();
 		bx->getRB()->setLinearVelocity(GameEngine::Physics::irrVec3ToBtVec3(end) * 100.0f);
+
+		*/
 	}
 	if(GameEngine::handler.keyFired(irr::KEY_F8))
 	{
@@ -145,7 +158,7 @@ bool SanctumOfShadows::update(float delta){
 	}
 	if(GameEngine::handler.keyFired(irr::KEY_F11))
 	{
-		level->toggleLighting(!level->isLit());
+//		level->toggleLighting(!level->isLit());
 	}
 
 	return true;
@@ -159,12 +172,12 @@ void SanctumOfShadows::reset()
 	GameEngine::UI::displayTextMessage(str,2000);
 
 	//reset player position and health
-	player->setHealth(100.0f);
-	player->getController()->warp(btVector3(0,10,0));
+	//player->setHealth(100.0f);
+	//player->getController()->warp(btVector3(0,10,0));
 
 	//TODO Reset all game Entities
 	_gameover = false;
-	player->setAlive(true);
+	//player->setAlive(true);
 	//Fade In
   //  fader->fadeIn(8000);
 	//fader->drop();
@@ -196,14 +209,14 @@ SanctumOfShadows::~SanctumOfShadows()
 	workLight->drop();
 	spinningLight->drop();
 
-	delete level;
-	level = NULL;
+	//delete level;
+	//level = NULL;
 
-	delete player;
-	player = NULL;
+	//delete player;
+	//player = NULL;
 
-	delete enemy;
-	enemy = NULL;
+	//delete enemy;
+	//enemy = NULL;
 
 	Flycamera->drop();
 }

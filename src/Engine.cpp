@@ -28,7 +28,8 @@ namespace GameEngine{
 		_device->setWindowCaption(_caption.c_str());
 		_device->getVideoDriver()->setTextureCreationFlag(irr::video::ETCF_ALWAYS_32_BIT, true);
 		
-		if(!EntityManager::initialise())
+		_EntityManager = new EntityManager();
+		if(!_EntityManager->initialise())
 		{
 			return false;
 		}
@@ -61,10 +62,10 @@ namespace GameEngine{
 	bool Engine::update(float delta){
 		handler.update();
 		ui.update();
-		if(!EntityManager::update(delta))
-		{
-			return false;
-		}
+	//	if(!EntityManager::update(delta))
+	//	{
+		//	return false;
+	//	}
 		if(!MessageHandler::update())
 		{
 			return false;
@@ -102,7 +103,7 @@ namespace GameEngine{
 
 	//Shuts down components and closes the irrlicht device.
 	void Engine::shutdown(){
-		EntityManager::shutdown();
+//		EntityManager::shutdown();
 		if(_device)
 		{
 			_device->closeDevice();

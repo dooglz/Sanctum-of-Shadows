@@ -1,12 +1,13 @@
 #pragma once
 #include <irrlicht.h>
 #include <string>
-#include "EntityManager.h"
+//#include "EntityManager.h"
 
 namespace GameEngine{
 	/*! \brief A Scene.
 	 * \ingroup Engine
 	 */
+	class EntityManager;
 	class GameState{ 
 		protected : 
 
@@ -44,5 +45,8 @@ namespace GameEngine{
 
 			//! Get name of game state 
 			std::string getName(){return _name;}
+
+			//! Get the Entity Manger for this state 
+			EntityManager* getEntityManager();
 	} ;
 }

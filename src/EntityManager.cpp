@@ -1,15 +1,21 @@
 #include "EntityManager.h"
+#include <iostream>
 
 namespace GameEngine{
 
-	// The next availbe ID to assign to an Entity.
-	int EntityManager::_nextID = 0;
+	// Constructor
+	EntityManager::EntityManager()
+	{
+		// The next available ID to assign to an Entity.
+		int _nextID = 0;
 
-	// A Map of every Entity, identified by ID.
-	std::unordered_map<int,Entity*> EntityManager::_entities = std::unordered_map<int,Entity*>();
+		// A Map of every Entity, identified by ID.
+		std::unordered_map<int,Entity*>_entities = std::unordered_map<int,Entity*>();
 
-	// A Map contating lists of named entities, identified by Name.
-	std::unordered_map<std::string, std::list<Entity*>> EntityManager::_namedEntities = std::unordered_map<std::string,std::list<Entity*>>();
+		// A Map containing lists of named entities, identified by Name.
+		std::unordered_map<std::string, std::list<Entity*>> _namedEntities = std::unordered_map<std::string,std::list<Entity*>>();
+	}
+
 
 	// Call initialise() on all Entities.
 	bool EntityManager::initialise()
@@ -76,7 +82,7 @@ namespace GameEngine{
 		_namedEntities.clear();
 	}
 
-	// Registers the pointer ot the entitiy in the relevant lists.
+	// Registers the pointer to the entity in the relevant lists.
 	void EntityManager::registerEntity(Entity* newEntity)
 	{
 		if(newEntity->getID() == -1)

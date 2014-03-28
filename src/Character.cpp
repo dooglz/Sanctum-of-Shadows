@@ -1,3 +1,4 @@
+/*
 #include "Character.h"
 
 //! Creates the controller and adds a blank scene node.
@@ -125,3 +126,5 @@ void Character::die(){
 	_ghostObject = NULL;
 	Entity::die();
 }
+
+*/

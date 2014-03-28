@@ -1,3 +1,4 @@
+/*
 #pragma once
 #include <irrlicht.h>
 #include "Character.h"
@@ -5,6 +6,9 @@
 /*! \brief The player.
  * \ingroup Game
  */
+
+/*
+
 class Player:public Character{
 	private:
 		
@@ -51,3 +55,4 @@ class Player:public Character{
 
 };
 
+*/

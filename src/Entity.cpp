@@ -1,15 +1,18 @@
 #pragma once
 #include "Entity.h"
+#include "EntityManager.h"
 
 namespace GameEngine{
 	//TODO investigate id in constructor, nessisary?
-	Entity::Entity(int id, irr::scene::ISceneNode* node, const std::string& name)
+	Entity::Entity(GameState* parentState, irr::scene::ISceneNode* node, const std::string& name)
 	{
 		_name = name;
-		_id = id;
+		_id = -1;
 		_node = node;
 		_shouldRemove = false;
-		EntityManager::registerEntity(this);
+		_parentstate = parentState;
+		_parentstate->flush();
+		//_parentstate->getEntityManager()->registerEntity(this);
 	}
 	void Entity::die()
 	{
@@ -21,7 +24,7 @@ namespace GameEngine{
 		//IF id != 1, the manager is still tracking us
 		if(_id != -1)
 		{
-			GameEngine::EntityManager::remove(this);
+			_parentstate->getEntityManager()->registerEntity(this);
 		}
 
 		if(_node != nullptr )

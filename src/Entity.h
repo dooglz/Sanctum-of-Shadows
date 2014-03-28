@@ -2,12 +2,13 @@
 #include <irrlicht.h>
 #include "Message.h"
 #include "MessageHandler.h"
-#include "EntityManager.h"
+#include "GameState.h"
 
 namespace GameEngine{
 	/*! \brief An entity has its update function called by EntityManager if it is alive, it also has a scene node attached.
 	 *  \ingroup  Engine
 	 */
+	//class GameState;
 	class Entity{
 		protected:
 			//! A unique int assigned by entityManager for identification.
@@ -18,6 +19,8 @@ namespace GameEngine{
 
 			//! An irrlicht scene node associated with this entity
 			irr::scene::ISceneNode* _node;
+
+			GameState* _parentstate;
 
 			//! If _alive = false, EnityManager will not call update(), the node will still be rendered however.
 			bool _alive;
@@ -31,7 +34,7 @@ namespace GameEngine{
 
 		public:
 			//! Constructor
-			Entity(int id, irr::scene::ISceneNode* node,const std::string& name);
+			Entity(GameState* parentState, irr::scene::ISceneNode* node,const std::string& name);
 
 			//! Destructor.
 			virtual ~Entity();

@@ -1,6 +1,8 @@
 #pragma once
 #include <irrlicht.h>
 #include <iostream>
+#include "GameState.h"
+
 /*! \brief Baseclass for gamelogic, bridge between engine and game code, think of this as also a Game state manager.
  * \ingroup Engine
  */
@@ -11,6 +13,8 @@ protected:
 
 	//! Starting dimensions
 	irr::core::dimension2d<irr::u32> _resolution;
+
+	GameEngine::GameState* _activeState;
 
 public:
 
@@ -27,13 +31,12 @@ public:
 	virtual bool update(float delta) = 0;
 
 	//! Returns _gameTitle. 
-	std::wstring getGametitle(){
-		return _gameTitle;
-	}
+	std::wstring getGametitle();
 
 	//! Returns _resolution. 
-	irr::core::dimension2d<irr::u32> getResolution(){
-		return _resolution;
-	}
+	irr::core::dimension2d<irr::u32> getResolution();
+
+	//! Returns the current game state.
+	GameEngine::GameState* getActiveState();
 
 };

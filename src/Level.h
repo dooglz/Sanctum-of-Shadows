@@ -1,3 +1,6 @@
+
+/*
+
 #pragma once
 #include "Entity.h"
 #include "Beacon.h"
@@ -6,9 +9,12 @@
 #include <vector>
 #include <array>
 
-/*! \brief Primary Game logic for Sanctum of Shadows
+/* ! \brief Primary Game logic for Sanctum of Shadows
  * \ingroup Game
  */
+
+/*
+
 class Level: public GameEngine::Entity{
 	private:
 
@@ -64,7 +70,7 @@ class Level: public GameEngine::Entity{
 	public:
 
 		//! Constructor
-		Level() :Entity(-1,0,"Level"){};
+		Level(GameState* parentState);
 
 		//! Destructor.
 		~Level(){};
@@ -87,3 +93,5 @@ class Level: public GameEngine::Entity{
 			return _isLit;
 		}
 };
+
+*/

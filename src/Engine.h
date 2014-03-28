@@ -11,6 +11,7 @@
 #include "BulletDebugDraw.h"
 #include "irrKlang.h"
 #pragma comment(lib, "irrKlang.lib")
+
 /**
 * \defgroup Engine Game Engine Classes
 */
@@ -35,6 +36,8 @@ namespace GameEngine{
 			//! Draw Bullet physics debug data.
 			bool _debug_draw_bullet;
 
+			EntityManager* _EntityManager;
+
 		public:
 			//! constructor
 			Engine(){}
@@ -44,6 +47,7 @@ namespace GameEngine{
 
 			//! the sound engine
 			 static irrklang::ISoundEngine* soundengine;
+
 			//! Calls initialise() on various components and creates the irrlicht device.
 			bool initialise();
 
@@ -106,6 +110,11 @@ namespace GameEngine{
 			bool getBulletDebugDrawing()
 			{
 				return _debug_draw_bullet;
+			}
+			
+			EntityManager* getEntityManager()
+			{
+				return _EntityManager;
 			}
 	};
 

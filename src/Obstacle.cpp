@@ -1,10 +1,11 @@
+/*
 #include "Obstacle.h"
 #include "Engine.h"
 
 irr::scene::IMesh* Obstacle::_mesh;
 irr::video::ITexture* Obstacle::_texture;
 
-Obstacle::Obstacle (const irr::core::vector3df& position, const irr::core::vector3df size) : GameEngine::StaticPhysicalEntity(-1,0, "Obstacle")
+Obstacle::Obstacle (GameState* parentState, const irr::core::vector3df& position, const irr::core::vector3df size) : GameEngine::StaticPhysicalEntity(parentstate,0, "Obstacle")
 {
 
 	//scene node
@@ -63,3 +64,5 @@ Obstacle::~Obstacle(){
 		_mesh = NULL;
 	}
 }
+
+*/

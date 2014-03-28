@@ -19,7 +19,7 @@ namespace GameEngine{
 		public:
 
 			//! Constructor.
-			StaticPhysicalEntity(int id, irr::scene::ISceneNode* node,const std::string& name):Entity(id,node,name){}
+			StaticPhysicalEntity(GameState* parentState, irr::scene::ISceneNode* node,const std::string& name):Entity(parentState,node,name){}
 
 			//! Destructor.
 			~StaticPhysicalEntity();
