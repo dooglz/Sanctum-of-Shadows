@@ -9,7 +9,7 @@ class Obstacle : public GameEngine::StaticPhysicalEntity{
 
 	private:
 		
-		static irr::scene::IAnimatedMesh* _mesh;
+		static irr::scene::IMesh* _mesh;
 		static irr::video::ITexture* _texture;
 	
 	public:

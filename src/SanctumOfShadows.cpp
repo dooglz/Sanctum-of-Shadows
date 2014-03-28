@@ -39,6 +39,7 @@ bool SanctumOfShadows::init(){
 	Flycamera->setPosition(irr::core::vector3df(0,100,0));
 	Flycamera->setFarValue(10000.0f);
 
+
 	Menucamera = GameEngine::engine.getDevice()->getSceneManager()->addCameraSceneNode(0,irr::core::vector3df(0,100,223),irr::core::vector3df(0,100,0));
 	workLight = smgr->addLightSceneNode(0, irr::core::vector3df(0,200.0f,0), irr::video::SColorf(1.0f, 1.0f, 1.0f, 1.0f), 1000.0f);
 	
@@ -47,6 +48,8 @@ bool SanctumOfShadows::init(){
 	irr::scene::ISceneNodeAnimator* anim = smgr->createFlyCircleAnimator (irr::core::vector3df(0,50,0),300.0f);
 	spinningLight->addAnimator(anim);
 	anim->drop();
+	spinningLight->setDebugDataVisible ( irr::scene::EDS_BBOX );
+
 	irr::scene::ISceneNode* LightSpriteNode = smgr->addBillboardSceneNode(spinningLight, irr::core::dimension2d<irr::f32>(50, 50));
 	LightSpriteNode->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	LightSpriteNode->setMaterialType(irr::video::EMT_TRANSPARENT_ADD_COLOR);

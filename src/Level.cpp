@@ -4,7 +4,7 @@
 #include "Obstacle.h"
 #include <iostream>
 #include "Box.h"
-#include <array>
+#include <vector>
 
 std::array<std::array<Level::tile,Level::_gridSize>, Level::_gridSize> Level::_grid;
 
@@ -48,16 +48,24 @@ void Level::placeBeacons()
 // Spawn the entities and geometry as laid out by generateLevel().
 void Level::createLevel()
 {
+	//fog
 	GameEngine::engine.getDevice()->getVideoDriver()->setFog(irr::video::SColor(0,0,0,0), irr::video::EFT_FOG_LINEAR, 250, 1000, .003f, true, false);	
 
 	float tileSize = (float)_tileSize;
-	irr::video::ITexture* cobbleTex = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble_1024.jpg");
+	irr::video::ITexture* cobbleTex = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble2_1024.jpg");
 	irr::video::ITexture* darkTex = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble_d_1024.jpg");
 	irr::video::ITexture* lightTex = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble_l_1024.jpg");
-	irr::scene::IAnimatedMesh* planeMesh = GameEngine::engine.getDevice()->getSceneManager()->addHillPlaneMesh("floormesh", irr::core::dimension2df(tileSize,tileSize), irr::core::dimension2du(1,1));
-	irr::scene::IAnimatedMesh* cubeMesh = GameEngine::engine.getDevice()->getSceneManager()->getMesh("models/cube1.obj");
-	
-	std::array<irr::scene::IMeshSceneNode*, (_gridSize*_gridSize)> floorTiles;
+
+	//Normals are saved into meshdata once applied, So we need two meshes for the two different textures+normals.
+	irr::video::ITexture* normalMap = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble_1024_NRM.jpg");
+	irr::video::ITexture* normalMap2 = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble2_1024_NRM.jpg");
+
+	irr::scene::IAnimatedMesh* planeMesh = GameEngine::engine.getDevice()->getSceneManager()->addHillPlaneMesh("floormesh", irr::core::dimension2df(tileSize/4,tileSize/4), irr::core::dimension2du(4,4));
+	irr::scene::IAnimatedMesh* planeMesh2 = GameEngine::engine.getDevice()->getSceneManager()->addHillPlaneMesh("floormesh2", irr::core::dimension2df(tileSize/4,tileSize/4), irr::core::dimension2du(4,4));
+	irr::scene::IMesh* tangentMesh = GameEngine::engine.getDevice()->getSceneManager()->getMeshManipulator()->createMeshWithTangents(planeMesh->getMesh(0));
+	irr::scene::IMesh* tangentMesh2 = GameEngine::engine.getDevice()->getSceneManager()->getMeshManipulator()->createMeshWithTangents(planeMesh2->getMesh(0));
+
+	std::vector<irr::scene::IMeshSceneNode*> floorTiles;
 
 	unsigned int a =0;
 	float startingPos = (-1.0f * (0.5f*(tileSize * _gridSize))) +(0.5f*tileSize);
@@ -66,42 +74,51 @@ void Level::createLevel()
 	{
 		for(unsigned int row = 0; row < _grid[col].size(); row ++)
 		{
+
 			irr::core::vector3df origin = irr::core::vector3df(startingPos + (col*tileSize),0,startingPos + (row*tileSize));
 
-			irr::scene::IMeshSceneNode* node;
-			node = GameEngine::engine.getDevice()->getSceneManager()->addMeshSceneNode(planeMesh->getMesh(0));
-
-			//node->getMaterial(0).SpecularColor.set(0,0,0,0);
-			//node->getMaterial(0).EmissiveColor.set(255,0,0,0);
-			
-			node->setMaterialFlag(irr::video::EMF_FOG_ENABLE, true);
-			//node->setMaterialType(irr::video::EMT_SOLID);
-			node->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, false);
-			node->setMaterialFlag(irr::video::EMF_LIGHTING, true);
-
-			//node->setScale(irr::core::vector3df(500.0f,2.0f,500.0f));
-			node->setPosition(origin);
-			
-
-			if(_grid[col][row] == BEACON)
-			{
-				node->setMaterialTexture(0, lightTex);
-				new Beacon(origin);
-			}
-			else if(_grid[col][row] == OBSTACLE)
+			if(_grid[col][row] == OBSTACLE)
 			{
 				new Obstacle(origin,irr::core::vector3df(tileSize,tileSize,tileSize));
-				node->setMaterialTexture(0, cobbleTex);
-			}
-			else if(_grid[col][row] == EMPTY)
-			{
-				node->setMaterialTexture(0, cobbleTex);
 			}
 			else
 			{
-				node->setMaterialTexture(0, darkTex);
+				irr::scene::IMeshSceneNode* node;
+
+				if(_grid[col][row] == BEACON)
+				{
+					node = GameEngine::engine.getDevice()->getSceneManager()->addMeshSceneNode(tangentMesh);
+					node->setMaterialTexture(0, lightTex);
+					node->setMaterialTexture(1, normalMap);
+					new Beacon(origin);
+				}
+				else if(_grid[col][row] == EMPTY)
+				{
+					node = GameEngine::engine.getDevice()->getSceneManager()->addMeshSceneNode(tangentMesh2);
+					node->setMaterialTexture(0, cobbleTex);
+					node->setMaterialTexture(1, normalMap2);
+				}
+				else
+				{
+					node = GameEngine::engine.getDevice()->getSceneManager()->addMeshSceneNode(tangentMesh);
+					node->setMaterialTexture(0, darkTex);
+				}
+
+				//Normalmap parameters
+				node->getMaterial(0).MaterialTypeParam = 1.f / 64.f;
+				node->getMaterial(0).SpecularColor.set(0,0,0,0);
+				node->getMaterial(0).EmissiveColor.set(255,0,0,0);
+			
+				node->setMaterialFlag(irr::video::EMF_FOG_ENABLE, true);
+				node->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
+				node->setMaterialFlag(irr::video::EMF_LIGHTING, true);
+				node->setMaterialType(irr::video::EMT_NORMAL_MAP_SOLID);
+
+				node->setPosition(origin);
+
+				floorTiles.push_back(node);
 			}
-			floorTiles[a] = node;
+
 			a++;
 		}
 	}
