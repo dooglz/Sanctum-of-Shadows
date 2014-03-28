@@ -36,7 +36,7 @@ namespace GameEngine{
 			//! Destructor.
 			virtual ~Entity();
 
-			//! Process pre frame logic.
+			//! Process per frame logic.
 			virtual void update(float delta) = 0;
 
 			//! Set all values to a default state, can be called multiple times. 

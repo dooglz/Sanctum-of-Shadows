@@ -97,6 +97,7 @@
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Main_Scene.cpp" />
     <ClCompile Include="MeshManager.cpp" />
     <ClCompile Include="MessageHandler.cpp" />
     <ClCompile Include="Obstacle.cpp" />
@@ -118,8 +119,10 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameState.h" />
     <ClInclude Include="KeyboardHandler.h" />
     <ClInclude Include="Level.h" />
+    <ClInclude Include="Main_Scene.h" />
     <ClInclude Include="MeshManager.h" />
     <ClInclude Include="Message.h" />
     <ClInclude Include="MessageHandler.h" />

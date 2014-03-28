@@ -24,7 +24,6 @@ Level* level;
 
 // Creates Required Entities.
 bool SanctumOfShadows::init(){
-	
 	std::wcout <<  _gameTitle << " Game code init" << std::endl;
 
 	irr::scene::ISceneManager* smgr = GameEngine::engine.getDevice()->getSceneManager();

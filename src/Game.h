@@ -1,7 +1,7 @@
 #pragma once
 #include <irrlicht.h>
 #include <iostream>
-/*! \brief Baseclass for gamelogic, bridge between engine and game code.
+/*! \brief Baseclass for gamelogic, bridge between engine and game code, think of this as also a Game state manager.
  * \ingroup Engine
  */
 class Game{
