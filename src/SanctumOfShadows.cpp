@@ -18,13 +18,13 @@ irr::scene::ILightSceneNode* workLight;
 irr::scene::ILightSceneNode* spinningLight;
 
 bool _flying;
-Level* level;
 Player* SanctumOfShadows::player;
 Enemy* enemy;
+Level* level;
 
 // Creates Required Entities.
 bool SanctumOfShadows::init(){
-
+	
 	std::wcout <<  _gameTitle << " Game code init" << std::endl;
 
 	irr::scene::ISceneManager* smgr = GameEngine::engine.getDevice()->getSceneManager();
@@ -68,7 +68,6 @@ bool SanctumOfShadows::init(){
 	//fader
 	fader = GameEngine::engine.getDevice()->getGUIEnvironment()->addInOutFader();
     fader->setColor(irr::video::SColor(0,0,0,0));
-
 	reset();
 
 	return true;
@@ -131,6 +130,10 @@ bool SanctumOfShadows::update(float delta){
 		end.normalize();
 		bx->getRB()->setLinearVelocity(GameEngine::Physics::irrVec3ToBtVec3(end) * 100.0f);
 	}
+	if(GameEngine::handler.keyFired(irr::KEY_F8))
+	{
+		GameEngine::engine.setBulletDebugDrawing(!GameEngine::engine.getBulletDebugDrawing());
+	}
 
 	//debug lights
 	if(GameEngine::handler.keyFired(irr::KEY_F9))
@@ -140,6 +143,10 @@ bool SanctumOfShadows::update(float delta){
 	if(GameEngine::handler.keyFired(irr::KEY_F10))
 	{
 		spinningLight->setVisible(!spinningLight->isVisible());
+	}
+	if(GameEngine::handler.keyFired(irr::KEY_F11))
+	{
+		level->toggleLighting(!level->isLit());
 	}
 
 	return true;

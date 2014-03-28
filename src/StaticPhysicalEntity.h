@@ -10,6 +10,7 @@ namespace GameEngine{
 
 		protected:
 			
+			//! Returns a btRigidBody* matching the bounding box of a node.
 			static btRigidBody* createBoundingBoxRB(irr::scene::ISceneNode* node, irr::core::vector3df offset);
 
 			//! The simulated bullet Rigidbody.

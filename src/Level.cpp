@@ -1,10 +1,5 @@
-#include "Engine.h"
 #include "Level.h"
-#include "Beacon.h"
-#include "Obstacle.h"
-#include <iostream>
-#include "Box.h"
-#include <vector>
+#include <ctime>
 
 std::array<std::array<Level::tile,Level::_gridSize>, Level::_gridSize> Level::_grid;
 
@@ -17,6 +12,8 @@ void Level::intitalise()
 	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(0,groundMotionState,groundShape,btVector3(0.0, 0.0, 0.0));
 	_groundPlaneRB = new btRigidBody(groundRigidBodyCI);
 	GameEngine::Physics::world->addRigidBody(_groundPlaneRB,GameEngine::Physics::E_Static,GameEngine::Physics::E_StaticGroup);
+
+	_isLit = true;
 
 	//generate
 	srand((int)time(0));
@@ -65,8 +62,6 @@ void Level::createLevel()
 	irr::scene::IMesh* tangentMesh = GameEngine::engine.getDevice()->getSceneManager()->getMeshManipulator()->createMeshWithTangents(planeMesh->getMesh(0));
 	irr::scene::IMesh* tangentMesh2 = GameEngine::engine.getDevice()->getSceneManager()->getMeshManipulator()->createMeshWithTangents(planeMesh2->getMesh(0));
 
-	std::vector<irr::scene::IMeshSceneNode*> floorTiles;
-
 	unsigned int a =0;
 	float startingPos = (-1.0f * (0.5f*(tileSize * _gridSize))) +(0.5f*tileSize);
 
@@ -79,7 +74,7 @@ void Level::createLevel()
 
 			if(_grid[col][row] == OBSTACLE)
 			{
-				new Obstacle(origin,irr::core::vector3df(tileSize,tileSize,tileSize));
+				_obstacles.push_back( new Obstacle(origin,irr::core::vector3df(tileSize,tileSize,tileSize)) );
 			}
 			else
 			{
@@ -90,7 +85,7 @@ void Level::createLevel()
 					node = GameEngine::engine.getDevice()->getSceneManager()->addMeshSceneNode(tangentMesh);
 					node->setMaterialTexture(0, lightTex);
 					node->setMaterialTexture(1, normalMap);
-					new Beacon(origin);
+					_beacons.push_back( new Beacon(origin) );
 				}
 				else if(_grid[col][row] == EMPTY)
 				{
@@ -104,10 +99,10 @@ void Level::createLevel()
 					node->setMaterialTexture(0, darkTex);
 				}
 
-				//Normalmap parameters
-				node->getMaterial(0).MaterialTypeParam = 1.f / 64.f;
-				node->getMaterial(0).SpecularColor.set(0,0,0,0);
-				node->getMaterial(0).EmissiveColor.set(255,0,0,0);
+				//Normal map parameters
+				node->getMaterial(1).MaterialTypeParam = 1.f / 64.f;
+				node->getMaterial(1).SpecularColor.set(0,0,0,0);
+				node->getMaterial(1).EmissiveColor.set(255,0,0,0);
 			
 				node->setMaterialFlag(irr::video::EMF_FOG_ENABLE, true);
 				node->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
@@ -116,7 +111,7 @@ void Level::createLevel()
 
 				node->setPosition(origin);
 
-				floorTiles.push_back(node);
+				_floorTiles.push_back(node);
 			}
 
 			a++;
@@ -227,4 +222,28 @@ void Level::generateLevel()
 bool Level::loadContent(){
 	//TODO
 	return true;
+}
+
+// Sets EMF_LIGHTING on all level nodes.
+void Level::toggleLighting(bool a)
+{
+	_isLit = a;
+	for (irr::scene::IMeshSceneNode* i : _floorTiles ) 
+	{
+		i->setMaterialFlag(irr::video::EMF_LIGHTING, a);
+		i->setMaterialFlag(irr::video::EMF_FOG_ENABLE, a);
+		if(!a)
+		{
+			i->setMaterialType(irr::video::EMT_SOLID);
+		}
+		else
+		{
+			i->setMaterialType(irr::video::EMT_NORMAL_MAP_SOLID);
+		}
+	}
+	for (Obstacle* j : _obstacles ) 
+	{
+		j->getNode()->setMaterialFlag(irr::video::EMF_LIGHTING, a);
+		j->getNode()->setMaterialFlag(irr::video::EMF_FOG_ENABLE, a);
+	}
 }

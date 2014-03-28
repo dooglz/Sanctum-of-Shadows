@@ -1,13 +1,17 @@
 #pragma once
 #include "Entity.h"
+#include "Beacon.h"
+#include "Obstacle.h"
+#include <iostream>
+#include <vector>
 #include <array>
-#include <ctime>
 
 /*! \brief Primary Game logic for Sanctum of Shadows
  * \ingroup Game
  */
 class Level: public GameEngine::Entity{
 	private:
+
 
 		//level gen stuff
 		//@{
@@ -21,7 +25,7 @@ class Level: public GameEngine::Entity{
 			static const unsigned int _tileSize = 800; 
 			//! Chance of placing a beacon in an available slot
 			static const unsigned int _beaconPercent = 10; 
-			//! Should all avaiable slots for beacons be filled?
+			//! Should all available slots for beacons be filled?
 			static const bool _beaconFill = false; 
 			//! Chance of placing a beacon in an available slot
 			static const unsigned int _obstaclePercent = 80; 
@@ -45,6 +49,18 @@ class Level: public GameEngine::Entity{
 		//! The bullet ground plane.
 		btRigidBody* _groundPlaneRB;
 
+		//! Vector of all the floortiles
+		std::vector< irr::scene::IMeshSceneNode* > _floorTiles;
+
+		//! Vector of all the obstacles
+		std::vector< Obstacle* > _obstacles;
+
+		//! Vector of all the beacons
+		std::vector< Beacon* > _beacons;
+
+		//! Is Lighting enabled on the level, used for debug
+		bool _isLit;
+
 	public:
 
 		//! Constructor
@@ -61,4 +77,13 @@ class Level: public GameEngine::Entity{
 
 		//! Does Nothing
 		void update(float delta){};
+
+		//! Sets EMF_LIGHTING on all level nodes, used for debug.
+		void toggleLighting(bool a);
+
+		//! Is Lighting enabled on the level.
+		bool isLit()
+		{
+			return _isLit;
+		}
 };

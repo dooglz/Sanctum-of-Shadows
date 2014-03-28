@@ -31,6 +31,10 @@ namespace GameEngine{
 
 			//! Set to false to exit the main loop
 			bool _run;
+
+			//! Draw Bullet physics debug data.
+			bool _debug_draw_bullet;
+
 		public:
 			//! constructor
 			Engine(){}
@@ -90,6 +94,18 @@ namespace GameEngine{
 			void setDimensions(const irr::core::dimension2d<irr::u32>& value)
 			{
 				_dimensions = value;
+			}
+
+			//! Sets _debug_draw_bullet.
+			void setBulletDebugDrawing( bool a)
+			{
+				_debug_draw_bullet = a;
+			}
+
+			//! Sets _debug_draw_bullet.
+			bool getBulletDebugDrawing()
+			{
+				return _debug_draw_bullet;
 			}
 	};
 

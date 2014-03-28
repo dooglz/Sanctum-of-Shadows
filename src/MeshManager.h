@@ -1,3 +1,4 @@
+#pragma once
 #include <irrlicht.h>
 #include <iostream>
 #include <btBulletCollisionCommon.h>

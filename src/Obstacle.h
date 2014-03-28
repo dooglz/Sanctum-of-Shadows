@@ -1,6 +1,5 @@
 #pragma once
 #include "StaticPhysicalEntity.h"
-#include "Engine.h"
 
 /*! \brief A solid Peice of Map Geometry.
  * \ingroup Game

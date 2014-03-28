@@ -6,7 +6,6 @@ namespace GameEngine{
 	Engine engine = Engine();
 	KeyHandler handler = KeyHandler();
 	UI ui;
-	const bool debug_draw_bullet = true;	
 	irr::video::SMaterial debugMat;
 	DebugDraw* debugDraw;
 
@@ -35,23 +34,23 @@ namespace GameEngine{
 		}
 		
 		Physics::initialise();
-		soundengine = irrklang::createIrrKlangDevice();
-		if(debug_draw_bullet)
-		{
-			//physics debug
-			debugDraw = new DebugDraw(_device);
-			   debugDraw->setDebugMode(
-					 btIDebugDraw::DBG_DrawWireframe |
-					 btIDebugDraw::DBG_DrawAabb |
-					 btIDebugDraw::DBG_DrawContactPoints |
-					 btIDebugDraw::DBG_DrawText |
-					 //btIDebugDraw::DBG_DrawConstraintLimits |
-					 btIDebugDraw::DBG_DrawConstraints //|
-			   );
-			  Physics::world->setDebugDrawer(debugDraw);
 
-			   debugMat.Lighting = false;
-		}
+		soundengine = irrklang::createIrrKlangDevice();
+
+		//physics debug
+		_debug_draw_bullet = false;
+		debugDraw = new DebugDraw(_device);
+		debugDraw->setDebugMode(
+				btIDebugDraw::DBG_DrawWireframe |
+				btIDebugDraw::DBG_DrawAabb |
+				btIDebugDraw::DBG_DrawContactPoints |
+				btIDebugDraw::DBG_DrawText |
+				//btIDebugDraw::DBG_DrawConstraintLimits |
+				btIDebugDraw::DBG_DrawConstraints //|
+		);
+		Physics::world->setDebugDrawer(debugDraw);
+
+		debugMat.Lighting = false;
 
 
 		ui = UI(_device);
@@ -85,7 +84,7 @@ namespace GameEngine{
 		_device->getSceneManager()->drawAll();
 		_device->getGUIEnvironment()->drawAll();
 		
-		if(debug_draw_bullet)
+		if(_debug_draw_bullet)
 		{
 			_device->getVideoDriver()->setMaterial(debugMat);
 			_device->getVideoDriver()->setTransform(irr::video::ETS_WORLD, irr::core::IdentityMatrix);

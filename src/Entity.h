@@ -22,7 +22,7 @@ namespace GameEngine{
 			//! If _alive = false, EnityManager will not call update(), the node will still be rendered however.
 			bool _alive;
 
-			//! A flag to tell EntityManager to remove this entity from the entity List.
+			//! A flag to tell EntityManager to remove this entity from the entity List at the next loop. May cause leaks!
 			bool _shouldRemove;
 
 			//TODO call this remove()
@@ -48,6 +48,8 @@ namespace GameEngine{
 			//! Receive and process a message.
 			virtual void handleMessage(const Message& message){}
 
+			//TODO
+			//! Force Remove from Entity manager,  Remember to call Delete afterwards.
 			void remove(){
 				die();
 			}

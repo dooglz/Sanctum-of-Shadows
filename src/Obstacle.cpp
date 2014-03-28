@@ -1,4 +1,5 @@
 #include "Obstacle.h"
+#include "Engine.h"
 
 irr::scene::IMesh* Obstacle::_mesh;
 irr::video::ITexture* Obstacle::_texture;
