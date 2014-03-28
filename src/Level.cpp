@@ -1,10 +1,9 @@
-/*
 #include "Level.h"
 #include <ctime>
 
 std::array<std::array<Level::tile,Level::_gridSize>, Level::_gridSize> Level::_grid;
 
-Level::Level(GameState* parentState):Entity(parentState,0,"Level")
+Level::Level(GameEngine::GameState* parentState):Entity(parentState,0,"Level")
 {
 }
 
@@ -43,7 +42,7 @@ void Level::placeBeacons()
 	};
 
 	for (unsigned int i=0; i< positions.size(); i++) {
-		new Beacon(positions[i]);
+		new Beacon(_parentstate,positions[i]);
 	}
 }
 
@@ -79,7 +78,7 @@ void Level::createLevel()
 
 			if(_grid[col][row] == OBSTACLE)
 			{
-				_obstacles.push_back( new Obstacle(origin,irr::core::vector3df(tileSize,tileSize,tileSize)) );
+				_obstacles.push_back( new Obstacle(_parentstate, origin,irr::core::vector3df(tileSize,tileSize,tileSize)) );
 			}
 			else
 			{
@@ -90,7 +89,7 @@ void Level::createLevel()
 					node = GameEngine::engine.getDevice()->getSceneManager()->addMeshSceneNode(tangentMesh);
 					node->setMaterialTexture(0, lightTex);
 					node->setMaterialTexture(1, normalMap);
-					_beacons.push_back( new Beacon(origin) );
+					_beacons.push_back( new Beacon(_parentstate,origin) );
 				}
 				else if(_grid[col][row] == EMPTY)
 				{
@@ -252,5 +251,3 @@ void Level::toggleLighting(bool a)
 		j->getNode()->setMaterialFlag(irr::video::EMF_FOG_ENABLE, a);
 	}
 }
-
-*/

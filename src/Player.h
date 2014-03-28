@@ -1,4 +1,3 @@
-/*
 #pragma once
 #include <irrlicht.h>
 #include "Character.h"
@@ -6,8 +5,6 @@
 /*! \brief The player.
  * \ingroup Game
  */
-
-/*
 
 class Player:public Character{
 	private:
@@ -29,7 +26,7 @@ class Player:public Character{
 
 	public:
 		//! Constructor
-		Player(irr::core::vector3df position);
+		Player(GameEngine::GameState* parentState,irr::core::vector3df position);
 		
 		//! Destructor
 		~Player();
@@ -54,5 +51,3 @@ class Player:public Character{
 		void Player::handleMessage(const GameEngine::Message& message);
 
 };
-
-*/

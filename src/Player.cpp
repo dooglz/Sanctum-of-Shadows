@@ -1,11 +1,10 @@
-/*
+
 #include "Player.h"
-#include "SanctumOfShadows.h"
 
 // The Maximum radius of the lanterns effects.
 const float Player::_Lanternmaxradius = 300.0f;
 
-Player::Player(GameState* parentState, irr::core::vector3df position): Character(parentState,0,"player")
+Player::Player(GameEngine::GameState* parentState, irr::core::vector3df position): Character(parentState,0,"player")
 {
 	_fuelLevel = 1.0f;
 	_LanternOn = true;
@@ -141,7 +140,7 @@ void Player::toggleLantern(bool onoff)
 void Player::handleDeath()
 {
 	_alive = false;
-	SanctumOfShadows::GameOver();
+	//SanctumOfShadows::GameOver();
 }
 
 void Player::handleMessage(const GameEngine::Message& message)
@@ -174,5 +173,3 @@ Player::~Player()
 		_camera = NULL;
 	}
 }
-
-*/

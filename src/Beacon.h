@@ -1,4 +1,4 @@
-/*
+
 #pragma once
 #include "StaticPhysicalEntity.h"
 #include "Engine.h"
@@ -9,9 +9,6 @@
 /*! \brief A Beacon, can be lit, doesn't move. 
  * \ingroup Game
  */
-
-
-/*
 
 class Beacon : public GameEngine::StaticPhysicalEntity{
 
@@ -35,7 +32,7 @@ class Beacon : public GameEngine::StaticPhysicalEntity{
 	public:
 
 		//! Constructor.
-		Beacon (GameState* parentState,const irr::core::vector3df& position);
+		Beacon (GameEngine::GameState* parentState,const irr::core::vector3df& position);
 
 		//! Destructor.
 		~Beacon (){};
@@ -57,5 +54,3 @@ class Beacon : public GameEngine::StaticPhysicalEntity{
 
 		bool loadContent();
 };
-
-*/

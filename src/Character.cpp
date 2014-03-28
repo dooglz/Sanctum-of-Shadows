@@ -1,5 +1,7 @@
-/*
 #include "Character.h"
+
+
+Character::Character(GameEngine::GameState* parentState, irr::scene::ISceneNode* node,const std::string& name):Entity(parentState,node,name){}
 
 //! Creates the controller and adds a blank scene node.
 void Character::intitalise(irr::core::vector3df position, irr::core::vector3df size)
@@ -126,5 +128,3 @@ void Character::die(){
 	_ghostObject = NULL;
 	Entity::die();
 }
-
-*/

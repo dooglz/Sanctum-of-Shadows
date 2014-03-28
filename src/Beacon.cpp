@@ -1,6 +1,7 @@
 #include "Beacon.h"
-/*
-Beacon::Beacon(GameState* parentState, const irr::core::vector3df& position) : GameEngine::StaticPhysicalEntity(parentState,0,"Beacon")
+#include "Main_Scene.h"
+
+Beacon::Beacon(GameEngine::GameState* parentState, const irr::core::vector3df& position) : GameEngine::StaticPhysicalEntity(parentState,0,"Beacon")
 {
 	bool particles = true;
 	bool flame = true;
@@ -132,16 +133,17 @@ bool Beacon::loadContent()
 // Check player location, turn on, Heal player.
 void Beacon::update(float delta)
 {
-	float distanceToPlayer = (SanctumOfShadows::player->getNode()->getPosition() - _node->getPosition()).getLength();
+	
+	float distanceToPlayer = (Main_Scene::player->getNode()->getPosition() - _node->getPosition()).getLength();
 	if(_isLit)
 	{
 		if(distanceToPlayer < _healingRange)
 		{
-			float a = SanctumOfShadows::player->getHealth();
+			float a = Main_Scene::player->getHealth();
 			if( a < 150.0f)
 			{
 				//player getting healed by beacon
-				SanctumOfShadows::player->setHealth( a + (5.0f * delta));
+				Main_Scene::player->setHealth( a + (5.0f * delta));
 			}
 		}
 	}
@@ -152,6 +154,7 @@ void Beacon::update(float delta)
 			light(true);
 		}
 	}
+	
 }
 
 void Beacon::handleMessage(const GameEngine::Message& message)
@@ -167,4 +170,3 @@ void Beacon::intitalise(){
 	light(false);
 
 }
-*/

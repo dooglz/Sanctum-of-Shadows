@@ -19,14 +19,8 @@ class SanctumOfShadows:public Game{
 
 	private:
 
-		//! Removes all new created Entities, resets everything to starting positions.
-		void reset();
-
 		//! The current game state.
 		state _state;
-
-		//! is the game over? Used for death animations
-		static bool _gameover;
 
 	public:
 		static GameEngine::GameState* gameState;
@@ -40,20 +34,11 @@ class SanctumOfShadows:public Game{
 		//! Destructor.
 		~SanctumOfShadows();
 
-		//! The Player Entity.
-	//	static Player* player;
-
 		//! Creates Required Entities.
 		bool init();
 
 		//! Run per-frame game logic.
 		bool update(float delta);
-
-		//! Move to Gameover State.
-		static void GameOver();
-
-
-
 
 };
 

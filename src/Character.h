@@ -1,19 +1,13 @@
-/*
 #pragma once
 #include <irrlicht.h>
 #include "BulletDynamics/Character/btKinematicCharacterController.h"
 #include "BulletCollision/CollisionDispatch/btGhostObject.h"
 #include "Engine.h"
 #include "Entity.h"
-//TODO remove
-#include "SanctumOfShadows.h"
 
 /*! \brief A character manages an entity that implemets the bullet KinematicCharacterController and a irrlicht render node
  *  \ingroup Game
  */
-
-
-/*
 
 class Character: public GameEngine::Entity{
 	protected:
@@ -60,7 +54,7 @@ class Character: public GameEngine::Entity{
 	public:
 		//TODO tidy all this
 		//! Constructor, implemeted only to pass name and ID to Entity constructor.
-		Character(int id, irr::scene::ISceneNode* node,const std::string& name):Entity(SanctumOfShadows::gameState,node,name){}
+		Character(GameEngine::GameState* parentState, irr::scene::ISceneNode* node,const std::string& name);
 
 		//! Destructor.
 		~Character(){};
@@ -85,5 +79,3 @@ class Character: public GameEngine::Entity{
 		//! Sets _health.
 		void setHealth(float value) {  _health = value; }
 };
-
-*/

@@ -1,6 +1,3 @@
-
-/*
-
 #pragma once
 #include "Entity.h"
 #include "Beacon.h"
@@ -12,8 +9,6 @@
 /* ! \brief Primary Game logic for Sanctum of Shadows
  * \ingroup Game
  */
-
-/*
 
 class Level: public GameEngine::Entity{
 	private:
@@ -70,7 +65,7 @@ class Level: public GameEngine::Entity{
 	public:
 
 		//! Constructor
-		Level(GameState* parentState);
+		Level(GameEngine::GameState* parentState);
 
 		//! Destructor.
 		~Level(){};
@@ -93,5 +88,3 @@ class Level: public GameEngine::Entity{
 			return _isLit;
 		}
 };
-
-*/

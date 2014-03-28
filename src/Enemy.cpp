@@ -1,4 +1,3 @@
-/*
 #include "Enemy.h"
 #include "Message.h"
 #include "MessageHandler.h"
@@ -7,13 +6,10 @@
 #include <iostream>
 #pragma comment(lib, "irrKlang.lib")
 
+Player* Enemy::_player;
 
-
-Enemy::Enemy(GameState* parentState, irr::core::vector3df position): Character(parentState,0,"Skeletors")
+Enemy::Enemy(GameEngine::GameState* parentState, irr::core::vector3df position): Character(parentState,0,"Skeletors")
 {
-	// start the sound engine with default parameters
-	
-
 	_walkVelocity = btScalar(4.5);
 	_rotateSpeed = 5.0f;
 
@@ -32,9 +28,8 @@ Enemy::Enemy(GameState* parentState, irr::core::vector3df position): Character(p
 
 void Enemy::update(float delta)
 {	
-	Player* player = SanctumOfShadows::player;
 	//a random number for enemy combat statistic to hit player
-	int n1 = rand() % 900;
+	int n1 = rand() % 400;
 	//int n2 = rand() % 250;
 	//int n3 = rand() % 100;
 	walkleft = false;
@@ -44,7 +39,7 @@ void Enemy::update(float delta)
 	Character::update(delta);
 
 	//get dotProduct of the look vector and player position vector
-	float angleToplayer =  _forwardDir.angle(GameEngine::Physics::irrVec3ToBtVec3 ((player->getNode()->getPosition() - _node->getPosition())));
+	float angleToplayer =  _forwardDir.angle(GameEngine::Physics::irrVec3ToBtVec3 ((_player->getNode()->getPosition() - _node->getPosition())));
 	//clamp
 	if(angleToplayer > 1)
 	{
@@ -58,13 +53,13 @@ void Enemy::update(float delta)
 	angleToplayer = acos(angleToplayer);
 
 	//get The Y component of the crossproduct between the look vector and player position vector
-	float crossToplayer = _forwardDir.cross(GameEngine::Physics::irrVec3ToBtVec3 ((player->getNode()->getPosition() - _node->getPosition()))).getY(); 
+	float crossToplayer = _forwardDir.cross(GameEngine::Physics::irrVec3ToBtVec3 ((_player->getNode()->getPosition() - _node->getPosition()))).getY(); 
 	
 	//TODO put these in a header, with other things when enemies get more complicated
 	float visibleRange = 300.0f;
 	float combatRange = 130.0f;
 
-	float distanceToPlayer = (player->getNode()->getPosition() - _node->getPosition()).getLength();
+	float distanceToPlayer = (_player->getNode()->getPosition() - _node->getPosition()).getLength();
 	if(distanceToPlayer < visibleRange )
 	{
 		if(crossToplayer < -10.5f)
@@ -101,12 +96,12 @@ void Enemy::update(float delta)
 	walk(delta);
 
 	//damage player
-	if (player->isAlive() && (player->getNode()->getPosition() - _node->getPosition()).getLength() < combatRange)
+	if (_player->isAlive() && (_player->getNode()->getPosition() - _node->getPosition()).getLength() < combatRange)
 	{
 		if( n1 < 3)
 		{
 		//create a message 
-		GameEngine::Message message(player,"playerHealthDecrease",0);
+		GameEngine::Message message(_player,"playerHealthDecrease",0);
 		//send it via the message handler
 		GameEngine::MessageHandler::sendMessage(message);
 		}
@@ -127,7 +122,6 @@ void Enemy::handleMessage(const GameEngine::Message& message)
 {
 	if (message.message == "healthDecrease")
 	{
-		
 		//received message to take damage
 		_health = _health - 20.0f;
 		//"bob" the enemy to notify damage taken
@@ -137,9 +131,10 @@ void Enemy::handleMessage(const GameEngine::Message& message)
 		_characterC->jump();
 		//play sound for when the enemy takes damage
 		GameEngine::Engine::soundengine->play2D("sounds/hit.wav", false);
-		
 	}
 
 }
 
-*/
+void Enemy::setPlayer(Player* player){
+	_player = player;
+}

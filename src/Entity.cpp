@@ -3,7 +3,7 @@
 #include "EntityManager.h"
 
 namespace GameEngine{
-	//TODO investigate id in constructor, nessisary?
+	//TODO investigate id in constructor, necessary?
 	Entity::Entity(GameState* parentState, irr::scene::ISceneNode* node, const std::string& name)
 	{
 		_name = name;
@@ -11,8 +11,7 @@ namespace GameEngine{
 		_node = node;
 		_shouldRemove = false;
 		_parentstate = parentState;
-		_parentstate->flush();
-		//_parentstate->getEntityManager()->registerEntity(this);
+		_parentstate->getEntityManager()->registerEntity(this);
 	}
 	void Entity::die()
 	{
