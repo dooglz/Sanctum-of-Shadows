@@ -3,7 +3,7 @@
 
 irr::core::vector3df Pathfinder::getDarkLocation()
 {	
-	irr::core::vector3df pos ;
+	irr::core::vector3df pos;
 	bool found = false;
 
 	while(!found)
@@ -15,7 +15,7 @@ irr::core::vector3df Pathfinder::getDarkLocation()
 				if(Level::_grid[col][row] == Level::EMPTY)
 				{
 					if (rand() % 100 < 5) {
-						pos = Level::getResolvedLocation(col,row);
+						pos = Level::getResolvedLocation(irr::core::vector2d<int>(col,row));
 						found = true;
 					}
 				}
@@ -24,5 +24,13 @@ irr::core::vector3df Pathfinder::getDarkLocation()
 	}
 
 	pos.Y = pos.Y + 100.0f;
+	return pos;
+}
+
+irr::core::vector3df Pathfinder::getLocationWithinTile(irr::core::vector2d<int> coord)
+{
+	//get tile position
+	irr::core::vector3df pos;
+	pos = Level::getResolvedLocation(coord);
 	return pos;
 }

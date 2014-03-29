@@ -87,7 +87,7 @@ class Level: public GameEngine::Entity{
 			return _isLit;
 		}
 
-		static irr::core::vector3df getResolvedLocation(int x, int y);
+		static irr::core::vector3df getResolvedLocation(irr::core::vector2d<int> coord);
 
 		static irr::core::vector2d<int> getResolvedCoord(irr::core::vector3df location);
 

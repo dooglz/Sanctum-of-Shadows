@@ -295,14 +295,14 @@ bool Level::isGameWon()
 			}
 			
 		}
-		return true;
 	}
+	return true;
 }
 
-irr::core::vector3df Level::getResolvedLocation(int x, int y)
+irr::core::vector3df Level::getResolvedLocation(irr::core::vector2d<int> coord)
 {
 	float startingPos = (-1.0f * (0.5f*((float)_tileSize * _gridSize))) +(0.5f*(float)_tileSize);
-	irr::core::vector3df origin = irr::core::vector3df(startingPos + (x*(float)_tileSize),0,startingPos + (y*(float)_tileSize));
+	irr::core::vector3df origin = irr::core::vector3df(startingPos + (coord.X *(float)_tileSize),0,startingPos + (coord.Y*(float)_tileSize));
 	return origin;
 }
 
