@@ -14,7 +14,7 @@ namespace GameEngine{
 		irr::gui::IGUIEnvironment* env = dev->getGUIEnvironment();
 
 		//TODO scale font size with resolution.
-		_font =  irr::gui::CGUITTFont::createTTFont(env, "fonts/kochi-gothic-subst.ttf", 30);
+		_font =  irr::gui::CGUITTFont::createTTFont(env, "fonts/CelticGaramond.ttf", 30);
 
 		//_font = _device->getGUIEnvironment()->getBuiltInFont();
 

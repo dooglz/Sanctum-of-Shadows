@@ -28,7 +28,7 @@ namespace GameEngine{
 
 		if(_node != nullptr )
 		{
-			_node->removeAll();
+			_node->remove();
 			_node = NULL;
 		}
 	}

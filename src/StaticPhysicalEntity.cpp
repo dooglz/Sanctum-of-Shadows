@@ -36,7 +36,5 @@ namespace GameEngine{
 			delete _rigidBody;
 			_rigidBody = NULL;
 		}
-
-		Entity::~Entity();
 	}
 }

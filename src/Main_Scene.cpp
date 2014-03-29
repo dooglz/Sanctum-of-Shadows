@@ -87,7 +87,7 @@ void Main_Scene::initialize()
 	irr::core::stringw str = "Game Initialised";
 	GameEngine::UI::displayTextMessage(str,2000);
 
-	//reset();
+	reset();
 
 }
 
@@ -97,7 +97,6 @@ void Main_Scene::flush()
 
 	if (Menucamera != nullptr )
 	{
-		//Menucamera->drop();
 		Menucamera->remove();
 		Menucamera = NULL;
 	}
@@ -110,13 +109,12 @@ void Main_Scene::flush()
 
 	if (spinningLight != nullptr )
 	{
-		spinningLight->removeAll();
+		spinningLight->remove();
 		spinningLight = NULL;
 	}
 
 	if (Menucamera != nullptr )
 	{
-		//Flycamera->drop();
 		Flycamera->remove();
 		Flycamera = NULL;
 	}
