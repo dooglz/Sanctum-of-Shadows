@@ -70,7 +70,6 @@ void Game::processStates()
 			if (_activeState != nullptr )
 			{
 				_activeState->flush();
-				delete _activeState;
 			}
 			if (_targetState != nullptr )
 			{
