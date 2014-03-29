@@ -32,12 +32,6 @@ class Level: public GameEngine::Entity{
 			static const unsigned int _obstaclePercent = 80; 
 		//@}
 
-		//! The tiles types that make up a level.
-		static const enum tile {EMPTY,BADLANDS,BEACON,OBSTACLE};
-
-		//! The level Grid.
-		static std::array<std::array<tile,_gridSize>, _gridSize> _grid;
-
 		//! Procedurally generate the level, populates _grid.
 		void generateLevel();
 
@@ -61,6 +55,8 @@ class Level: public GameEngine::Entity{
 		bool _isWon;
 
 	public:
+		//! The tiles types that make up a level.
+		static const enum tile {EMPTY,BADLANDS,BEACON,OBSTACLE};
 
 		//! Constructor
 		Level(GameEngine::GameState* parentState);
@@ -82,14 +78,14 @@ class Level: public GameEngine::Entity{
 
 		bool isGameWon();
 
-		static std::array<std::array<tile,_gridSize>, _gridSize>* getGrid()
-		{
-			return &_grid;
-		}
+		//! The level Grid.
+		static std::array<std::array<tile,_gridSize>, _gridSize> _grid;
 
 		//! Is Lighting enabled on the level.
 		bool isLit()
 		{
 			return _isLit;
 		}
+
+		static irr::core::vector3df getResolvedLocation(int x, int y);
 };

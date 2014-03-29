@@ -104,6 +104,7 @@
     <ClCompile Include="MeshManager.cpp" />
     <ClCompile Include="MessageHandler.cpp" />
     <ClCompile Include="Obstacle.cpp" />
+    <ClCompile Include="Pathfinder.cpp" />
     <ClCompile Include="PhysicalEntity.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Player.cpp" />

@@ -297,3 +297,10 @@ bool Level::isGameWon()
 		return true;
 	}
 }
+
+irr::core::vector3df Level::getResolvedLocation(int x, int y)
+{
+	float startingPos = (-1.0f * (0.5f*((float)_tileSize * _gridSize))) +(0.5f*(float)_tileSize);
+	irr::core::vector3df origin = irr::core::vector3df(startingPos + (x*(float)_tileSize),0,startingPos + (y*(float)_tileSize));
+	return origin;
+}

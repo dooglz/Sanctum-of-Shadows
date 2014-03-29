@@ -6,6 +6,7 @@
 #include "Enemy.h"
 #include "Level.h"
 #include "Box.h"
+#include "Pathfinder.h"
 
 irr::scene::ICameraSceneNode* Flycamera;
 irr::scene::ICameraSceneNode* Menucamera;
@@ -83,7 +84,7 @@ void Main_Scene::initialize()
 	Enemy::setPlayer(player);
 	for(int i = 0; i < 10; i++)
 	{
-	new Enemy(this,irr::core::vector3df(400.0f,80.0f + (i*80),0));
+		new Enemy(this,Pathfinder::getDarkLocation());
 	}
 	//
 
