@@ -10,6 +10,7 @@
 class Enemy:public Character{
 	private:
 		static Player* _player;
+		irr::core::vector3df targetPosition;
 
 	public:
 		//! Constructor
