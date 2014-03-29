@@ -16,7 +16,6 @@ bool Main_Scene::_gameover;
 bool Main_Scene::_gamewon;
 
 Player* Main_Scene::player;
-Enemy* enemy;
 Level* level;
 irr::gui::IGUIInOutFader* fader;
 
@@ -82,7 +81,10 @@ void Main_Scene::initialize()
 	//Game Entities
 	player = new Player(this,irr::core::vector3df(0,200.0f,0));
 	Enemy::setPlayer(player);
-	enemy = new Enemy(this,irr::core::vector3df(400.0f,200.0f,0));
+	for(int i = 0; i < 10; i++)
+	{
+	new Enemy(this,irr::core::vector3df(400.0f,80.0f + (i*80),0));
+	}
 	//
 
 	irr::core::stringw str = "Game Initialised";
@@ -124,12 +126,6 @@ void Main_Scene::flush()
 	{
 		delete player;
 		player = NULL;
-	}
-	
-	if(enemy != nullptr )
-	{
-		delete enemy;
-		enemy = NULL;
 	}
 
 	if(level != nullptr )
