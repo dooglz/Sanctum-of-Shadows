@@ -118,13 +118,18 @@ btKinematicCharacterController*  Character::addCharacter(btScalar stepHeight,btV
 	return character;
 };
 
-void Character::die(){
-	_node->remove();
-	GameEngine::Physics::world->removeCharacter(_characterC);
-	GameEngine::Physics::world->removeCollisionObject(_ghostObject);
-	delete _characterC;
-	_characterC = NULL;
-	delete _ghostObject;
-	_ghostObject = NULL;
-	Entity::die();
+Character::~Character()
+{
+	if (_characterC != nullptr )
+	{
+		GameEngine::Physics::world->removeCharacter(_characterC);
+		delete _characterC;
+		_characterC = NULL;
+	}
+	if (_ghostObject != nullptr )
+	{
+		GameEngine::Physics::world->removeCollisionObject(_ghostObject);
+		delete _ghostObject;
+		_ghostObject = NULL;
+	}
 }

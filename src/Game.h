@@ -16,7 +16,8 @@ protected:
 	//! Starting dimensions
 	irr::core::dimension2d<irr::u32> _resolution;
 
-	irr::gui::IGUIImage* _LoadingImg;
+	irr::gui::IGUIImage* _loadingImg;
+	irr::video::ITexture* _loadingTexture;
 
 	static GameEngine::GameState* _activeState;
 	static GameEngine::GameState* _targetState;

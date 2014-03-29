@@ -135,7 +135,7 @@ namespace GameEngine{
 	bool EntityManager::remove(std::unordered_map<int,Entity*>::iterator &iter)
 	{
 		std::cout << "Removing Entity: ID:"<<iter->first << " Name: " << iter->second->getName() << std::endl;
-		std::cout << _entities.size() << std::endl;
+		std::cout << "_entities.size: " << _entities.size() << std::endl;
 
 		//does entity have a name
 		if(iter->second->getName() != "")
@@ -155,7 +155,7 @@ namespace GameEngine{
 
 		//Delete the pointer to the Entity from the main list. The iterator gets incremented
 		iter = _entities.erase(iter);
-		std::cout << _entities.size() << std::endl;
+		std::cout << "_entities.size: " <<  _entities.size() << std::endl;
 		return true;
 	}
 

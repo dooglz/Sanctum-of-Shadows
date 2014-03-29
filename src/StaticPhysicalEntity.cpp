@@ -30,11 +30,12 @@ namespace GameEngine{
 
 	StaticPhysicalEntity::~StaticPhysicalEntity()
 	{
-		if(_rigidBody)
+		if (_rigidBody != nullptr )
 		{
+			GameEngine::Physics::world->removeCollisionObject(_rigidBody);
 			delete _rigidBody;
+			_rigidBody = NULL;
 		}
-		_rigidBody = NULL;
 
 		Entity::~Entity();
 	}

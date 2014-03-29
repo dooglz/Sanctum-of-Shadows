@@ -40,7 +40,9 @@ bool Main_Scene::loadContent()
 void Main_Scene::initialize()
 {
 	flush();
+
 	std::cout << "Main_Scene initialize" << std::endl;
+	
 
 	irr::scene::ISceneManager* smgr = GameEngine::engine.getDevice()->getSceneManager();
 
@@ -48,8 +50,10 @@ void Main_Scene::initialize()
 	Flycamera = smgr->addCameraSceneNodeFPS();
 	Flycamera->setPosition(irr::core::vector3df(0,100,0));
 	Flycamera->setFarValue(10000.0f);
-
+	
 	Menucamera = smgr->addCameraSceneNode(0,irr::core::vector3df(0,100,223),irr::core::vector3df(0,100,0));
+
+				
 	//Lights
 	workLight = smgr->addLightSceneNode(0, irr::core::vector3df(0,200.0f,0), irr::video::SColorf(1.0f, 1.0f, 1.0f, 1.0f), 1000.0f);
 	// create spinning light
@@ -57,22 +61,22 @@ void Main_Scene::initialize()
 	irr::scene::ISceneNodeAnimator* anim = smgr->createFlyCircleAnimator (irr::core::vector3df(0,50,0),300.0f);
 	spinningLight->addAnimator(anim);
 	anim->drop();
-	spinningLight->setDebugDataVisible ( irr::scene::EDS_BBOX );
 
 	irr::scene::ISceneNode* LightSpriteNode = smgr->addBillboardSceneNode(spinningLight, irr::core::dimension2d<irr::f32>(50, 50));
 	LightSpriteNode->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	LightSpriteNode->setMaterialType(irr::video::EMT_TRANSPARENT_ADD_COLOR);
 	LightSpriteNode->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/particlewhite.bmp"));
-	
+
 	//fader
 	fader = GameEngine::engine.getDevice()->getGUIEnvironment()->addInOutFader();
     fader->setColor(irr::video::SColor(0,0,0,0));
 
-
+	
 	//load the level
 	level = new Level(this);
 	level->loadContent();
 	level->intitalise();
+	
 
 	//Game Entities
 	player = new Player(this,irr::core::vector3df(0,200.0f,0));
@@ -83,7 +87,8 @@ void Main_Scene::initialize()
 	irr::core::stringw str = "Game Initialised";
 	GameEngine::UI::displayTextMessage(str,2000);
 
-	reset();
+	//reset();
+
 }
 
 void Main_Scene::flush()
@@ -92,25 +97,27 @@ void Main_Scene::flush()
 
 	if (Menucamera != nullptr )
 	{
-		Menucamera->drop();
+		//Menucamera->drop();
+		Menucamera->remove();
 		Menucamera = NULL;
 	}
 
 	if (workLight != nullptr )
 	{
-		workLight->drop();
+		workLight->remove();
 		workLight = NULL;
 	}
 
 	if (spinningLight != nullptr )
 	{
-		spinningLight->drop();
+		spinningLight->removeAll();
 		spinningLight = NULL;
 	}
 
 	if (Menucamera != nullptr )
 	{
-		Flycamera->drop();
+		//Flycamera->drop();
+		Flycamera->remove();
 		Flycamera = NULL;
 	}
 	
@@ -134,7 +141,8 @@ void Main_Scene::flush()
 	
 	if(fader != nullptr )
 	{
-		fader->drop();
+		//fader->drop();
+		fader->remove();
 		fader = NULL;
 	}
 }
@@ -142,6 +150,7 @@ void Main_Scene::flush()
 // Run per-frame game logic.
 void Main_Scene::update(float delta)
 {
+	
 	//display player health
 	irr::core::stringw str = "Player Health: ";
 	str += player->getHealth();
@@ -210,7 +219,12 @@ void Main_Scene::update(float delta)
 	{
 		GameOver();
 	}
-
+	
+	if(GameEngine::handler.keyFired(irr::KEY_RETURN))
+	{
+		// Change State
+		Game::changeState("menu");
+	}
 
 	_entityManager->update(delta);
 }

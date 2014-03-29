@@ -3,7 +3,6 @@
 #include "Game.h"
 
 irr::gui::IGUIImage* img;
-irr::video::ITexture* tex;
 
 Menu_Scene::Menu_Scene():GameState("menu")
 {
@@ -19,7 +18,6 @@ Menu_Scene::~Menu_Scene()
 bool Menu_Scene::loadContent()
 {
 	std::cout << "Menu_Scene loadContent" << std::endl;
-	tex = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_dev_spiral.jpg");
 	return true;
 }
 
@@ -27,9 +25,6 @@ void Menu_Scene::initialize()
 {
 	std::cout << "Menu_Scene initialize" << std::endl;
 	loadContent();
-	//Don't drop this pointer, Irrlicht hates it.
-	img = GameEngine::engine.getDevice()->getGUIEnvironment()->addImage(irr::core::rect<irr::s32>(200,200,500,500),0);
-	img->setImage(tex);
 }
 
 void Menu_Scene::flush()

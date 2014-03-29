@@ -15,10 +15,12 @@ bool SanctumOfShadows::init(){
 	addState(_gameState);
 	addState(_menuState);
 
-	_LoadingImg = GameEngine::engine.getDevice()->getGUIEnvironment()->addImage(irr::core::rect<irr::s32>(300,400,600,700),0);
+	_loadingImg = GameEngine::engine.getDevice()->getGUIEnvironment()->addImage(irr::core::rect<irr::s32>(0,0,_resolution.Width,_resolution.Height),0);
 	//TODO checks this loads.
-	_LoadingImg ->setImage(GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_dev_radius.png"));
-	
+	_loadingTexture = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_loading.png");
+	_loadingImg->setImage(_loadingTexture );
+	_loadingImg->setScaleImage(true);
+
 	changeState("menu");
 
 	return true;

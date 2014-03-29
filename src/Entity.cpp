@@ -23,12 +23,12 @@ namespace GameEngine{
 		//IF id != 1, the manager is still tracking us
 		if(_id != -1)
 		{
-			_parentstate->getEntityManager()->registerEntity(this);
+			_parentstate->getEntityManager()->remove(this);
 		}
 
 		if(_node != nullptr )
 		{
-			_node->drop();
+			_node->removeAll();
 			_node = NULL;
 		}
 	}

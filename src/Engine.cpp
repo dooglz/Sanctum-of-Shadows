@@ -18,6 +18,7 @@ namespace GameEngine{
 			return 1;
 
 		_run = true;
+
 		_device = irr::createDevice(
 			driverType, _dimensions, 16, false, true, false, &handler);
 		//TODO investigate if vsync can be toggled

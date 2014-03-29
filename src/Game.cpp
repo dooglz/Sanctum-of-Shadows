@@ -64,7 +64,7 @@ void Game::processStates()
 	if(!_stateLoaded)
 	{
 		//Has the loading screen loaded?
-		if(_LoadingImg->isVisible())
+		if(_loadingImg->isVisible())
 		{
 			//We don't have parallel loading threads, so we will hang around here while we load.
 			if (_activeState != nullptr )
@@ -82,12 +82,12 @@ void Game::processStates()
 
 			_stateLoaded = true;
 			_activeState = _targetState;
-			_LoadingImg->setVisible(false);
+			_loadingImg->setVisible(false);
 
 		}
 		else
 		{
-			_LoadingImg->setVisible(true);
+			_loadingImg->setVisible(true);
 			return;
 		}
 	}
@@ -106,4 +106,16 @@ Game::~Game()
 		}
 	}
 	_states.clear();
+
+	if (_loadingImg != nullptr )
+	{
+		_loadingImg->remove();
+		_loadingImg = NULL;
+	}
+	if (_loadingTexture != nullptr )
+	{
+		_loadingTexture->drop();
+		_loadingTexture = NULL;
+	}
+
 }

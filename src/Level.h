@@ -38,9 +38,6 @@ class Level: public GameEngine::Entity{
 		//! The level Grid.
 		static std::array<std::array<tile,_gridSize>, _gridSize> _grid;
 
-		//! Place beacons in the level.
-		void placeBeacons();
-
 		//! Procedurally generate the level, populates _grid.
 		void generateLevel();
 
@@ -68,7 +65,7 @@ class Level: public GameEngine::Entity{
 		Level(GameEngine::GameState* parentState);
 
 		//! Destructor.
-		~Level(){};
+		~Level();
 
 		//! Generate and Create level.
 		void intitalise();

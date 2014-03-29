@@ -167,9 +167,14 @@ void Player::handleMessage(const GameEngine::Message& message)
 
 Player::~Player()
 {
+	if(_Lanternlight != nullptr )
+	{
+		_Lanternlight->remove();
+		_Lanternlight = NULL;
+	}
 	if(_camera != nullptr )
 	{
-		_camera->drop();
+		_camera->remove();
 		_camera = NULL;
 	}
 }

@@ -57,7 +57,7 @@ class Character: public GameEngine::Entity{
 		Character(GameEngine::GameState* parentState, irr::scene::ISceneNode* node,const std::string& name);
 
 		//! Destructor.
-		~Character(){};
+		~Character();
 
 		//! Creates the controller and adds a blank scene node.
 		void intitalise(irr::core::vector3df position, irr::core::vector3df size);
@@ -67,8 +67,6 @@ class Character: public GameEngine::Entity{
 
 		//! Recalculate position transforms and direction vectors, call this before Walk.
 		void update(float delta);
-
-		void die();
 
 		//! Creates the controller and adds a blank scene node.
 		void intitalise(){};

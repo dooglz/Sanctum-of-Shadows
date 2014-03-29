@@ -11,6 +11,7 @@ Level::Level(GameEngine::GameState* parentState):Entity(parentState,0,"Level")
 void Level::intitalise()
 {	
 	//Bullet floor plane
+	//TODO destructor tidy this
 	btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0.0, 1.0, 0.0), 1.0);
 	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1),btVector3(0,-1,0)));
 	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(0,groundMotionState,groundShape,btVector3(0.0, 0.0, 0.0));
@@ -26,24 +27,6 @@ void Level::intitalise()
 	//Create
 	createLevel();
 
-	//Populate
-	//placeBeacons();
-}
-
-// Place beacons in the level.
-void Level::placeBeacons()
-{
-	std::array<irr::core::vector3df, 5> positions = {
-		irr::core::vector3df(0,0,800),
-		irr::core::vector3df(0,0,-800),
-		irr::core::vector3df(800,0,0),
-		irr::core::vector3df(-800,0,0),
-		irr::core::vector3df(0,0,0),
-	};
-
-	for (unsigned int i=0; i< positions.size(); i++) {
-		new Beacon(_parentstate,positions[i]);
-	}
 }
 
 // Spawn the entities and geometry as laid out by generateLevel().
@@ -249,5 +232,51 @@ void Level::toggleLighting(bool a)
 	{
 		j->getNode()->setMaterialFlag(irr::video::EMF_LIGHTING, a);
 		j->getNode()->setMaterialFlag(irr::video::EMF_FOG_ENABLE, a);
+	}
+}
+
+Level::~Level()
+{
+	if (_groundPlaneRB != nullptr )
+	{
+		GameEngine::Physics::world->removeCollisionObject(_groundPlaneRB);
+		delete _groundPlaneRB;
+		_groundPlaneRB = NULL;
+	}
+
+	if (!_floorTiles.empty())
+	{
+		for (irr::scene::IMeshSceneNode* i : _floorTiles ) 
+		{
+			if (i != nullptr )
+			{
+				i->remove();
+			}
+		}
+		_floorTiles.clear();
+	}
+
+	if (!_obstacles.empty())
+	{
+		for (Obstacle* i : _obstacles ) 
+		{
+			if (i != nullptr )
+			{
+				delete i;
+			}
+		}
+		_obstacles.clear();
+	}
+
+	if (!_beacons.empty())
+	{
+		for (Beacon* i : _beacons ) 
+		{
+			if (i != nullptr )
+			{
+				delete i;
+			}
+		}
+		_beacons.clear();
 	}
 }

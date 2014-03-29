@@ -31,6 +31,7 @@ class SanctumOfShadows:public Game{
 		SanctumOfShadows(){
 			_gameTitle = L"SanctumOfShadows";
 			_resolution  = irr::core::dimension2d<irr::u32>(1280, 720);
+
 		};
 
 		//! Destructor.
