@@ -17,7 +17,7 @@ class Level: public GameEngine::Entity{
 		//level gen stuff
 		//@{
 			//! Grid size, X by X, has to be an odd number.
-			static const unsigned int _gridSize = 7;
+			static const unsigned int _gridSize = 11;
 			//! amount of dark tiles lining the edge.
 			static const unsigned int _darkPadding = 1;
 			//! Max obstacles to spawn around a beacon.
@@ -88,4 +88,7 @@ class Level: public GameEngine::Entity{
 		}
 
 		static irr::core::vector3df getResolvedLocation(int x, int y);
+
+		static irr::core::vector2d<int> getResolvedCoord(irr::core::vector3df location);
+
 };

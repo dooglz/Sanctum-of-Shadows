@@ -1,5 +1,6 @@
 #include "Level.h"
 #include <ctime>
+#include <math.h> 
 
 std::array<std::array<Level::tile,Level::_gridSize>, Level::_gridSize> Level::_grid;
 int numberofBeacons;
@@ -303,4 +304,23 @@ irr::core::vector3df Level::getResolvedLocation(int x, int y)
 	float startingPos = (-1.0f * (0.5f*((float)_tileSize * _gridSize))) +(0.5f*(float)_tileSize);
 	irr::core::vector3df origin = irr::core::vector3df(startingPos + (x*(float)_tileSize),0,startingPos + (y*(float)_tileSize));
 	return origin;
+}
+
+irr::core::vector2d<int> Level::getResolvedCoord(irr::core::vector3df location)
+{
+	float tilesize = (float)_tileSize;
+	float totalSize = (_gridSize * tilesize);
+	int col = 0;
+	int row = 0;
+	//remove 0 center offset
+	float aX = location.X + (0.5f*totalSize);
+	float aY = location.Z+ (0.5f*totalSize);
+	//project onto grid
+	int bX = int(floor(aX / tilesize));
+	int bY = int(floor(aY / tilesize));
+	//clamp
+	bX =  bX < 0 ? 0 : (bX > _gridSize ? _gridSize : bX);
+	bY =  bY < 0 ? 0 : (bY > _gridSize ? _gridSize : bY);
+
+	return irr::core::vector2d<int>(bX,bY);
 }

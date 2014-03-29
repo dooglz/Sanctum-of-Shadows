@@ -40,6 +40,8 @@ bool Main_Scene::loadContent()
 
 void Main_Scene::initialize()
 {
+
+
 	flush();
 
 	std::cout << "Main_Scene initialize" << std::endl;
@@ -82,7 +84,7 @@ void Main_Scene::initialize()
 	//Game Entities
 	player = new Player(this,irr::core::vector3df(0,200.0f,0));
 	Enemy::setPlayer(player);
-	for(int i = 0; i < 10; i++)
+	for(int i = 0; i < 15; i++)
 	{
 		new Enemy(this,Pathfinder::getDarkLocation());
 	}
