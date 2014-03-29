@@ -144,6 +144,8 @@ void Main_Scene::flush()
 		fader->remove();
 		fader = NULL;
 	}
+
+	//todo flush EM
 }
 
 // Run per-frame game logic.

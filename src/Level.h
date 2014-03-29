@@ -81,7 +81,11 @@ class Level: public GameEngine::Entity{
 		void toggleLighting(bool a);
 
 		bool isGameWon();
-		
+
+		static std::array<std::array<tile,_gridSize>, _gridSize>* getGrid()
+		{
+			return &_grid;
+		}
 
 		//! Is Lighting enabled on the level.
 		bool isLit()
