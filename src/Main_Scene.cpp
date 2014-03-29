@@ -13,6 +13,7 @@ irr::scene::ILightSceneNode* workLight;
 irr::scene::ILightSceneNode* spinningLight;
 
 bool Main_Scene::_gameover;
+bool Main_Scene::_gamewon;
 
 Player* Main_Scene::player;
 Enemy* enemy;
@@ -154,6 +155,13 @@ void Main_Scene::update(float delta)
 	str += player->getHealth();
 	GameEngine::UI::displayTextMessage(str,0);
 
+
+	if(level->isGameWon() == true)
+	{
+		GameWon();
+	}
+
+
 	//Debug Camera commands
 	if(GameEngine::handler.keyFired(irr::KEY_F1))
 	{
@@ -224,8 +232,12 @@ void Main_Scene::update(float delta)
 		Game::changeState("menu");
 	}
 
-	_entityManager->update(delta);
+	if(_gameover== false && _gamewon== false)
+	{
+	 _entityManager->update(delta);
+	}
 }
+
 
 void Main_Scene::render()
 {
@@ -246,6 +258,8 @@ void Main_Scene::reset()
 
 	//TODO Reset all game Entities
 	_gameover = false;
+	_gamewon = false;
+
 
 	//Fade In
     fader->fadeIn(7000);
@@ -264,4 +278,19 @@ void Main_Scene::GameOver()
 		fader->fadeOut(1000);
 	}
 	_gameover = true;
+}
+
+
+void Main_Scene::GameWon()
+{
+	if(!_gamewon)
+	{
+
+		std::cerr << "Game has been won" << std::endl;
+		irr::core::stringw str = "Game is has been won by player";
+		GameEngine::UI::displayTextMessage(str,2000);
+		fader->fadeOut(3000);
+		
+	}
+	_gamewon = true;
 }

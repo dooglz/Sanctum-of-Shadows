@@ -2,6 +2,7 @@
 #include <ctime>
 
 std::array<std::array<Level::tile,Level::_gridSize>, Level::_gridSize> Level::_grid;
+int numberofBeacons;
 
 Level::Level(GameEngine::GameState* parentState):Entity(parentState,0,"Level")
 {
@@ -278,5 +279,21 @@ Level::~Level()
 			}
 		}
 		_beacons.clear();
+	}
+}
+
+bool Level::isGameWon()
+{
+	if (!_beacons.empty())
+	{
+		for (Beacon* i : _beacons ) 
+		{
+			if(!i->isLit())
+			{
+				return false;
+			}
+			
+		}
+		return true;
 	}
 }

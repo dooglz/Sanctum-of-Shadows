@@ -140,10 +140,16 @@ void Beacon::update(float delta)
 		if(distanceToPlayer < _healingRange)
 		{
 			float a = Main_Scene::player->getHealth();
-			if( a < 150.0f)
+			float b = Main_Scene::player->getFuel();
+		    
+			if( a < 100.0f)
 			{
 				//player getting healed by beacon
 				Main_Scene::player->setHealth( a + (5.0f * delta));
+			}
+			if( b < 1.0f)
+			{
+				Main_Scene::player->setFuel(b + (0.2 * delta));
 			}
 		}
 	}

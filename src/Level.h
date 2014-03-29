@@ -17,7 +17,7 @@ class Level: public GameEngine::Entity{
 		//level gen stuff
 		//@{
 			//! Grid size, X by X, has to be an odd number.
-			static const unsigned int _gridSize = 15;
+			static const unsigned int _gridSize = 7;
 			//! amount of dark tiles lining the edge.
 			static const unsigned int _darkPadding = 1;
 			//! Max obstacles to spawn around a beacon.
@@ -58,6 +58,7 @@ class Level: public GameEngine::Entity{
 
 		//! Is Lighting enabled on the level, used for debug
 		bool _isLit;
+		bool _isWon;
 
 	public:
 
@@ -78,6 +79,9 @@ class Level: public GameEngine::Entity{
 
 		//! Sets EMF_LIGHTING on all level nodes, used for debug.
 		void toggleLighting(bool a);
+
+		bool isGameWon();
+		
 
 		//! Is Lighting enabled on the level.
 		bool isLit()

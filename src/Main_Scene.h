@@ -12,10 +12,14 @@ class Main_Scene : public GameEngine::GameState{
 		//! is the game over? Used for death animations
 		static bool _gameover;
 
+		static bool _gamewon;
+
 		//! Removes all new created Entities, resets everything to starting positions.
 		void reset();
 
 		void GameOver();
+
+		void GameWon();
 
 	public: 
 		//! Constructor.
