@@ -45,6 +45,17 @@ void Menu_Scene::initialize()
 void Menu_Scene::flush()
 {
 	std::cout << "Menu_Scene flush" << std::endl;
+	if (logoNode != nullptr )
+	{
+		logoNode->remove();
+		logoNode = NULL;
+	}
+
+	if (menucam != nullptr )
+	{
+		menucam->remove();
+		menucam = NULL;
+	}
 }
 
 void Menu_Scene::update(float delta)
