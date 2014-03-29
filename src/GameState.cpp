@@ -7,4 +7,10 @@ namespace GameEngine{
 	{
 		return _entityManager;
 	}
+
+	 GameState::GameState (std::string name):_name(name)
+	 {
+		 _entityManager = new GameEngine::EntityManager();
+	 }
+
 }

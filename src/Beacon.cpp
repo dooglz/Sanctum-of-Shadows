@@ -93,7 +93,7 @@ Beacon::Beacon(GameEngine::GameState* parentState, const irr::core::vector3df& p
 		_effects.push_back(n);
 	}
 
-	//set beacon to be unlit innitially
+	//set beacon to be unlit initially
 	light(false);
 }
 

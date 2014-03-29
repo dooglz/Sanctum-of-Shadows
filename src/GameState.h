@@ -23,7 +23,7 @@ namespace GameEngine{
 			GameState () ; 
 
 			//! Constructor
-			GameState (std::string name):_name(name){};
+			GameState (std::string name);
 
 			//! Destructor.
 			~GameState (){};

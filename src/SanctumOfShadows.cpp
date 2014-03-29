@@ -4,23 +4,31 @@
 #include "Beacon.h"
 #include <btBulletDynamicsCommon.h>
 #include "Main_Scene.h"
-
-GameEngine::GameState* SanctumOfShadows::gameState;
+#include "Menu_Scene.h"
 
 // Creates Required Entities.
 bool SanctumOfShadows::init(){
-
-	gameState = new Main_Scene();
-	_activeState = gameState;
-	gameState->initialize();
-
 	std::wcout <<  _gameTitle << " Game code init" << std::endl;
+
+	_gameState = new Main_Scene();
+	_menuState = new Menu_Scene();
+	addState(_gameState);
+	addState(_menuState);
+
+	_LoadingImg = GameEngine::engine.getDevice()->getGUIEnvironment()->addImage(irr::core::rect<irr::s32>(300,400,600,700),0);
+	//TODO checks this loads.
+	_LoadingImg ->setImage(GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_dev_radius.png"));
+	
+	changeState("menu");
+
 	return true;
 }
 
-// Run per-frame game logic.
+// Run per-frameState Independent game logic.
 bool SanctumOfShadows::update(float delta){
-
+	
+	processStates();
+	
 	if(GameEngine::handler.keyFired(irr::KEY_ESCAPE))
 	{
 		GameEngine::engine.stop();
@@ -30,8 +38,11 @@ bool SanctumOfShadows::update(float delta){
 	{
 		GameEngine::engine.setBulletDebugDrawing(!GameEngine::engine.getBulletDebugDrawing());
 	}
-
-	gameState->update(delta);
+	
+	if(_stateLoaded)
+	{
+		_activeState->update(delta);
+	}
 
 	return true;
 }
@@ -39,6 +50,5 @@ bool SanctumOfShadows::update(float delta){
 // Destructor
 SanctumOfShadows::~SanctumOfShadows()
 {
-	delete gameState;
-	gameState = NULL;
+
 }

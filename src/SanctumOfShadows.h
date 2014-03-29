@@ -22,8 +22,10 @@ class SanctumOfShadows:public Game{
 		//! The current game state.
 		state _state;
 
+		GameEngine::GameState* _menuState;
+		GameEngine::GameState* _gameState;
+
 	public:
-		static GameEngine::GameState* gameState;
 
 		//! Constructor.
 		SanctumOfShadows(){

@@ -22,30 +22,13 @@ irr::gui::IGUIInOutFader* fader;
 Main_Scene::Main_Scene():GameState("main")
 {
 	std::cout << "Main_Scene constructor" << std::endl;
-	_entityManager = new GameEngine::EntityManager();
 }
 
 // Destructor
 Main_Scene::~Main_Scene()
 {
 	std::cout << "Main_Scene destructor" << std::endl;
-	
-	Menucamera->drop();
-	workLight->drop();
-	spinningLight->drop();
-	Flycamera->drop();
-	
-	delete player;
-	player = NULL;
-
-	delete enemy;
-	enemy = NULL;
-
-	delete level;
-	level = NULL;
-
-	fader->drop();
-	fader = NULL;
+	flush();
 }
 
 bool Main_Scene::loadContent()
@@ -56,6 +39,7 @@ bool Main_Scene::loadContent()
 
 void Main_Scene::initialize()
 {
+	flush();
 	std::cout << "Main_Scene initialize" << std::endl;
 
 	irr::scene::ISceneManager* smgr = GameEngine::engine.getDevice()->getSceneManager();
@@ -105,6 +89,54 @@ void Main_Scene::initialize()
 void Main_Scene::flush()
 {
 	std::cout << "Main_Scene Flush" << std::endl;
+
+	if (Menucamera != nullptr )
+	{
+		Menucamera->drop();
+		Menucamera = NULL;
+	}
+
+	if (workLight != nullptr )
+	{
+		workLight->drop();
+		workLight = NULL;
+	}
+
+	if (spinningLight != nullptr )
+	{
+		spinningLight->drop();
+		spinningLight = NULL;
+	}
+
+	if (Menucamera != nullptr )
+	{
+		Flycamera->drop();
+		Flycamera = NULL;
+	}
+	
+	if(player != nullptr )
+	{
+		delete player;
+		player = NULL;
+	}
+	
+	if(enemy != nullptr )
+	{
+		delete enemy;
+		enemy = NULL;
+	}
+
+	if(level != nullptr )
+	{
+		delete level;
+		level = NULL;
+	}
+	
+	if(fader != nullptr )
+	{
+		fader->drop();
+		fader = NULL;
+	}
 }
 
 // Run per-frame game logic.
