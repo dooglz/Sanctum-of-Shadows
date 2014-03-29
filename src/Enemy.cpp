@@ -37,44 +37,50 @@ void Enemy::update(float delta)
 	walkforward = false;
 	walkback = false;
 	Character::update(delta);
-
+	
 	//get dotProduct of the look vector and player position vector
-	float angleToplayer =  _forwardDir.angle(GameEngine::Physics::irrVec3ToBtVec3 ((_player->getNode()->getPosition() - _node->getPosition())));
+	float angleToTarget =  _forwardDir.angle(GameEngine::Physics::irrVec3ToBtVec3 ((targetPosition - _node->getPosition())));
 	//clamp
-	if(angleToplayer > 1)
+	
+	if(angleToTarget > 1)
 	{
-		angleToplayer =1;
+		angleToTarget =1;
 	}
-	else if(angleToplayer < -1)
+	else if(angleToTarget < -1)
 	{
-		angleToplayer = -1;
+		angleToTarget = -1;
 	}
 	//cos^-1 to get angle
-	angleToplayer = acos(angleToplayer);
+	angleToTarget = acos(angleToTarget);
 
 	//get The Y component of the crossproduct between the look vector and player position vector
-	float crossToplayer = _forwardDir.cross(GameEngine::Physics::irrVec3ToBtVec3 ((_player->getNode()->getPosition() - _node->getPosition()))).getY(); 
+	float crossToTarget = _forwardDir.cross(GameEngine::Physics::irrVec3ToBtVec3 ((targetPosition - _node->getPosition()))).getY(); 
 	
 	//TODO put these in a header, with other things when enemies get more complicated
 	float visibleRange = 300.0f;
 	float combatRange = 130.0f;
+	float distanceToTarget= (targetPosition - _node->getPosition()).getLength();
 
-	float distanceToPlayer = (_player->getNode()->getPosition() - _node->getPosition()).getLength();
-	if(distanceToPlayer < visibleRange )
+	if((_player->getNode()->getPosition() - _node->getPosition()).getLength() < visibleRange)
 	{
-		if(crossToplayer < -10.5f)
+		targetPosition = _player->getNode()->getPosition();
+	}
+
+	if(distanceToTarget < visibleRange )
+	{
+		if(crossToTarget < -10.5f)
 		{
 			walkleft=true;
 		}
-		else if(crossToplayer > 10.5f)
+		else if(crossToTarget > 10.5f)
 		{
 			walkright = true;
 		}
 
-		if(distanceToPlayer > combatRange)
+		if(distanceToTarget > combatRange)
 		{
 			//move towards player, if he is in front of us
-			if(angleToplayer < 60)
+			if(angleToTarget < 60)
 			{
 				walkforward = true;
 			}
@@ -82,7 +88,7 @@ void Enemy::update(float delta)
 		else
 		{
 			//We are in attack range
-			if(distanceToPlayer < (0.8f*combatRange))
+			if(distanceToTarget < (0.8f*combatRange))
 			{
 				//move away from player as we are too close
 				walkback = true;
