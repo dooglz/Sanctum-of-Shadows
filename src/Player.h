@@ -50,4 +50,7 @@ class Player:public Character{
 		
 		void Player::handleMessage(const GameEngine::Message& message);
 
+		float getFuel(){ return _fuelLevel; }
+
+	    void setFuel(float value) {  _fuelLevel = value; }
 };
