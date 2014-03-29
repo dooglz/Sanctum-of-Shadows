@@ -149,7 +149,8 @@ void Beacon::update(float delta)
 			}
 			if( b < 1.0f)
 			{
-				Main_Scene::player->setFuel(b + (0.2 * delta));
+				//player fuel gets more
+				Main_Scene::player->setFuel(b + (0.1 * delta));
 			}
 		}
 	}
