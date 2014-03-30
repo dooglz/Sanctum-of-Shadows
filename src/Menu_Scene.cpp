@@ -2,11 +2,6 @@
 #include "Engine.h"
 #include "Game.h"
 
-
-irr::gui::IGUIImage* img;
-irr::scene::ICameraSceneNode* menucam;
-irr::scene::ISceneNode* logoNode;
-
 Menu_Scene::Menu_Scene():GameState("menu")
 {
 	std::cout << "Menu_Scene constructor" << std::endl;
@@ -26,21 +21,36 @@ bool Menu_Scene::loadContent()
 
 void Menu_Scene::initialize()
 {
-	std::cout << "Menu_Scene initialize" << std::endl;
-		irr::scene::ISceneManager* smgr = GameEngine::engine.getDevice()->getSceneManager();
-
-	logoNode = smgr->addBillboardSceneNode(0, irr::core::dimension2d<irr::f32>(1280, 163));
-	//logoNode->setMaterialFlag(irr::video::EMF_TEXTURE_WRAP, true);
-	logoNode->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-	logoNode->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
-	//logoNode->setMaterialType(irr::video::EMT_TRANSPARENT_ADD_COLOR);
-	logoNode->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/Logo1.jpg"));
-//	logoNode->getMaterial(0).getTextureMatrix(0).setTextureScale(5.0f,5.0f);
-
-	menucam = smgr->addCameraSceneNode(0,irr::core::vector3df(0,0,500),irr::core::vector3df(0,0,0));
-	irr::scene::ILightSceneNode* workLight = smgr->addLightSceneNode(0, irr::core::vector3df(0,0,0), irr::video::SColorf(1.0f, 0.6f, 0.7f, 1.0f), 10000.0f);
-
 	loadContent();
+	std::cout << "Menu_Scene initialize" << std::endl;
+
+	irr::scene::ISceneManager* smgr = GameEngine::engine.getDevice()->getSceneManager();
+	
+	// Floating Logo
+	logoNode = smgr->addBillboardSceneNode(0, irr::core::dimension2d<irr::f32>(1280, 163));
+	logoNode->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+	logoNode->setMaterialType(irr::video::EMT_TRANSPARENT_ADD_COLOR);
+	logoNode->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/Logo1.jpg"));
+
+	//Camera
+	menucam = smgr->addCameraSceneNode(0,irr::core::vector3df(0,0,500),irr::core::vector3df(0,0,0));
+	irr::scene::ISceneNodeAnimator* anim = smgr->createFlyCircleAnimator (irr::core::vector3df(0,0,700),200.0,0.0005f);
+	menucam->addAnimator(anim);
+	anim->drop();
+
+	//Beacon
+	menuBeacon = new Beacon(this,irr::core::vector3df(0,-150,500));
+	menuBeacon->getNode()->setRotation(irr::core::vector3df(0,90.0f,0));
+	menuBeacon->light(true);
+
+	//Floor
+	irr::scene::IAnimatedMesh* planeMesh = GameEngine::engine.getDevice()->getSceneManager()->addHillPlaneMesh("menufloormesh", irr::core::dimension2df(300.0f,300.0f), irr::core::dimension2du(8,8));
+	floorNode = smgr->addMeshSceneNode(planeMesh);
+	floorNode->setPosition(irr::core::vector3df(0,-150,300));
+	floorNode->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble_bump.jpg"));
+	floorNode->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
+	floorNode->setMaterialFlag(irr::video::EMF_LIGHTING, true);
+
 }
 
 void Menu_Scene::flush()
@@ -57,11 +67,27 @@ void Menu_Scene::flush()
 		menucam->remove();
 		menucam = NULL;
 	}
+
+	if (floorNode != nullptr )
+	{
+		floorNode->remove();
+		floorNode = NULL;
+	}
+
+	if (menuBeacon != nullptr )
+	{
+		menuBeacon->remove();
+		delete menuBeacon;
+		menuBeacon = NULL;
+	}
+
+	_entityManager->shutdown();
+
 }
 
 void Menu_Scene::update(float delta)
 {
-	GameEngine::UI::displayTextMessage(irr::core::stringw("This is the Menu"),0);
+	GameEngine::UI::displayTextMessage(irr::core::stringw("Press Space to Begin"),0);
 	if(GameEngine::handler.keyFired(irr::KEY_RETURN))
 	{
 		// Change State
@@ -71,9 +97,4 @@ void Menu_Scene::update(float delta)
 	{
 		GameEngine::UI::displayTextMessage(irr::core::stringw("Space pressed"),100);
 	}
-}
-
-void Menu_Scene::render()
-{
-
 }

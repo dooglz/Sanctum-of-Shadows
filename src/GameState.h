@@ -40,9 +40,6 @@ namespace GameEngine{
 			//! Process per frame logic.
 			virtual void update(float delta) = 0;
 
-			//! Render all the stuff
-			virtual void render () =  0;  
-
 			//! Get name of game state 
 			std::string getName(){return _name;}
 

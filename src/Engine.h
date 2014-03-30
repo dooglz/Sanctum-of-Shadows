@@ -36,8 +36,6 @@ namespace GameEngine{
 			//! Draw Bullet physics debug data.
 			bool _debug_draw_bullet;
 
-			EntityManager* _EntityManager;
-
 		public:
 			//! constructor
 			Engine(){}
@@ -110,11 +108,6 @@ namespace GameEngine{
 			bool getBulletDebugDrawing()
 			{
 				return _debug_draw_bullet;
-			}
-			
-			EntityManager* getEntityManager()
-			{
-				return _EntityManager;
 			}
 	};
 

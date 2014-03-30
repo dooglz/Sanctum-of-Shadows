@@ -29,12 +29,6 @@ namespace GameEngine{
 		_device->setWindowCaption(_caption.c_str());
 		_device->getVideoDriver()->setTextureCreationFlag(irr::video::ETCF_ALWAYS_32_BIT, true);
 		
-		_EntityManager = new EntityManager();
-		if(!_EntityManager->initialise())
-		{
-			return false;
-		}
-		
 		Physics::initialise();
 
 		soundengine = irrklang::createIrrKlangDevice();
@@ -63,10 +57,7 @@ namespace GameEngine{
 	bool Engine::update(float delta){
 		handler.update();
 		ui.update();
-	//	if(!EntityManager::update(delta))
-	//	{
-		//	return false;
-	//	}
+
 		if(!MessageHandler::update())
 		{
 			return false;
