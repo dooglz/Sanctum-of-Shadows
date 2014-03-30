@@ -52,7 +52,6 @@ class Level: public GameEngine::Entity{
 
 		//! Is Lighting enabled on the level, used for debug
 		bool _isLit;
-		bool _isWon;
 
 	public:
 		//! The tiles types that make up a level.
@@ -76,7 +75,8 @@ class Level: public GameEngine::Entity{
 		//! Sets EMF_LIGHTING on all level nodes, used for debug.
 		void toggleLighting(bool a);
 
-		bool isGameWon();
+		//! Are all the beacons lit?
+		bool allBeaconsLit();
 
 		//! The level Grid.
 		static std::array<std::array<tile,_gridSize>, _gridSize> _grid;
@@ -87,8 +87,9 @@ class Level: public GameEngine::Entity{
 			return _isLit;
 		}
 
-		static irr::core::vector3df getResolvedLocation(irr::core::vector2d<int> coord);
+		//! Returns a vector2df at the center of a supplied grid coordinate
+		static irr::core::vector2df getResolvedLocation(irr::core::vector2d<int> coord);
 
-		static irr::core::vector2d<int> getResolvedCoord(irr::core::vector3df location);
-
+		//! Returns a vector2d<int> grid coordinate that contains the supplied position, Clamps between 0 and _gridSize.
+		static irr::core::vector2d<int> getResolvedCoord(irr::core::vector2df location);
 };

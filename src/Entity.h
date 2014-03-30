@@ -19,6 +19,7 @@ namespace GameEngine{
 			//! An irrlicht scene node associated with this entity
 			irr::scene::ISceneNode* _node;
 
+			//! Scene which this entity belongs to, used for getting the relevant Entity Manager.
 			Scene* _parentScene;
 
 			//! If _alive = false, EnityManager will not call update(), the node will still be rendered however.

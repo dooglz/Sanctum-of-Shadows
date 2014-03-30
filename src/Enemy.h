@@ -9,8 +9,27 @@
 
 class Enemy:public Character{
 	private:
+		
+		//! A reference to the player Entity
 		static Player* _player;
-		irr::core::vector3df targetPosition;
+
+		//! AI states of enemies
+		static const enum enemyState{IDLE,COMBAT};
+
+		//! current state
+		enemyState _state;
+
+		//! The current navigation Target.
+		irr::core::vector3df _targetPosition;
+
+		//! How close a player can get before aggro.
+		float _visibleRange;
+
+		//! How close the enemy can be to player before it can attack.
+		float _combatRange;
+
+		//! combat state logic
+		void process_combat(float delta);
 
 	public:
 		//! Constructor
@@ -27,5 +46,6 @@ class Enemy:public Character{
 		
 		void handleMessage(const GameEngine::Message& message);
 
+		//! Set the reference to the player Entity
 		static void setPlayer(Player* player);
 };

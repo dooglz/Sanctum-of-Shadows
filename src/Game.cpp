@@ -2,9 +2,16 @@
 #include "Game.h"
 #include "UI.h"
 
+// The currently active Scene.
 GameEngine::Scene* Game::_activeScene;
+
+// The Scene to transition into.
 GameEngine::Scene* Game::_targetScene;
+
+// Map containing all scenes, identified by their name. 
 std::unordered_map<std::string, GameEngine::Scene*>  Game::_scenes;
+
+// Is the scene we are transitioning into loaded?
 bool Game::_sceneLoaded;
 
 //! Returns _gameTitle. 
@@ -22,6 +29,7 @@ GameEngine::Scene* Game::getActiveScene(){
 	return _activeScene;
 }
 
+// Transition into a different scene.
 void Game::changeScene(GameEngine::Scene* newScene)
 {
 	//transition into loading state
@@ -30,11 +38,13 @@ void Game::changeScene(GameEngine::Scene* newScene)
 	_targetScene = newScene;
 }
 
+// Transition into a different scene, identified by name.
 void Game::changeScene(std::string newScene)
 {
 	changeScene(findScene(newScene));
 }
 
+// Find a scene by name.
 GameEngine::Scene* Game::findScene(std::string sceneName)
 {
 	auto found = _scenes.find(sceneName);
@@ -47,6 +57,7 @@ GameEngine::Scene* Game::findScene(std::string sceneName)
 	return NULL;
 }
 
+// Register a new scene
 void Game::addScene(GameEngine::Scene* newScene)
 {
 	//already stored?
@@ -60,6 +71,7 @@ void Game::addScene(GameEngine::Scene* newScene)
 	_scenes[newScene->getName()] = newScene;
 }
 
+// Process scene transition logic, should be called every frame.
 void Game::processScenes()
 {
 	//Are we transitioning
@@ -95,6 +107,7 @@ void Game::processScenes()
 	}
 }
 
+// Destructor
 Game::~Game()
 {
 	std::unordered_map<std::string, GameEngine::Scene*>::iterator iter = _scenes.begin();

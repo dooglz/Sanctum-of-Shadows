@@ -2,9 +2,10 @@
 #include <ctime>
 #include <math.h> 
 
+// The level Grid.
 std::array<std::array<Level::tile,Level::_gridSize>, Level::_gridSize> Level::_grid;
-int numberofBeacons;
 
+// Constructor
 Level::Level(GameEngine::Scene* parentScene):Entity(parentScene,0,"Level")
 {
 }
@@ -237,6 +238,7 @@ void Level::toggleLighting(bool a)
 	}
 }
 
+// Destructor.
 Level::~Level()
 {
 	if (_groundPlaneRB != nullptr )
@@ -283,7 +285,8 @@ Level::~Level()
 	}
 }
 
-bool Level::isGameWon()
+// Are all the beacons lit?
+bool Level::allBeaconsLit()
 {
 	if (!_beacons.empty())
 	{
@@ -299,22 +302,22 @@ bool Level::isGameWon()
 	return true;
 }
 
-irr::core::vector3df Level::getResolvedLocation(irr::core::vector2d<int> coord)
+// Returns a vector2df at the center of a supplied grid coordinate
+irr::core::vector2df Level::getResolvedLocation(irr::core::vector2d<int> coord)
 {
 	float startingPos = (-1.0f * (0.5f*((float)_tileSize * _gridSize))) +(0.5f*(float)_tileSize);
-	irr::core::vector3df origin = irr::core::vector3df(startingPos + (coord.X *(float)_tileSize),0,startingPos + (coord.Y*(float)_tileSize));
+	irr::core::vector2df origin = irr::core::vector2df(startingPos + (coord.X *(float)_tileSize),startingPos + (coord.Y*(float)_tileSize));
 	return origin;
 }
 
-irr::core::vector2d<int> Level::getResolvedCoord(irr::core::vector3df location)
+// Returns a vector2d<int> grid coordinate that contains the supplied position, Clamps between 0 and _gridSize.
+irr::core::vector2d<int> Level::getResolvedCoord(irr::core::vector2df location)
 {
 	float tilesize = (float)_tileSize;
 	float totalSize = (_gridSize * tilesize);
-	int col = 0;
-	int row = 0;
 	//remove 0 center offset
 	float aX = location.X + (0.5f*totalSize);
-	float aY = location.Z+ (0.5f*totalSize);
+	float aY = location.Y + (0.5f*totalSize);
 	//project onto grid
 	int bX = int(floor(aX / tilesize));
 	int bY = int(floor(aY / tilesize));
