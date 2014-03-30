@@ -26,7 +26,7 @@ class Player:public Character{
 
 	public:
 		//! Constructor
-		Player(GameEngine::GameState* parentState,irr::core::vector3df position);
+		Player(GameEngine::Scene* parentScene,irr::core::vector3df position);
 		
 		//! Destructor
 		~Player();

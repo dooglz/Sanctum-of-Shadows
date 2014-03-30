@@ -1,4 +1,3 @@
-
 #pragma once
 #include "StaticPhysicalEntity.h"
 #include "Engine.h"
@@ -32,7 +31,7 @@ class Beacon : public GameEngine::StaticPhysicalEntity{
 	public:
 
 		//! Constructor.
-		Beacon (GameEngine::GameState* parentState,const irr::core::vector3df& position);
+		Beacon (GameEngine::Scene* parentScene,const irr::core::vector3df& position);
 
 		//! Destructor.
 		~Beacon (){};

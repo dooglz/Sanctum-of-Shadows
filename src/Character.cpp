@@ -1,7 +1,7 @@
 #include "Character.h"
 
 
-Character::Character(GameEngine::GameState* parentState, irr::scene::ISceneNode* node,const std::string& name):Entity(parentState,node,name){}
+Character::Character(GameEngine::Scene* parentScene, irr::scene::ISceneNode* node,const std::string& name):Entity(parentScene,node,name){}
 
 //! Creates the controller and adds a blank scene node.
 void Character::intitalise(irr::core::vector3df position, irr::core::vector3df size)

@@ -19,7 +19,7 @@ Player* Main_Scene::player;
 Level* level;
 irr::gui::IGUIInOutFader* fader;
 
-Main_Scene::Main_Scene():GameState("main")
+Main_Scene::Main_Scene():Scene("main")
 {
 	std::cout << "Main_Scene constructor" << std::endl;
 }
@@ -198,8 +198,8 @@ void Main_Scene::update(float delta)
 	
 	if(GameEngine::handler.keyFired(irr::KEY_RETURN))
 	{
-		// Change State
-		Game::changeState("menu");
+		// Change Scene
+		Game::changeScene("menu");
 	}
 
 }

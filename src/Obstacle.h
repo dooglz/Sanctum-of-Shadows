@@ -15,7 +15,7 @@ class Obstacle : public GameEngine::StaticPhysicalEntity{
 	public:
 
 		//! Constructor.
-		Obstacle (GameEngine::GameState* parentState,const irr::core::vector3df& position, const irr::core::vector3df size);
+		Obstacle (GameEngine::Scene* parentScene,const irr::core::vector3df& position, const irr::core::vector3df size);
 
 		//! Destructor.
 		~Obstacle();

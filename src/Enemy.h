@@ -14,7 +14,7 @@ class Enemy:public Character{
 
 	public:
 		//! Constructor
-		Enemy(GameEngine::GameState* parentState, irr::core::vector3df position);
+		Enemy(GameEngine::Scene* parentScene, irr::core::vector3df position);
 		
 		//! Destructor
 		~Enemy(){};

@@ -2,7 +2,7 @@
 #include "Engine.h"
 #include "Game.h"
 
-Menu_Scene::Menu_Scene():GameState("menu")
+Menu_Scene::Menu_Scene():Scene("menu")
 {
 	std::cout << "Menu_Scene constructor" << std::endl;
 }
@@ -45,10 +45,13 @@ void Menu_Scene::initialize()
 
 	//Floor
 	irr::scene::IAnimatedMesh* planeMesh = GameEngine::engine.getDevice()->getSceneManager()->addHillPlaneMesh("menufloormesh", irr::core::dimension2df(300.0f,300.0f), irr::core::dimension2du(8,8));
-	floorNode = smgr->addMeshSceneNode(planeMesh);
+	irr::scene::IMesh* tangentMesh = GameEngine::engine.getDevice()->getSceneManager()->getMeshManipulator()->createMeshWithTangents(planeMesh->getMesh(0));
+	floorNode = smgr->addMeshSceneNode(tangentMesh);
 	floorNode->setPosition(irr::core::vector3df(0,-150,300));
-	floorNode->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble_bump.jpg"));
+	floorNode->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble2_1024.jpg"));
+	floorNode->setMaterialTexture(1, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble2_1024_NRM.jpg"));
 	floorNode->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
+	floorNode->setMaterialType(irr::video::EMT_NORMAL_MAP_SOLID);
 	floorNode->setMaterialFlag(irr::video::EMF_LIGHTING, true);
 
 }
@@ -90,8 +93,8 @@ void Menu_Scene::update(float delta)
 	GameEngine::UI::displayTextMessage(irr::core::stringw("Press Space to Begin"),0);
 	if(GameEngine::handler.keyFired(irr::KEY_RETURN))
 	{
-		// Change State
-		Game::changeState("main");
+		// Change Scene
+		Game::changeScene("main");
 	}
 	if(GameEngine::handler.keyFired(irr::KEY_SPACE))
 	{

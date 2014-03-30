@@ -1,11 +1,11 @@
 #pragma once
-#include "GameState.h"
+#include "Scene.h"
 #include "beacon.h"
 
 /*! \brief Main Menu Scene
  * \ingroup Game
  */
-class Menu_Scene : public GameEngine::GameState{
+class Menu_Scene : public GameEngine::Scene{
 
 	private:
 		//Menu SceneNodes, if there were more, an array should be used to hold these. 

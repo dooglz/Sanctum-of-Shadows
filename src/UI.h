@@ -37,6 +37,9 @@ namespace GameEngine{
 			//! Draw UI elements. 
 			static void render();
 
+			//! Clear Messages. 
+			static void clear();
+
 		private:
 			//! Vector containing all text messages. Unsorted.
 			static std::vector<TextMessage> _textMessages;

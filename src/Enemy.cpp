@@ -8,7 +8,7 @@
 
 Player* Enemy::_player;
 
-Enemy::Enemy(GameEngine::GameState* parentState, irr::core::vector3df position): Character(parentState,0,"Skeletors")
+Enemy::Enemy(GameEngine::Scene* parentScene, irr::core::vector3df position): Character(parentScene,0,"Skeletors")
 {
 	_walkVelocity = btScalar(4.5);
 	_rotateSpeed = 5.0f;

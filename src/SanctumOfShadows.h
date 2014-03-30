@@ -3,36 +3,17 @@
  */
 
 #pragma once
-#include "Engine.h"
 #include "Game.h"
-//#include "Player.h"
 
 /*! \brief Primary Game logic for Sanctum of Shadows
  * \ingroup Game
  */
 class SanctumOfShadows:public Game{
 
-	public: 
-
-		//! States the game can be in.
-		static const enum state {RUN,PAUSE,GAEMOVER,MENU};
-
-	private:
-
-		//! The current game state.
-		state _state;
-
-		GameEngine::GameState* _menuState;
-		GameEngine::GameState* _gameState;
-
 	public:
 
 		//! Constructor.
-		SanctumOfShadows(){
-			_gameTitle = L"SanctumOfShadows";
-			_resolution  = irr::core::dimension2d<irr::u32>(1280, 720);
-
-		};
+		SanctumOfShadows();
 
 		//! Destructor.
 		~SanctumOfShadows();

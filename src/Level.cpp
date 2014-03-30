@@ -5,7 +5,7 @@
 std::array<std::array<Level::tile,Level::_gridSize>, Level::_gridSize> Level::_grid;
 int numberofBeacons;
 
-Level::Level(GameEngine::GameState* parentState):Entity(parentState,0,"Level")
+Level::Level(GameEngine::Scene* parentScene):Entity(parentScene,0,"Level")
 {
 }
 
@@ -63,7 +63,7 @@ void Level::createLevel()
 
 			if(_grid[col][row] == OBSTACLE)
 			{
-				_obstacles.push_back( new Obstacle(_parentstate, origin,irr::core::vector3df(tileSize,tileSize,tileSize)) );
+				_obstacles.push_back( new Obstacle(_parentScene, origin,irr::core::vector3df(tileSize,tileSize,tileSize)) );
 			}
 			else
 			{
@@ -74,7 +74,7 @@ void Level::createLevel()
 					node = GameEngine::engine.getDevice()->getSceneManager()->addMeshSceneNode(tangentMesh);
 					node->setMaterialTexture(0, lightTex);
 					node->setMaterialTexture(1, normalMap);
-					_beacons.push_back( new Beacon(_parentstate,origin) );
+					_beacons.push_back( new Beacon(_parentScene,origin) );
 				}
 				else if(_grid[col][row] == EMPTY)
 				{

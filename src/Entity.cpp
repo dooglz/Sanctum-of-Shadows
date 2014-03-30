@@ -4,14 +4,14 @@
 
 namespace GameEngine{
 	//TODO investigate id in constructor, necessary?
-	Entity::Entity(GameState* parentState, irr::scene::ISceneNode* node, const std::string& name)
+	Entity::Entity(Scene* parentScene, irr::scene::ISceneNode* node, const std::string& name)
 	{
 		_name = name;
 		_id = -1;
 		_node = node;
 		_shouldRemove = false;
-		_parentstate = parentState;
-		_parentstate->getEntityManager()->registerEntity(this);
+		_parentScene = parentScene;
+		_parentScene->getEntityManager()->registerEntity(this);
 	}
 	void Entity::die()
 	{
@@ -23,7 +23,7 @@ namespace GameEngine{
 		//IF id != 1, the manager is still tracking us
 		if(_id != -1)
 		{
-			_parentstate->getEntityManager()->remove(this);
+			_parentScene->getEntityManager()->remove(this);
 		}
 
 		if(_node != nullptr )

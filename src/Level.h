@@ -59,7 +59,7 @@ class Level: public GameEngine::Entity{
 		static const enum tile {EMPTY,BADLANDS,BEACON,OBSTACLE};
 
 		//! Constructor
-		Level(GameEngine::GameState* parentState);
+		Level(GameEngine::Scene* parentScene);
 
 		//! Destructor.
 		~Level();
