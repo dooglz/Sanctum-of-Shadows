@@ -22,9 +22,6 @@ namespace GameEngine{
 			//! Default constructor.
 			UI() {};
 
-			//! Constructor, uses device to setup fonts. 
-			UI(irr::IrrlichtDevice* dev);
-
 			//! Destructor.
 			~UI();
 
@@ -37,6 +34,11 @@ namespace GameEngine{
 			//! Draw UI elements. 
 			static void render();
 
+			//! Clear Messages. 
+			static void clear();
+
+			static void initialise(irr::IrrlichtDevice* dev);
+
 		private:
 			//! Vector containing all text messages. Unsorted.
 			static std::vector<TextMessage> _textMessages;
@@ -46,6 +48,7 @@ namespace GameEngine{
 
 			//! Font Colour to use. 
 			static irr::video::SColor _colour;
+
 	};
 
 }

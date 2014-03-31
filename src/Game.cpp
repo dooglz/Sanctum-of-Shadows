@@ -1,10 +1,18 @@
 #pragma once
 #include "Game.h"
+#include "UI.h"
 
-GameEngine::GameState* Game::_activeState;
-GameEngine::GameState* Game::_targetState;
-std::unordered_map<std::string, GameEngine::GameState*>  Game::_states;
-bool Game::_stateLoaded;
+// The currently active Scene.
+GameEngine::Scene* Game::_activeScene;
+
+// The Scene to transition into.
+GameEngine::Scene* Game::_targetScene;
+
+// Map containing all scenes, identified by their name. 
+std::unordered_map<std::string, GameEngine::Scene*>  Game::_scenes;
+
+// Is the scene we are transitioning into loaded?
+bool Game::_sceneLoaded;
 
 //! Returns _gameTitle. 
 std::wstring Game::getGametitle(){
@@ -16,72 +24,78 @@ irr::core::dimension2d<irr::u32> Game::getResolution(){
 	return _resolution;
 }
 
-//! Returns the current game state.
-GameEngine::GameState* Game::getActiveState(){
-	return _activeState;
+//! Returns the current game Scene.
+GameEngine::Scene* Game::getActiveScene(){
+	return _activeScene;
 }
 
-void Game::changeState(GameEngine::GameState* newState)
+// Transition into a different scene.
+void Game::changeScene(GameEngine::Scene* newScene)
 {
 	//transition into loading state
-	_stateLoaded = false;
-	_targetState = newState;
+	GameEngine::UI::clear();
+	_sceneLoaded = false;
+	_targetScene = newScene;
 }
 
-void Game::changeState(std::string newState)
+// Transition into a different scene, identified by name.
+void Game::changeScene(std::string newScene)
 {
-	changeState(findState(newState));
+	changeScene(findScene(newScene));
 }
 
-GameEngine::GameState* Game::findState(std::string a)
+// Find a scene by name.
+GameEngine::Scene* Game::findScene(std::string sceneName)
 {
-	auto found = _states.find(a);
-	if(found != _states.end())
+	auto found = _scenes.find(sceneName);
+	if(found != _scenes.end())
 	{
 		return found->second;
 	}
 	//TODO handle this better.
-	std::cout << "Couldn't Locate Scene: "<< a << std::endl;
+	std::cout << "Couldn't Locate Scene: "<< sceneName << std::endl;
 	return NULL;
 }
 
-void Game::addState(GameEngine::GameState* newState)
+// Register a new scene
+void Game::addScene(GameEngine::Scene* newScene)
 {
 	//already stored?
-	if(_states.find(newState->getName()) != _states.end())
+	if(_scenes.find(newScene->getName()) != _scenes.end())
 	{
-		std::cerr << "Error registering new State: " << newState->getName()
-			<< " State with same name already stored"<< std::endl;
+		std::cerr << "Error registering new Scene: " << newScene->getName()
+			<< " Scene with same name already stored"<< std::endl;
 		return;
 	}
-	//nope, store the new state.
-	_states[newState->getName()] = newState;
+	//nope, store the new Scene.
+	_scenes[newScene->getName()] = newScene;
 }
 
-void Game::processStates()
+// Process scene transition logic, should be called every frame.
+void Game::processScenes()
 {
 	//Are we transitioning
-	if(!_stateLoaded)
+	if(!_sceneLoaded)
 	{
 		//Has the loading screen loaded?
 		if(_loadingImg->isVisible())
 		{
 			//We don't have parallel loading threads, so we will hang around here while we load.
-			if (_activeState != nullptr )
+			if (_activeScene != nullptr )
 			{
-				_activeState->flush();
+				_activeScene->flush();
 			}
-			if (_targetState != nullptr )
+			if (_targetScene != nullptr )
 			{
-				_targetState->initialize();
+				_targetScene->initialize();
 			}
 			else
 			{
 				//Oh Fiddlesticks. TODO
 			}
 
-			_stateLoaded = true;
-			_activeState = _targetState;
+			_sceneLoaded = true;
+			_activeScene = _targetScene;
 			_loadingImg->setVisible(false);
 
 		}
@@ -93,19 +107,20 @@ void Game::processStates()
 	}
 }
 
+// Destructor
 Game::~Game()
 {
-	std::unordered_map<std::string, GameEngine::GameState*>::iterator iter = _states.begin();
-	for(; iter != _states.end(); ++iter)
+	std::unordered_map<std::string, GameEngine::Scene*>::iterator iter = _scenes.begin();
+	for(; iter != _scenes.end(); ++iter)
 	{
-		//delete states, free memory
+		//delete Scenes, free memory
 		if(iter->second != nullptr )
 		{
 			delete iter->second;
 			iter->second = NULL;
 		}
 	}
-	_states.clear();
+	_scenes.clear();
 
 	if (_loadingImg != nullptr )
 	{

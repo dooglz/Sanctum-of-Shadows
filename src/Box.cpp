@@ -1,10 +1,8 @@
-
 #include "Box.h"
 #include "Engine.h"
-
 #include <iostream>
 
-Box::Box (GameEngine::GameState* parentState, const btVector3& position, const irr::core::vector3df& scale, float mass) : GameEngine::PhysicalEntity(parentState,0,"box")
+Box::Box (GameEngine::Scene* parentScene, const btVector3& position, const irr::core::vector3df& scale, float mass) : GameEngine::PhysicalEntity(parentScene,0,"box")
 {
 	//scene node
 	loadContent();

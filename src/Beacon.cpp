@@ -1,7 +1,7 @@
 #include "Beacon.h"
 #include "Main_Scene.h"
 
-Beacon::Beacon(GameEngine::GameState* parentState, const irr::core::vector3df& position) : GameEngine::StaticPhysicalEntity(parentState,0,"Beacon")
+Beacon::Beacon(GameEngine::Scene* parentScene, const irr::core::vector3df& position) : GameEngine::StaticPhysicalEntity(parentScene,0,"Beacon")
 {
 	bool particles = true;
 	bool flame = true;
@@ -150,7 +150,7 @@ void Beacon::update(float delta)
 			if( b < 1.0f)
 			{
 				//player fuel gets more
-				Main_Scene::player->setFuel(b + (0.1 * delta));
+				Main_Scene::player->setFuel(b + (0.1f * delta));
 			}
 		}
 	}

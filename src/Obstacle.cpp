@@ -4,7 +4,7 @@
 irr::scene::IMesh* Obstacle::_mesh;
 irr::video::ITexture* Obstacle::_texture;
 
-Obstacle::Obstacle (GameEngine::GameState* parentState, const irr::core::vector3df& position, const irr::core::vector3df size) : GameEngine::StaticPhysicalEntity(parentState,0, "Obstacle")
+Obstacle::Obstacle (GameEngine::Scene* parentScene, const irr::core::vector3df& position, const irr::core::vector3df size) : GameEngine::StaticPhysicalEntity(parentScene,0, "Obstacle")
 {
 
 	//scene node

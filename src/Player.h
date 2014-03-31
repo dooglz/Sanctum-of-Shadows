@@ -26,7 +26,7 @@ class Player:public Character{
 
 	public:
 		//! Constructor
-		Player(GameEngine::GameState* parentState,irr::core::vector3df position);
+		Player(GameEngine::Scene* parentScene,irr::core::vector3df position);
 		
 		//! Destructor
 		~Player();
@@ -50,7 +50,9 @@ class Player:public Character{
 		
 		void Player::handleMessage(const GameEngine::Message& message);
 
+		//! Get Current fuel
 		float getFuel(){ return _fuelLevel; }
 
+		//! Set Current fuel
 	    void setFuel(float value) {  _fuelLevel = value; }
 };

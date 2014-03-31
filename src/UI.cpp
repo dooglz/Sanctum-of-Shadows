@@ -5,9 +5,9 @@ namespace GameEngine{
 	irr::video::SColor UI::_colour;
 	std::vector<UI::TextMessage> UI::_textMessages;
 
-	UI::UI(irr::IrrlichtDevice* dev){
+	// Constructor, uses device to setup fonts. 
+	void UI::initialise(irr::IrrlichtDevice* dev){
 
-		
 		_colour = irr::video::SColor(255,255,255,255);
 
 		//Load TrueType Font to CGUITTFace
@@ -24,9 +24,15 @@ namespace GameEngine{
  
 	}
 
+	// Destructor.
 	UI::~UI()
 	{
-		_font->drop();
+		if (_font != nullptr )
+		{
+			_font->drop();
+			_font = NULL;
+		}
+
 		_textMessages.clear();
 	}
 	
@@ -56,5 +62,11 @@ namespace GameEngine{
 		for (unsigned int i=0; i<_textMessages.size(); i++) {
 			_font->draw(_textMessages[i].message,irr::core::rect<irr::s32>(130,10+(i*35),300,50+(i*35)),_colour);
 		}
+	}
+
+	// Clear Messages.
+	void UI::clear()
+	{
+		_textMessages.clear();
 	}
 }

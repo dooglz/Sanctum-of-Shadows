@@ -10,7 +10,7 @@ class Box : public GameEngine::PhysicalEntity{
 	public:
 
 		//! Constructor
-		Box (GameEngine::GameState* parentState, const btVector3& position, const irr::core::vector3df& scale, float mass);
+		Box (GameEngine::Scene* parentScene, const btVector3& position, const irr::core::vector3df& scale, float mass);
 
 		//! Destructor
 		~Box (){};

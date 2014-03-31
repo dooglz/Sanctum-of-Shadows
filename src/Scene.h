@@ -8,7 +8,7 @@ namespace GameEngine{
 	 * \ingroup Engine
 	 */
 	class EntityManager;
-	class GameState{ 
+	class Scene{ 
 		protected : 
 
 			//! A unique name, used for identification.
@@ -20,33 +20,30 @@ namespace GameEngine{
 		public : 
 
 			//! Default Constructor
-			GameState () ; 
+			Scene () ; 
 
 			//! Constructor
-			GameState (std::string name);
+			Scene (std::string name);
 
 			//! Destructor.
-			~GameState (){};
+			~Scene (){};
 
 			//! All resources (textures/meshes) should be loaded and assigned in this function.
 			virtual bool loadContent() = 0;
  
-			//!Initialize the game state, setup gui or something 
+			//!Initialize the Scene, setup gui or something 
 			virtual void initialize () = 0;
  
-			//! Clean up the game state 
+			//! Clean up the Scene
 			virtual void flush () = 0;
 			
 			//! Process per frame logic.
 			virtual void update(float delta) = 0;
 
-			//! Render all the stuff
-			virtual void render () =  0;  
-
-			//! Get name of game state 
+			//! Get Scene name
 			std::string getName(){return _name;}
 
-			//! Get the Entity Manger for this state 
+			//! Get the Entity Manger for this Scene
 			EntityManager* getEntityManager();
 	} ;
 }

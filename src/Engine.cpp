@@ -5,7 +5,7 @@ namespace GameEngine{
 	irrklang::ISoundEngine* Engine::soundengine;
 	Engine engine = Engine();
 	KeyHandler handler = KeyHandler();
-	UI ui;
+	UI ui = UI();
 	irr::video::SMaterial debugMat;
 	DebugDraw* debugDraw;
 
@@ -28,17 +28,11 @@ namespace GameEngine{
 		}
 		_device->setWindowCaption(_caption.c_str());
 		_device->getVideoDriver()->setTextureCreationFlag(irr::video::ETCF_ALWAYS_32_BIT, true);
-		
-		_EntityManager = new EntityManager();
-		if(!_EntityManager->initialise())
-		{
-			return false;
-		}
-		
-		Physics::initialise();
 
 		soundengine = irrklang::createIrrKlangDevice();
+		UI::initialise(_device);
 
+		Physics::initialise();
 		//physics debug
 		_debug_draw_bullet = false;
 		debugDraw = new DebugDraw(_device);
@@ -55,7 +49,6 @@ namespace GameEngine{
 		debugMat.Lighting = false;
 
 
-		ui = UI(_device);
 		return true;
 	}
 
@@ -63,10 +56,7 @@ namespace GameEngine{
 	bool Engine::update(float delta){
 		handler.update();
 		ui.update();
-	//	if(!EntityManager::update(delta))
-	//	{
-		//	return false;
-	//	}
+
 		if(!MessageHandler::update())
 		{
 			return false;

@@ -2,31 +2,43 @@
 #include <irrlicht.h>
 #include <iostream>
 #include <unordered_map>
-#include "GameState.h"
+#include "Scene.h"
 
 
-/*! \brief Baseclass for gamelogic, bridge between engine and game code, think of this as also a Game state manager.
+/*! \brief Baseclass for gamelogic, bridge between engine and game code, think of this also as a Scene manager.
  * \ingroup Engine
  */
 class Game{
 protected:
-	//! Title of the game
+	//! Title of the game.
 	std::wstring _gameTitle;
 
-	//! Starting dimensions
+	//! Starting dimensions.
 	irr::core::dimension2d<irr::u32> _resolution;
 
+	//! Image object to show during loading.
 	irr::gui::IGUIImage* _loadingImg;
+
+	//! Texture to display on _loadingImg.
 	irr::video::ITexture* _loadingTexture;
 
-	static GameEngine::GameState* _activeState;
-	static GameEngine::GameState* _targetState;
+	//! The currently active Scene.
+	static GameEngine::Scene* _activeScene;
 
-	static std::unordered_map<std::string, GameEngine::GameState*> _states;
+	//! The Scene to transition into.
+	static GameEngine::Scene* _targetScene;
 
-	static GameEngine::GameState* findState(std::string a);
-	static void addState(GameEngine::GameState* newState);
-	static bool _stateLoaded;
+	//! Map containing all scenes, identified by their name. 
+	static std::unordered_map<std::string, GameEngine::Scene*> _scenes;
+
+	//! Find a scene by name.
+	static GameEngine::Scene* findScene(std::string sceneName);
+
+	//! Register a new scene.
+	static void addScene(GameEngine::Scene* newScene);
+
+	//! Is the scene we are transitioning into loaded?
+	static bool _sceneLoaded;
 
 public:
 
@@ -48,12 +60,15 @@ public:
 	//! Returns _resolution. 
 	irr::core::dimension2d<irr::u32> getResolution();
 
-	//! Returns the current game state.
-	GameEngine::GameState* getActiveState();
+	//! Returns the current game Scene.
+	GameEngine::Scene* getActiveScene();
 
-	static void changeState(GameEngine::GameState* newState);
+	//! Transition into a different scene.
+	static void changeScene(GameEngine::Scene* newScene);
 
-	static void changeState(std::string newState);
+	//! Transition into a different scene, identified by name.
+	static void changeScene(std::string newScene);
 	
-	void processStates();
+	//! Process scene transition logic, should be called every frame.
+	void processScenes();
 };

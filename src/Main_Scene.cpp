@@ -10,17 +10,16 @@
 
 irr::scene::ICameraSceneNode* Flycamera;
 irr::scene::ICameraSceneNode* Menucamera;
-irr::scene::ILightSceneNode* workLight;
-irr::scene::ILightSceneNode* spinningLight;
 
 bool Main_Scene::_gameover;
 bool Main_Scene::_gamewon;
+bool Main_Scene::_gamepaused;
 
 Player* Main_Scene::player;
 Level* level;
 irr::gui::IGUIInOutFader* fader;
 
-Main_Scene::Main_Scene():GameState("main")
+Main_Scene::Main_Scene():Scene("main")
 {
 	std::cout << "Main_Scene constructor" << std::endl;
 }
@@ -40,12 +39,7 @@ bool Main_Scene::loadContent()
 
 void Main_Scene::initialize()
 {
-
-
-	flush();
-
 	std::cout << "Main_Scene initialize" << std::endl;
-	
 
 	irr::scene::ISceneManager* smgr = GameEngine::engine.getDevice()->getSceneManager();
 
@@ -56,39 +50,25 @@ void Main_Scene::initialize()
 	
 	Menucamera = smgr->addCameraSceneNode(0,irr::core::vector3df(0,100,223),irr::core::vector3df(0,100,0));
 
-				
-	//Lights
-	workLight = smgr->addLightSceneNode(0, irr::core::vector3df(0,200.0f,0), irr::video::SColorf(1.0f, 1.0f, 1.0f, 1.0f), 1000.0f);
-	// create spinning light
-	spinningLight = smgr->addLightSceneNode(0, irr::core::vector3df(0,300.0f,0), irr::video::SColorf(1.0f, 0.6f, 0.7f, 1.0f), 1000.0f);
-	irr::scene::ISceneNodeAnimator* anim = smgr->createFlyCircleAnimator (irr::core::vector3df(0,50,0),300.0f);
-	spinningLight->addAnimator(anim);
-	anim->drop();
-
-	irr::scene::ISceneNode* LightSpriteNode = smgr->addBillboardSceneNode(spinningLight, irr::core::dimension2d<irr::f32>(50, 50));
-	LightSpriteNode->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-	LightSpriteNode->setMaterialType(irr::video::EMT_TRANSPARENT_ADD_COLOR);
-	LightSpriteNode->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/particlewhite.bmp"));
-
 	//fader
 	fader = GameEngine::engine.getDevice()->getGUIEnvironment()->addInOutFader();
     fader->setColor(irr::video::SColor(0,0,0,0));
-
 	
 	//load the level
 	level = new Level(this);
 	level->loadContent();
 	level->intitalise();
-	
 
 	//Game Entities
 	player = new Player(this,irr::core::vector3df(0,200.0f,0));
 	Enemy::setPlayer(player);
+
 	for(int i = 0; i < 10; i++)
+
 	{
-		new Enemy(this,Pathfinder::getDarkLocation());
+		new Enemy(this,Pathfinder::getResolvedLocation(Pathfinder::getDarkLocation()));
 	}
-	//
+	
 
 	irr::core::stringw str = "Game Initialised";
 	GameEngine::UI::displayTextMessage(str,2000);
@@ -105,18 +85,6 @@ void Main_Scene::flush()
 	{
 		Menucamera->remove();
 		Menucamera = NULL;
-	}
-
-	if (workLight != nullptr )
-	{
-		workLight->remove();
-		workLight = NULL;
-	}
-
-	if (spinningLight != nullptr )
-	{
-		spinningLight->remove();
-		spinningLight = NULL;
 	}
 
 	if (Menucamera != nullptr )
@@ -139,12 +107,11 @@ void Main_Scene::flush()
 	
 	if(fader != nullptr )
 	{
-		//fader->drop();
 		fader->remove();
 		fader = NULL;
 	}
 
-	//todo flush EM
+	_entityManager->shutdown();
 }
 
 // Run per-frame game logic.
@@ -156,12 +123,13 @@ void Main_Scene::update(float delta)
 	str += player->getHealth();
 	GameEngine::UI::displayTextMessage(str,0);
 
-
-	if(level->isGameWon() == true)
+	// Toggle the pause state
+	if(GameEngine::handler.keyFired(irr::KEY_KEY_P) || GameEngine::handler.keyFired(irr::KEY_PAUSE))
 	{
-		GameWon();
+		//TODO fix this, it's completely broken. Physics doesn't pause.
+		_gamepaused = !_gamepaused;
+		GameEngine::UI::displayTextMessage(irr::core::stringw("Game Paused"),100);
 	}
-
 
 	//Debug Camera commands
 	if(GameEngine::handler.keyFired(irr::KEY_F1))
@@ -177,16 +145,6 @@ void Main_Scene::update(float delta)
 	if(GameEngine::handler.keyFired(irr::KEY_F3))
 	{
 		GameEngine::engine.getDevice()->getSceneManager()->setActiveCamera(Flycamera);
-	}
-
-	if(GameEngine::handler.keyFired(irr::KEY_F9))
-	{
-		workLight->setVisible(!workLight->isVisible());
-	}
-
-	if(GameEngine::handler.keyFired(irr::KEY_F10))
-	{
-		spinningLight->setVisible(!spinningLight->isVisible());
 	}
 
 	if(GameEngine::handler.keyFired(irr::KEY_F11))
@@ -221,27 +179,29 @@ void Main_Scene::update(float delta)
 		bx->getRB()->setLinearVelocity(GameEngine::Physics::irrVec3ToBtVec3(end) * 100.0f);
 	}
 
-	//Has the player died?
-	if(player->getHealth() <= 0 || !player->isAlive())
+	// Has the player died?
+	if(!_gameover && (player->getHealth() <= 0 || !player->isAlive()) )
 	{
 		GameOver();
+	}
+
+	// Has the player won?
+	else if(!_gamewon && level->allBeaconsLit())
+	{
+		GameWon();
+	}
+
+	// Only update if the game is still playing
+	if(!_gameover && !_gamewon && !_gamepaused)
+	{
+		_entityManager->update(delta);
 	}
 	
 	if(GameEngine::handler.keyFired(irr::KEY_RETURN))
 	{
-		// Change State
-		Game::changeState("menu");
+		// Change Scene
+		Game::changeScene("menu");
 	}
-
-	if(_gameover== false && _gamewon== false)
-	{
-	 _entityManager->update(delta);
-	}
-}
-
-
-void Main_Scene::render()
-{
 
 }
 

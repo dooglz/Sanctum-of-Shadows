@@ -1,19 +1,19 @@
 #include "SanctumOfShadows.h"
-
-#include "Level.h"
-#include "Beacon.h"
-#include <btBulletDynamicsCommon.h>
 #include "Main_Scene.h"
 #include "Menu_Scene.h"
+
+SanctumOfShadows::SanctumOfShadows()
+{
+	_gameTitle = L"SanctumOfShadows";
+	_resolution  = irr::core::dimension2d<irr::u32>(1280, 720);
+}
 
 // Creates Required Entities.
 bool SanctumOfShadows::init(){
 	std::wcout <<  _gameTitle << " Game code init" << std::endl;
 
-	_gameState = new Main_Scene();
-	_menuState = new Menu_Scene();
-	addState(_gameState);
-	addState(_menuState);
+	addScene( new Main_Scene() );
+	addScene( new Menu_Scene() );
 
 	_loadingImg = GameEngine::engine.getDevice()->getGUIEnvironment()->addImage(irr::core::rect<irr::s32>(0,0,_resolution.Width,_resolution.Height),0);
 	//TODO checks this loads.
@@ -21,15 +21,15 @@ bool SanctumOfShadows::init(){
 	_loadingImg->setImage(_loadingTexture );
 	_loadingImg->setScaleImage(true);
 
-	changeState("menu");
+	changeScene("menu");
 
 	return true;
 }
 
-// Run per-frameState Independent game logic.
+// Run per-frame Scene Independent game logic.
 bool SanctumOfShadows::update(float delta){
 	
-	processStates();
+	processScenes();
 	
 	if(GameEngine::handler.keyFired(irr::KEY_ESCAPE))
 	{
@@ -41,9 +41,9 @@ bool SanctumOfShadows::update(float delta){
 		GameEngine::engine.setBulletDebugDrawing(!GameEngine::engine.getBulletDebugDrawing());
 	}
 	
-	if(_stateLoaded)
+	if(_sceneLoaded)
 	{
-		_activeState->update(delta);
+		_activeScene->update(delta);
 	}
 
 	return true;

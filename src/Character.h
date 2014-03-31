@@ -54,7 +54,7 @@ class Character: public GameEngine::Entity{
 	public:
 		//TODO tidy all this
 		//! Constructor, implemeted only to pass name and ID to Entity constructor.
-		Character(GameEngine::GameState* parentState, irr::scene::ISceneNode* node,const std::string& name);
+		Character(GameEngine::Scene* parentScene, irr::scene::ISceneNode* node,const std::string& name);
 
 		//! Destructor.
 		~Character();

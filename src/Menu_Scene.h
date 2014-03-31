@@ -1,11 +1,26 @@
 #pragma once
-#include "GameState.h"
+#include "Scene.h"
+#include "beacon.h"
 
 /*! \brief Main Menu Scene
  * \ingroup Game
  */
-class Menu_Scene : public GameEngine::GameState{
+class Menu_Scene : public GameEngine::Scene{
+
 	private:
+		//Menu SceneNodes, if there were more, an array should be used to hold these. 
+
+		//! Rotating Menu Camera
+		irr::scene::ICameraSceneNode* menucam;
+
+		//! floating billboard with Game Logo
+		irr::scene::ISceneNode* logoNode;
+
+		//! A Beacon
+		Beacon* menuBeacon;
+
+		//! Floor to receive Light
+		irr::scene::IMeshSceneNode* floorNode;
 
 	public: 
 		//! Constructor.
@@ -22,5 +37,4 @@ class Menu_Scene : public GameEngine::GameState{
 
 		void update(float delta);
 
-		void render(); 
 };
