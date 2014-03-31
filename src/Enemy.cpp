@@ -41,8 +41,13 @@ void Enemy::update(float delta)
 	walkforward = false;
 	walkback = false;
 	Character::update(delta);
+
+	//HAAX! We discard the Y(up down) component for steering calculation, as enemies can't fly.
+	irr::core::vector2df currentPosition = irr::core::vector2df(_position.X,_position.Z);
+	irr::core::vector2df playerPosition = irr::core::vector2df(_player->getNode()->getPosition().X,_player->getNode()->getPosition().Z);
+	irr::core::vector2df targetPosition = irr::core::vector2df(_targetPosition.X,_targetPosition.Z);
 	
-	float distanceToPlayer = (_player->getNode()->getPosition()  - _node->getPosition()).getLength();
+	float distanceToPlayer = (playerPosition - currentPosition).getLength();
 
 	//Is the player in our aggro bubble?
 	if(_player->isAlive() && distanceToPlayer < _visibleRange)
@@ -50,6 +55,7 @@ void Enemy::update(float delta)
 		//YES.
 		_state = COMBAT;
 		_targetPosition = _player->getNode()->getPosition();
+		targetPosition = irr::core::vector2df(_targetPosition.X,_targetPosition.Z);
 	}
 	else
 	{
