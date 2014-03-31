@@ -56,9 +56,9 @@ void Player::update(float delta)
 	if(_LanternOn)
 	{
 		 if (_fuelLevel > 0){ 
-		    _fuelLevel -= 0.01f*delta;
+		    _fuelLevel -= 0.04f*delta;
 			irr::core::stringw str = "Lantern fuel: ";
-			str += _Lanternlight->getRadius();
+			str += _Lanternlight->getRadius()/3;
 			GameEngine::UI::displayTextMessage(str,0);
 			_Lanternlight->setRadius(_fuelLevel * _Lanternmaxradius);
 		 }
@@ -158,7 +158,7 @@ void Player::handleMessage(const GameEngine::Message& message)
 			_characterC->setJumpSpeed(20);
 			_characterC->setGravity(100);
 			_characterC->jump();
-
+			//take damage off of players health
 			_health = _health - 10.0f;
 		}
 		delete message.data;

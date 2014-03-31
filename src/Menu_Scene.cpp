@@ -34,6 +34,7 @@ void Menu_Scene::initialize()
 
 	//Camera
 	menucam = smgr->addCameraSceneNode(0,irr::core::vector3df(0,0,500),irr::core::vector3df(0,0,0));
+
 	irr::scene::ISceneNodeAnimator* anim = smgr->createFlyCircleAnimator (irr::core::vector3df(0,0,700),200.0,0.0005f);
 	menucam->addAnimator(anim);
 	anim->drop();
@@ -53,6 +54,7 @@ void Menu_Scene::initialize()
 	floorNode->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
 	floorNode->setMaterialType(irr::video::EMT_NORMAL_MAP_SOLID);
 	floorNode->setMaterialFlag(irr::video::EMF_LIGHTING, true);
+
 
 }
 

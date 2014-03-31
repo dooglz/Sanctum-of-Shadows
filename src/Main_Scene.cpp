@@ -63,14 +63,12 @@ void Main_Scene::initialize()
 	player = new Player(this,irr::core::vector3df(0,200.0f,0));
 	Enemy::setPlayer(player);
 
-	for(int i = 0; i < 5; i++)
+	for(int i = 0; i < 10; i++)
 	{
 		new Enemy(this,Pathfinder::getResolvedLocation(Pathfinder::getDarkLocation()));
 	}
 
 	//new Enemy(this,Pathfinder::getResolvedLocation(Pathfinder::getDarkLocation()));
-
-	//
 
 	irr::core::stringw str = "Game Initialised";
 	GameEngine::UI::displayTextMessage(str,2000);
