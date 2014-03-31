@@ -71,7 +71,9 @@ void Main_Scene::initialize()
 	//new Enemy(this,Pathfinder::getResolvedLocation(Pathfinder::getDarkLocation()));
 
 	irr::core::stringw str = "Game Initialised";
-	GameEngine::UI::displayTextMessage(str,2000);
+	GameEngine::UI::displayTextMessage(str,1000);
+	irr::core::stringw str1 = "Press H for help";
+	GameEngine::UI::displayTextMessage(str1,1000);
 
 	reset();
 
@@ -157,6 +159,17 @@ void Main_Scene::update(float delta)
 		reset();
 	}
 
+	if(GameEngine::handler.keyFired(irr::KEY_KEY_H))
+	{
+			irr::core::stringw strhelp1 = "use the wasd keys to move";
+			GameEngine::UI::displayTextMessage(strhelp1,400);
+			irr::core::stringw strhelp2 = "use space to attack";
+			GameEngine::UI::displayTextMessage(strhelp2,400);
+			irr::core::stringw strhelp3 = "approach beacons to activate them!";
+			GameEngine::UI::displayTextMessage(strhelp3,400);
+
+	}
+
 	//debug physics objects
 	if(GameEngine::handler.keyDown(irr::KEY_F5))
 	{
@@ -210,7 +223,7 @@ void Main_Scene::reset()
 {
 	std::cerr << "Game reset" << std::endl;
 	irr::core::stringw str = "Game reset";
-	GameEngine::UI::displayTextMessage(str,2000);
+	GameEngine::UI::displayTextMessage(str,1000);
 
 	//reset player position and health
 	player->setHealth(100.0f);
