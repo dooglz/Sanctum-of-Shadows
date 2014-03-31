@@ -38,7 +38,7 @@ void Menu_Scene::initialize()
 //	logoNode->getMaterial(0).getTextureMatrix(0).setTextureScale(5.0f,5.0f);
 
 	menucam = smgr->addCameraSceneNode(0,irr::core::vector3df(0,0,500),irr::core::vector3df(0,0,0));
-	irr::scene::ILightSceneNode* workLight = smgr->addLightSceneNode(0, irr::core::vector3df(0,0,0), irr::video::SColorf(1.0f, 0.6f, 0.7f, 1.0f), 10000.0f);
+	//irr::scene::ILightSceneNode* workLight = smgr->addLightSceneNode(0, irr::core::vector3df(0,0,0), irr::video::SColorf(1.0f, 0.6f, 0.7f, 1.0f), 10000.0f);
 
 	loadContent();
 }
