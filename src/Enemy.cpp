@@ -4,6 +4,7 @@
 #include "SanctumOfShadows.h"
 #include "irrKlang.h"
 #include <iostream>
+#include "Pathfinder.h"
 #pragma comment(lib, "irrKlang.lib")
 
 Player* Enemy::_player;
@@ -46,16 +47,20 @@ void Enemy::update(float delta)
 	irr::core::vector2df currentPosition = irr::core::vector2df(_position.X,_position.Z);
 	irr::core::vector2df playerPosition = irr::core::vector2df(_player->getNode()->getPosition().X,_player->getNode()->getPosition().Z);
 	irr::core::vector2df targetPosition = irr::core::vector2df(_targetPosition.X,_targetPosition.Z);
-	
-	float distanceToPlayer = (playerPosition - currentPosition).getLength();
+	irr::core::vector3df fw = GameEngine::Physics::btVecToirrVec3(_forwardDir);
+	irr::core::vector2df forwardDir = irr::core::vector2df(fw.X,fw.Z);
+	irr::core::vector2df vectorToTarget = targetPosition - currentPosition;
 
+	float distanceToPlayer = (playerPosition - currentPosition).getLength();
+	float distanceToTarget = vectorToTarget.getLength();
+	
 	//Is the player in our aggro bubble?
 	if(_player->isAlive() && distanceToPlayer < _visibleRange)
 	{
 		//YES.
-		_state = COMBAT;
-		_targetPosition = _player->getNode()->getPosition();
-		targetPosition = irr::core::vector2df(_targetPosition.X,_targetPosition.Z);
+	//	_state = COMBAT;
+	//	_targetPosition = _player->getNode()->getPosition();
+	//	targetPosition = irr::core::vector2df(_targetPosition.X,_targetPosition.Z);
 	}
 	else
 	{
@@ -72,6 +77,59 @@ void Enemy::update(float delta)
 			break;
 	}
 
+
+
+	
+	float cross = GameEngine::Engine::cross(forwardDir,vectorToTarget);
+	float dot = forwardDir.dotProduct(vectorToTarget);
+
+	if(distanceToTarget > 30.0f) 
+	{
+		// Is Target to the left or to the right?
+		if(cross > 0)
+		{
+			//Left
+			std::cout << "Left" << std::endl;
+						walkleft=true;
+		}
+		else if (cross < 0)
+		{
+			//right
+			std::cout << "right" << std::endl;
+			walkright = true;
+		}
+		else
+		{
+			if(dot < 0)
+			{
+				//behind
+				std::cout << "behind" << std::endl;
+			}
+		}
+
+		if(dot > 0)
+		{
+			std::cout << "infront" << std::endl;
+			//infront		
+			if(acos(dot / distanceToTarget) < 35.0f){
+				//target is within view radius
+				walkforward = true;
+				std::cout << "in view" << std::endl;
+			}
+			else
+			{
+				std::cout << "not in view" << std::endl;
+			}
+		}
+
+
+	}
+	else
+	{
+		//We are at our target.
+		std::cout << "Location reached" << std::endl;
+		_targetPosition = Pathfinder::getResolvedLocation(Pathfinder::getDarkLocation());
+	}
 	//get dotProduct of the look vector and player position vector
 	float angleToTarget =  _forwardDir.angle(GameEngine::Physics::irrVec3ToBtVec3 ((_targetPosition - _node->getPosition())));
 
@@ -85,6 +143,7 @@ void Enemy::update(float delta)
 	{
 		angleToTarget = -1;
 	}
+	//0.5236 = 30 degrees in radians
 
 
 	//cos^-1 to get angle
@@ -93,19 +152,18 @@ void Enemy::update(float delta)
 	//get The Y component of the crossproduct between the look vector and player position vector
 	float crossToTarget = _forwardDir.cross(GameEngine::Physics::irrVec3ToBtVec3 ((_targetPosition - _node->getPosition()))).getY(); 
 
-	float distanceToTarget = (_targetPosition - _node->getPosition()).getLength();
 
 	if(crossToTarget < -10.5f)
 	{
-		walkleft=true;
+		//walkleft=true;
 	}
 	else if(crossToTarget > 10.5f)
 	{
-		walkright = true;
+		//walkright = true;
 	}
 	if(angleToTarget < 60)
 	{
-		walkforward = true;
+		//walkforward = true;
 	}
 
 	walk(delta);

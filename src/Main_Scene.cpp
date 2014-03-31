@@ -65,8 +65,11 @@ void Main_Scene::initialize()
 
 	for(int i = 0; i < 5; i++)
 	{
-		new Enemy(this,Pathfinder::getResolvedLocation(Pathfinder::getDarkLocation()));
+		//new Enemy(this,Pathfinder::getResolvedLocation(Pathfinder::getDarkLocation()));
 	}
+
+	new Enemy(this,Pathfinder::getResolvedLocation(Pathfinder::getDarkLocation()));
+
 	//
 
 	irr::core::stringw str = "Game Initialised";

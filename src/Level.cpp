@@ -64,7 +64,7 @@ void Level::createLevel()
 
 			if(_grid[col][row] == OBSTACLE)
 			{
-				_obstacles.push_back( new Obstacle(_parentScene, origin,irr::core::vector3df(tileSize,tileSize,tileSize)) );
+			//	_obstacles.push_back( new Obstacle(_parentScene, origin,irr::core::vector3df(tileSize,tileSize,tileSize)) );
 			}
 			else
 			{

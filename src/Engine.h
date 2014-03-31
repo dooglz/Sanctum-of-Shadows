@@ -109,6 +109,11 @@ namespace GameEngine{
 			{
 				return _debug_draw_bullet;
 			}
+			
+			static float cross(irr::core::vector2df A, irr::core::vector2df B)
+			{
+				return ((A.X*B.Y)-(A.Y*B.X));
+			}
 	};
 
 	//! The primary Engine instance.
