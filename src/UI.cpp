@@ -6,7 +6,7 @@ namespace GameEngine{
 	std::vector<UI::TextMessage> UI::_textMessages;
 
 	// Constructor, uses device to setup fonts. 
-	UI::UI(irr::IrrlichtDevice* dev){
+	void UI::initialise(irr::IrrlichtDevice* dev){
 
 		_colour = irr::video::SColor(255,255,255,255);
 
@@ -27,7 +27,12 @@ namespace GameEngine{
 	// Destructor.
 	UI::~UI()
 	{
-		_font->drop();
+		if (_font != nullptr )
+		{
+			_font->drop();
+			_font = NULL;
+		}
+
 		_textMessages.clear();
 	}
 	
