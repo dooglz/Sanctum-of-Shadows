@@ -53,6 +53,8 @@ class Level: public GameEngine::Entity{
 		//! Is Lighting enabled on the level, used for debug
 		bool _isLit;
 
+
+
 	public:
 		//! The tiles types that make up a level.
 		static const enum tile {EMPTY,BADLANDS,BEACON,OBSTACLE};

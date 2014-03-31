@@ -28,9 +28,6 @@ class Enemy:public Character{
 		//! How close the enemy can be to player before it can attack.
 		float _combatRange;
 
-		//! combat state logic
-		void process_combat(float delta);
-
 	public:
 		//! Constructor
 		Enemy(GameEngine::Scene* parentScene, irr::core::vector3df position);

@@ -1,5 +1,7 @@
+#pragma once
 #include "Pathfinder.h"
 #include "Level.h"
+#include <random>
 
 // Find a random dark tile.
 irr::core::vector2d<int> Pathfinder::getDarkLocation()
@@ -42,4 +44,60 @@ irr::core::vector3df Pathfinder::getLocationWithinTile(irr::core::vector2d<int> 
 irr::core::vector3df Pathfinder::getResolvedLocation(irr::core::vector2d<int> coord){
 	irr::core::vector2df pos = Level::getResolvedLocation(coord);
 	return irr::core::vector3df(pos.X,100.0f,pos.Y);
+}
+
+// Get an adjacent Dark tile.
+irr::core::vector2d<int> Pathfinder::getAdjacentDarkLocation(irr::core::vector2d<int> coord)
+{
+	std::vector<irr::core::vector2d<int>> possibleLocations;
+
+	//UP
+	if(coord.X > 0){
+		if(Level::_grid[coord.X-1][coord.Y] == Level::EMPTY)
+		{
+			possibleLocations.push_back(irr::core::vector2d<int>(coord.X-1,coord.Y));
+		}
+	}
+	//Down
+	if(coord.X < Level::_grid.size()){
+		if(Level::_grid[coord.X+1][coord.Y] == Level::EMPTY)
+		{
+			possibleLocations.push_back(irr::core::vector2d<int>(coord.X+1,coord.Y));
+		}
+	}
+	//Left
+	if(coord.Y > 0){
+		if(Level::_grid[coord.X][coord.Y-1] == Level::EMPTY)
+		{
+			possibleLocations.push_back(irr::core::vector2d<int>(coord.X,coord.Y-1));
+		}
+	}
+	//Right
+	if(coord.Y < Level::_grid[coord.X].size()){
+		if(Level::_grid[coord.X][coord.Y+1] == Level::EMPTY)
+		{
+			possibleLocations.push_back(irr::core::vector2d<int>(coord.X,coord.Y+1));
+		}
+	}
+
+	if (!possibleLocations.empty())
+	{
+		//You're so Random, you don't even know it.
+		//Todo Tidy this unholy function.
+		std::default_random_engine generator;
+		generator.seed (rand());
+		std::uniform_int_distribution<int> distribution(0, possibleLocations.size()-1);
+		int a = distribution(generator);
+		//std::cerr << "moving to: " << a << "out of: "<< possibleLocations.size() << std::endl;
+		return (possibleLocations[a]);
+	}
+
+	//TODO display error.
+	return coord;
+}
+
+irr::core::vector2d<int> Pathfinder::getResolvedCoord(irr::core::vector3df location)
+{
+	//we bounce this though here in case we need to do any additional logic to it in the future.
+	return Level::getResolvedCoord(irr::core::vector2df(location.X,location.Z));
 }
