@@ -70,7 +70,10 @@ void Character::walk(float delta)
 			walkDirection -= _forwardDir;	
 		}
 
-		_characterC->setWalkDirection(walkDirection*walkSpeed);
+		if (_characterC != nullptr )
+		{
+			_characterC->setWalkDirection(walkDirection*walkSpeed);
+		}
 
 		//Set the render node's position and rotation to match _ghostObject's
 		//btMotionState is currently only available for rigid bodies and not Ghost Objects

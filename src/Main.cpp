@@ -44,6 +44,7 @@ int main(){
 	//Frame Timing
 	irr::u32 prevTime = device->getTimer()->getRealTime();
 	irr::u32 currtime;
+
 	float delta;
 
 	//Main Loop
@@ -53,6 +54,7 @@ int main(){
 		currtime = device->getTimer()->getRealTime();
 		delta = (currtime - prevTime) / 1000.f; // Time in seconds
 
+		
 		if (device->isWindowActive())
         {
 
@@ -75,7 +77,6 @@ int main(){
 			{
 				break;
 			}
-
 			prevTime = currtime;
 			int fps = driver->getFPS();
 

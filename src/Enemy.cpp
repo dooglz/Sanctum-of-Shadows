@@ -9,23 +9,26 @@
 
 Player* Enemy::_player;
 
-Enemy::Enemy(GameEngine::Scene* parentScene, irr::core::vector3df position): Character(parentScene,0,"Skeletors")
+Enemy::Enemy(GameEngine::Scene* parentScene, irr::core::vector3df position): cheapCharacter(parentScene,0,"Skeletors")
 {
 	irr::core::vector3df enemyScale = irr::core::vector3df(50.0f,80.0f,50.0f);
 	//Physics Kinematic character Object
+	/*
 	_characterC = addCharacter((btScalar)1.0f, &btVector3(position.X, position.Y, position.Z), (btScalar)enemyScale.Y/2, (btScalar)enemyScale.X/2);
 	_characterC->setMaxJumpHeight(30);
 	_characterC->setGravity(100);
 	_characterC->setJumpSpeed(20);
+	*/
 	//Render node
 	_node = GameEngine::engine.getDevice()->getSceneManager()->addCubeSceneNode(1.0f);
 	_node->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_dev_flurry.jpg"));
 	_node->setScale(enemyScale);
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	_node->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
+	_node->setPosition(position);
 	//
-	_walkVelocity = btScalar(4.5);
-	_rotateSpeed = 5.0f;
+	_walkVelocity = 110.5f;
+	_rotateSpeed = 90.0f;
 	_health = 80.0f;
 	_visibleRange = 300.0f;
 	_combatRange = 130.0f;
@@ -44,7 +47,7 @@ void Enemy::update(float delta)
 	walkright = false;
 	walkforward = false;
 	walkback = false;
-	Character::update(delta);	
+	cheapCharacter::update(delta);	
 
 	float distanceToPlayer = (_player->getNode()->getPosition()  - _position).getLength();
 
@@ -67,7 +70,7 @@ void Enemy::update(float delta)
 	float flatdistanceToTarget = irr::core::vector3df(vector3ToTarget.X,0,vector3ToTarget.Z).getLength();
 
 	//get dotProduct of the look vector and player position vector
-	float dotToTarget =  _forwardDir.dot(GameEngine::Physics::irrVec3ToBtVec3 (vector3ToTarget));
+	float dotToTarget =  _forwardDir.dotProduct(vector3ToTarget);
 
 	//normalize dot (assume _forwardDir is normalised)
 	float angleToTarget = dotToTarget / distanceToTarget;
@@ -86,14 +89,14 @@ void Enemy::update(float delta)
 	angleToTarget = acos(angleToTarget);
 
 	//Crossproduct between the look vector and player position vector
-	btVector3 crossToTarget = _forwardDir.cross(GameEngine::Physics::irrVec3ToBtVec3 (vector3ToTarget)); 
+	irr::core::vector3df crossToTarget = _forwardDir.crossProduct(vector3ToTarget); 
 
-	if(crossToTarget.getY() < -10.5f)
+	if(crossToTarget.Y < -10.5f)
 	{
 		//right
 		walkleft=true;
 	}
-	else if(crossToTarget.getY() > 10.5f)
+	else if(crossToTarget.Y > 10.5f)
 	{
 		//left
 		walkright = true;
@@ -134,8 +137,8 @@ void Enemy::update(float delta)
 				//roll dice, damage player
 				if((rand() % 400) < 3)
 				{	
-					GameEngine::Message message(_player,"playerHealthDecrease",0);
-					GameEngine::MessageHandler::sendMessage(message);
+				//	GameEngine::Message message(_player,"playerHealthDecrease",0);
+				//	GameEngine::MessageHandler::sendMessage(message);
 				}
 			}
 		}
@@ -172,7 +175,7 @@ void Enemy::handleMessage(const GameEngine::Message& message)
 		//received message to take damage
 		_health = _health - 20.0f;
 		//"bob" the enemy to notify damage taken
-		_characterC->jump();
+		//_characterC->jump();
 		//play sound for when the enemy takes damage
 		GameEngine::Engine::soundengine->play2D("sounds/hit.wav", false);
 	}

@@ -1,13 +1,13 @@
 #pragma once
 #include <irrlicht.h>
-#include "Character.h"
+#include "cheapCharacter.h"
 #include "Player.h"
 
 /*! \brief An Enemy.
  * \ingroup Game
  */
 
-class Enemy:public Character{
+class Enemy:public cheapCharacter{
 	private:
 		
 		//! A reference to the player Entity

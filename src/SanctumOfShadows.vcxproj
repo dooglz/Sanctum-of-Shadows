@@ -91,6 +91,7 @@
     <ClCompile Include="BulletdebugDraw.cpp" />
     <ClCompile Include="CGUITTFont.cpp" />
     <ClCompile Include="Character.cpp" />
+    <ClCompile Include="cheapCharacter.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -118,6 +119,7 @@
     <ClInclude Include="BulletDebugDraw.h" />
     <ClInclude Include="CGUITTFont.h" />
     <ClInclude Include="Character.h" />
+    <ClInclude Include="cheapCharacter.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Entity.h" />
