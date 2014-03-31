@@ -21,7 +21,7 @@ Enemy::Enemy(GameEngine::Scene* parentScene, irr::core::vector3df position): Cha
 	_node = GameEngine::engine.getDevice()->getSceneManager()->addCubeSceneNode(1.0f);
 	_node->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_dev_flurry.jpg"));
 	_node->setScale(enemyScale);
-	_node->setMaterialFlag(irr::video::EMF_LIGHTING, true);
+	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	_node->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
 	_health = 80.0f;
 	_visibleRange = 300.0f;
@@ -82,7 +82,7 @@ void Enemy::update(float delta)
 	
 	float cross = GameEngine::Engine::cross(forwardDir,vectorToTarget);
 	float dot = forwardDir.dotProduct(vectorToTarget);
-
+	/*
 	if(distanceToTarget > 30.0f) 
 	{
 		// Is Target to the left or to the right?
@@ -130,11 +130,17 @@ void Enemy::update(float delta)
 		std::cout << "Location reached" << std::endl;
 		_targetPosition = Pathfinder::getResolvedLocation(Pathfinder::getDarkLocation());
 	}
-	//get dotProduct of the look vector and player position vector
-	float angleToTarget =  _forwardDir.angle(GameEngine::Physics::irrVec3ToBtVec3 ((_targetPosition - _node->getPosition())));
+	*/
 
-	//clamp
-	//angleToTarget =  angleToTarget < -1.0f ? -1.0f : (angleToTarget > 1.0f ? 1.0f : angleToTarget);
+	irr::core::vector3df vector3ToTarget = (_targetPosition - _position);
+	distanceToTarget = vector3ToTarget.getLength();
+	float flatdistanceToTarget = irr::core::vector3df(vector3ToTarget.X,0,vector3ToTarget.Z).getLength();
+
+	//get dotProduct of the look vector and player position vector
+	float dotToTarget =  _forwardDir.dot(GameEngine::Physics::irrVec3ToBtVec3 (vector3ToTarget));
+	//normalize dot (assume _forwardDir is normalised)
+	float angleToTarget = dotToTarget / distanceToTarget;
+	//clamp to avoid rounding errors.
 	if(angleToTarget > 1)
 	{
 		angleToTarget =1;
@@ -143,27 +149,54 @@ void Enemy::update(float delta)
 	{
 		angleToTarget = -1;
 	}
-	//0.5236 = 30 degrees in radians
-
 
 	//cos^-1 to get angle
 	angleToTarget = acos(angleToTarget);
 
-	//get The Y component of the crossproduct between the look vector and player position vector
-	float crossToTarget = _forwardDir.cross(GameEngine::Physics::irrVec3ToBtVec3 ((_targetPosition - _node->getPosition()))).getY(); 
+	//Crossproduct between the look vector and player position vector
+	btVector3 crossToTarget = _forwardDir.cross(GameEngine::Physics::irrVec3ToBtVec3 (vector3ToTarget)); 
 
+	if(flatdistanceToTarget > (0.8f*_combatRange)) 
+	{
+		if(crossToTarget.getY() < -10.5f)
+		{
+			//right
+			walkleft=true;
+		}
+		else if(crossToTarget.getY() > 10.5f)
+		{
+			//left
+			walkright = true;
+		}
+		else
+		{
+			//Target is either directly in front or behind.
+			if(dotToTarget < 0)
+			{
+				//behind
+				std::cout << "behind" << std::endl;
+				walkleft=true;
+			}
+		}
 
-	if(crossToTarget < -10.5f)
-	{
-		//walkleft=true;
+		if(dotToTarget > 0)
+		{
+			//in front		
+			if(angleToTarget < 35.0f){
+				//target is within view radius
+				walkforward = true;
+			}
+			else
+			{
+				//Not in view
+			}
+		}
 	}
-	else if(crossToTarget > 10.5f)
+	else
 	{
-		//walkright = true;
-	}
-	if(angleToTarget < 60)
-	{
-		//walkforward = true;
+		//We are at our target.
+		std::cout << "Location reached" << std::endl;
+		_targetPosition = Pathfinder::getResolvedLocation(Pathfinder::getDarkLocation());
 	}
 
 	walk(delta);
