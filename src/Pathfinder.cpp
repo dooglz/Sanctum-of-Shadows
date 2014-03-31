@@ -6,25 +6,31 @@
 // Find a random dark tile.
 irr::core::vector2d<int> Pathfinder::getDarkLocation()
 {	
-	//Runaway loop protection, limit to 500 loops
-	unsigned int limit = 0;
+	std::vector<irr::core::vector2d<int>> possibleLocations;
 
-	while(limit < 500)
+	for(unsigned int col = 0; col < Level::_grid.size(); col ++)
 	{
-		for(unsigned int col = 0; col < Level::_grid.size(); col ++)
+		for(unsigned int row = 0; row < Level::_grid[col].size(); row ++)
 		{
-			for(unsigned int row = 0; row < Level::_grid[col].size(); row ++)
+			if(Level::_grid[col][row] == Level::EMPTY || Level::_grid[col][row] ==  Level::BADLANDS)
 			{
-				if(Level::_grid[col][row] == Level::EMPTY)
-				{
-					if (rand() % 100 < 5) {
-						return irr::core::vector2d<int>(col,row);
-					}
-				}
+				possibleLocations.push_back(irr::core::vector2d<int>(col,row));
 			}
 		}
-		limit++;
 	}
+
+	//TODO display error.
+	if (!possibleLocations.empty())
+	{
+		//You're so Random, you don't even know it.
+		//Todo Tidy this unholy function.
+		std::default_random_engine generator;
+		generator.seed (rand());
+		std::uniform_int_distribution<int> distribution(0, possibleLocations.size()-1);
+		int a = distribution(generator);
+		return (possibleLocations[a]);
+	}
+
 	//TODO display error.
 	return irr::core::vector2d<int>(0,0);
 }
@@ -53,28 +59,28 @@ irr::core::vector2d<int> Pathfinder::getAdjacentDarkLocation(irr::core::vector2d
 
 	//UP
 	if(coord.X > 0){
-		if(Level::_grid[coord.X-1][coord.Y] == Level::EMPTY)
+		if(Level::_grid[coord.X-1][coord.Y] == Level::EMPTY || Level::_grid[coord.X-1][coord.Y] == Level::BADLANDS)
 		{
 			possibleLocations.push_back(irr::core::vector2d<int>(coord.X-1,coord.Y));
 		}
 	}
 	//Down
-	if(coord.X < Level::_grid.size()){
-		if(Level::_grid[coord.X+1][coord.Y] == Level::EMPTY)
+	if(coord.X < Level::_grid.size()-1){
+		if(Level::_grid[coord.X+1][coord.Y] == Level::EMPTY || Level::_grid[coord.X+1][coord.Y] == Level::BADLANDS)
 		{
 			possibleLocations.push_back(irr::core::vector2d<int>(coord.X+1,coord.Y));
 		}
 	}
 	//Left
 	if(coord.Y > 0){
-		if(Level::_grid[coord.X][coord.Y-1] == Level::EMPTY)
+		if(Level::_grid[coord.X][coord.Y-1] == Level::EMPTY || Level::_grid[coord.X][coord.Y-1] == Level::BADLANDS)
 		{
 			possibleLocations.push_back(irr::core::vector2d<int>(coord.X,coord.Y-1));
 		}
 	}
 	//Right
-	if(coord.Y < Level::_grid[coord.X].size()){
-		if(Level::_grid[coord.X][coord.Y+1] == Level::EMPTY)
+	if(coord.Y < Level::_grid[coord.X].size()-1){
+		if(Level::_grid[coord.X][coord.Y+1] == Level::EMPTY || Level::_grid[coord.X][coord.Y+1] == Level::BADLANDS)
 		{
 			possibleLocations.push_back(irr::core::vector2d<int>(coord.X,coord.Y+1));
 		}
