@@ -63,7 +63,7 @@ void Main_Scene::initialize()
 	player = new Player(this,irr::core::vector3df(0,200.0f,0));
 	Enemy::setPlayer(player);
 
-	for(int i = 0; i < 1000; i++)
+	for(int i = 0; i < 3000; i++)
 	{
 		new Enemy(this,Pathfinder::getResolvedLocation(Pathfinder::getDarkLocation()));
 	}
@@ -234,25 +234,15 @@ void Main_Scene::update(float delta)
 
 }
 
-// Removes all new created Entities, Resets everything to starting positions.
+// Resets everything to starting positions.
 void Main_Scene::reset()
 {
-	std::cerr << "Game reset" << std::endl;
-
 	//reset player position and health
 	player->setHealth(100.0f);
 	player->getController()->warp(btVector3(0,10,0));
 	player->setAlive(true);
-
-	//TODO Reset all game Entities
 	_gameover = false;
 	_gamewon = false;
-
-
-	//Fade In
-    fader->fadeIn(7000);
-
-	//TODO, delete surplus entities
 }
 
 // Handle the loose scenario

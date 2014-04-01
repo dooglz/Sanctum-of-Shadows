@@ -3,7 +3,6 @@
 #include "EntityManager.h"
 
 namespace GameEngine{
-	//TODO investigate id in constructor, necessary?
 	Entity::Entity(Scene* parentScene, irr::scene::ISceneNode* node, const std::string& name)
 	{
 		_name = name;

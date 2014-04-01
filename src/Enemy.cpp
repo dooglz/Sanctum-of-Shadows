@@ -16,7 +16,7 @@ Enemy::Enemy(GameEngine::Scene* parentScene, irr::core::vector3df position): che
 	_node = GameEngine::engine.getDevice()->getSceneManager()->addCubeSceneNode(1.0f);
 	_node->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_dev_flurry.jpg"));
 	_node->setScale(enemyScale);
-	_node->setMaterialFlag(irr::video::EMF_LIGHTING, true);
+	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	_node->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
 	_node->setPosition(position);
 	//
@@ -137,7 +137,7 @@ void Enemy::update(float delta)
 			//We are at our target, find a new one.
 			//std::cout << "Location reached" << std::endl;
 			//_targetPosition = Pathfinder::getResolvedLocation(Pathfinder::getDarkLocation());
-			_targetPosition = Pathfinder::getResolvedLocation(
+			_targetPosition = Pathfinder::getLocationWithinTile(
 					Pathfinder::getAdjacentDarkLocation(
 						Pathfinder::getResolvedCoord(_position)
 					)

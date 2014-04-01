@@ -3,6 +3,9 @@
 #include "Level.h"
 #include <random>
 
+std::default_random_engine Pathfinder::_generator;
+
+
 // Find a random dark tile.
 irr::core::vector2d<int> Pathfinder::getDarkLocation()
 {	
@@ -24,11 +27,10 @@ irr::core::vector2d<int> Pathfinder::getDarkLocation()
 	{
 		//You're so Random, you don't even know it.
 		//Todo Tidy this unholy function.
-		std::default_random_engine generator;
-		generator.seed (rand());
+		_generator.seed (rand());
 		//TODO this throws and exception sometimes, fixxit.
 		std::uniform_int_distribution<int> distribution(0, possibleLocations.size()-1);
-		int a = distribution(generator);
+		int a = distribution(_generator);
 		return (possibleLocations[a]);
 	}
 	else if (possibleLocations.size()  == 1)
@@ -48,7 +50,9 @@ irr::core::vector3df Pathfinder::getLocationWithinTile(irr::core::vector2d<int> 
 	pos = Level::getResolvedLocation(coord);
 	//Find a random location within it
 		//TODO
-	return irr::core::vector3df(pos.X,40.0f,pos.Y);
+	std::uniform_real_distribution<float> distribution(-300.0,300.0);
+	//std::cout <<"num: " <<distribution(_generator) << std::endl;
+	return irr::core::vector3df(pos.X+ distribution(_generator),40.0f,pos.Y+ distribution(_generator));
 }
 
 // Returns a vector3df at the center of a supplied grid coordinate, at height 100.0f
@@ -70,7 +74,7 @@ irr::core::vector2d<int> Pathfinder::getAdjacentDarkLocation(irr::core::vector2d
 		}
 	}
 	//Down
-	if(coord.X < Level::_grid.size()-1){
+	if((unsigned int) coord.X < Level::_grid.size()-1){
 		if(Level::_grid[coord.X+1][coord.Y] == Level::EMPTY || Level::_grid[coord.X+1][coord.Y] == Level::BADLANDS)
 		{
 			possibleLocations.push_back(irr::core::vector2d<int>(coord.X+1,coord.Y));
@@ -84,7 +88,7 @@ irr::core::vector2d<int> Pathfinder::getAdjacentDarkLocation(irr::core::vector2d
 		}
 	}
 	//Right
-	if(coord.Y < Level::_grid[coord.X].size()-1){
+	if((unsigned int)coord.Y < Level::_grid[coord.X].size()-1){
 		if(Level::_grid[coord.X][coord.Y+1] == Level::EMPTY || Level::_grid[coord.X][coord.Y+1] == Level::BADLANDS)
 		{
 			possibleLocations.push_back(irr::core::vector2d<int>(coord.X,coord.Y+1));
@@ -95,14 +99,13 @@ irr::core::vector2d<int> Pathfinder::getAdjacentDarkLocation(irr::core::vector2d
 	{
 		//You're so Random, you don't even know it.
 		//Todo Tidy this unholy function.
-		std::default_random_engine generator;
-		generator.seed (rand());
+		_generator.seed (rand());
 		if (possibleLocations.size()-1 == 0)
 		{
 			std::cerr <<"PROBALESM" << std::endl;
 		}
 		std::uniform_int_distribution<int> distribution(0, possibleLocations.size()-1);
-		int a = distribution(generator);
+		int a = distribution(_generator);
 		return (possibleLocations[a]);
 	}
 	else if (possibleLocations.size()  == 1)
