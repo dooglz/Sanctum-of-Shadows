@@ -12,13 +12,6 @@ Player* Enemy::_player;
 Enemy::Enemy(GameEngine::Scene* parentScene, irr::core::vector3df position): cheapCharacter(parentScene,0,"Skeletors")
 {
 	irr::core::vector3df enemyScale = irr::core::vector3df(50.0f,80.0f,50.0f);
-	//Physics Kinematic character Object
-	/*
-	_characterC = addCharacter((btScalar)1.0f, &btVector3(position.X, position.Y, position.Z), (btScalar)enemyScale.Y/2, (btScalar)enemyScale.X/2);
-	_characterC->setMaxJumpHeight(30);
-	_characterC->setGravity(100);
-	_characterC->setJumpSpeed(20);
-	*/
 	//Render node
 	_node = GameEngine::engine.getDevice()->getSceneManager()->addCubeSceneNode(1.0f);
 	_node->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_dev_flurry.jpg"));
@@ -40,9 +33,6 @@ Enemy::Enemy(GameEngine::Scene* parentScene, irr::core::vector3df position): che
 
 void Enemy::update(float delta)
 {	
-
-	//int n2 = rand() % 250;
-	//int n3 = rand() % 100;
 	walkleft = false;
 	walkright = false;
 	walkforward = false;
@@ -137,8 +127,8 @@ void Enemy::update(float delta)
 				//roll dice, damage player
 				if((rand() % 400) < 3)
 				{	
-				//	GameEngine::Message message(_player,"playerHealthDecrease",0);
-				//	GameEngine::MessageHandler::sendMessage(message);
+					GameEngine::Message message(_player,"playerHealthDecrease",0);
+					GameEngine::MessageHandler::sendMessage(message);
 				}
 			}
 		}
@@ -174,8 +164,6 @@ void Enemy::handleMessage(const GameEngine::Message& message)
 	{
 		//received message to take damage
 		_health = _health - 20.0f;
-		//"bob" the enemy to notify damage taken
-		//_characterC->jump();
 		//play sound for when the enemy takes damage
 		GameEngine::Engine::soundengine->play2D("sounds/hit.wav", false);
 	}

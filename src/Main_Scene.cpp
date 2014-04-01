@@ -70,10 +70,7 @@ void Main_Scene::initialize()
 
 	//new Enemy(this,Pathfinder::getResolvedLocation(Pathfinder::getDarkLocation()));
 
-	irr::core::stringw str = "Game Initialised";
-	GameEngine::UI::displayTextMessage(str,1000);
-	irr::core::stringw str1 = "Press H for help";
-	GameEngine::UI::displayTextMessage(str1,1000);
+	GameEngine::UI::displayTextMessage(irr::core::stringw("Press H for help"),1000);
 
 	reset();
 
@@ -119,12 +116,6 @@ void Main_Scene::flush()
 // Run per-frame game logic.
 void Main_Scene::update(float delta)
 {
-	
-	//display player health
-	irr::core::stringw str = "Player Health: ";
-	str += player->getHealth();
-	GameEngine::UI::displayTextMessage(str,0);
-
 	// Toggle the pause state
 	if(GameEngine::handler.keyFired(irr::KEY_KEY_P) || GameEngine::handler.keyFired(irr::KEY_PAUSE))
 	{
@@ -161,13 +152,12 @@ void Main_Scene::update(float delta)
 
 	if(GameEngine::handler.keyFired(irr::KEY_KEY_H))
 	{
-			irr::core::stringw strhelp1 = "use the wasd keys to move";
-			GameEngine::UI::displayTextMessage(strhelp1,400);
-			irr::core::stringw strhelp2 = "use space to attack";
-			GameEngine::UI::displayTextMessage(strhelp2,400);
-			irr::core::stringw strhelp3 = "approach beacons to activate them!";
-			GameEngine::UI::displayTextMessage(strhelp3,400);
-
+		irr::core::stringw strhelp1 = "use the wasd keys to move";
+		GameEngine::UI::displayTextMessage(strhelp1,400);
+		irr::core::stringw strhelp2 = "use space to attack";
+		GameEngine::UI::displayTextMessage(strhelp2,400);
+		irr::core::stringw strhelp3 = "approach beacons to activate them!";
+		GameEngine::UI::displayTextMessage(strhelp3,400);
 	}
 
 	//debug physics objects
@@ -207,9 +197,35 @@ void Main_Scene::update(float delta)
 	// Only update if the game is still playing
 	if(!_gameover && !_gamewon && !_gamepaused)
 	{
+		//display player health
+		irr::core::stringw str = "Player Health: ";
+		str += player->getHealth();
+		GameEngine::UI::displayTextMessage(str,0);
+
+		//update entityManage
 		_entityManager->update(delta);
 	}
 	
+	if(_gamewon || _gameover)
+	{
+		GameEngine::UI::displayTextMessage(irr::core::stringw("Press Space to Return to menu"),0);
+		
+		if(_gameover)
+		{
+			GameEngine::UI::displayBigMessage(irr::core::stringw("You have Died"),1);
+		}
+
+		if(_gamewon)
+		{
+			GameEngine::UI::displayBigMessage(irr::core::stringw("You have won"),1);
+		}
+		
+		if(GameEngine::handler.keyFired(irr::KEY_SPACE))
+		{
+			Game::changeScene("menu");
+		}
+	}
+
 	if(GameEngine::handler.keyFired(irr::KEY_RETURN))
 	{
 		// Change Scene
@@ -222,8 +238,6 @@ void Main_Scene::update(float delta)
 void Main_Scene::reset()
 {
 	std::cerr << "Game reset" << std::endl;
-	irr::core::stringw str = "Game reset";
-	GameEngine::UI::displayTextMessage(str,1000);
 
 	//reset player position and health
 	player->setHealth(100.0f);
@@ -241,30 +255,24 @@ void Main_Scene::reset()
 	//TODO, delete surplus entities
 }
 
-
+// Handle the loose scenario
 void Main_Scene::GameOver()
 {
 	if(_gameover == false)
 	{
 		std::cerr << "Game is over" << std::endl;
-		irr::core::stringw str = "Game is over";
-		GameEngine::UI::displayTextMessage(str,2000);
 		fader->fadeOut(1000);
 	}
 	_gameover = true;
 }
 
-
+// Handle the win scenario
 void Main_Scene::GameWon()
 {
 	if(!_gamewon)
 	{
-
 		std::cerr << "Game has been won" << std::endl;
-		irr::core::stringw str = "Game is has been won by player";
-		GameEngine::UI::displayTextMessage(str,2000);
 		fader->fadeOut(3000);
-		
 	}
 	_gamewon = true;
 }

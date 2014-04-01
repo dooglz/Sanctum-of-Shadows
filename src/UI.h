@@ -28,6 +28,9 @@ namespace GameEngine{
 			//! Create a new text message, set time to 0 to display for 1 frame only.
 			static void displayTextMessage(const irr::core::stringw& message,const unsigned int time);
 
+			//! Create a new text message in the center of the screen, set time to 0 to display for 1 frame only.
+			static void displayBigMessage(const irr::core::stringw& message,const unsigned int time);
+
 			//! Process stored and queued UI data.
 			static void update();
 
@@ -40,11 +43,14 @@ namespace GameEngine{
 			static void initialise(irr::IrrlichtDevice* dev);
 
 		private:
+			static TextMessage _bigmessage;
+
 			//! Vector containing all text messages. Unsorted.
 			static std::vector<TextMessage> _textMessages;
 
 			//! Font to use. 
 			static irr::gui::CGUITTFont* _font;
+			static irr::gui::CGUITTFont* _bigfont;
 
 			//! Font Colour to use. 
 			static irr::video::SColor _colour;
