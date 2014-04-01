@@ -11,6 +11,7 @@ Beacon::Beacon(GameEngine::Scene* parentScene, const irr::core::vector3df& posit
 	loadContent();
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, true);
 	_node->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
+	//_node->setMaterialFlag(irr::video::EMF_FOG_ENABLE, true);
 	irr::core::vector3df scale = irr::core::vector3df(15.0f,15.0f,15.0f);
 	_node->setScale(scale);
 	_node->setPosition(position);
@@ -53,6 +54,7 @@ Beacon::Beacon(GameEngine::Scene* parentScene, const irr::core::vector3df& posit
 
 	ps->setPosition(irr::core::vector3df(0,3.0f,0));
 	ps->setScale(irr::core::vector3df(1,1,1));
+	//Beacons always glow
 	ps->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	ps->setMaterialFlag(irr::video::EMF_ZWRITE_ENABLE, false);
 	ps->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/particlewhite.bmp"));
@@ -105,11 +107,14 @@ void Beacon::light(bool onOff)
 	//change radius of main Light
 	if(_isLit)
 	{
-		_light->setRadius((irr::f32)_lightRange);
+	//	_light->setRadius((irr::f32)_lightRange);
+	//	_light->setVisible(true);
 	}
 	else
 	{
-		_light->setRadius(0.25f * _lightRange);
+		//A radius this small doesn't seem to effect the floor
+	//	_light->setRadius(0.25f * _lightRange);
+		//_light->setVisible(false);
 	}
 	//toggle all effects
 	for(auto& e : _effects) {
@@ -135,33 +140,45 @@ void Beacon::update(float delta)
 {
 	
 	float distanceToPlayer = (Main_Scene::player->getNode()->getPosition() - _node->getPosition()).getLength();
-	if(_isLit)
+	
+	if(distanceToPlayer < 800.0f)
 	{
-		if(distanceToPlayer < _healingRange)
+		if(_isLit)
 		{
-			float a = Main_Scene::player->getHealth();
-			float b = Main_Scene::player->getFuel();
+			//Todo increase this from 0 as the player approaches
+			_light->setRadius((irr::f32)_lightRange);
+
+			//Process Healing
+			if(distanceToPlayer < _healingRange)
+			{
+				float a = Main_Scene::player->getHealth();
+				float b = Main_Scene::player->getFuel();
 		    
-			if( a < 100.0f)
-			{
-				//player getting healed by beacon
-				Main_Scene::player->setHealth( a + (5.0f * delta));
+				if( a < 100.0f)
+				{
+					//player getting healed by beacon
+					Main_Scene::player->setHealth( a + (5.0f * delta));
+				}
+				if( b < 1.0f)
+				{
+					//Refuel player
+					Main_Scene::player->setFuel(b + (0.1f * delta));
+				}
 			}
-			if( b < 1.0f)
+		}
+		else
+		{
+			if(distanceToPlayer < _healingRange)
 			{
-				//player fuel gets more
-				Main_Scene::player->setFuel(b + (0.1f * delta));
+				light(true);
 			}
 		}
 	}
 	else
 	{
-		if(distanceToPlayer < _healingRange)
-		{
-			light(true);
-		}
+		//Even if _isLit, disable the light for performance
+		_light->setRadius(0.25f * _lightRange);
 	}
-	
 }
 
 void Beacon::handleMessage(const GameEngine::Message& message)

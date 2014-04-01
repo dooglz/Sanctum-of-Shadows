@@ -20,15 +20,20 @@ irr::core::vector2d<int> Pathfinder::getDarkLocation()
 	}
 
 	//TODO display error.
-	if (!possibleLocations.empty())
+	if (possibleLocations.size() > 1)
 	{
 		//You're so Random, you don't even know it.
 		//Todo Tidy this unholy function.
 		std::default_random_engine generator;
 		generator.seed (rand());
+		//TODO this throws and exception sometimes, fixxit.
 		std::uniform_int_distribution<int> distribution(0, possibleLocations.size()-1);
 		int a = distribution(generator);
 		return (possibleLocations[a]);
+	}
+	else if (possibleLocations.size()  == 1)
+	{
+		return possibleLocations[0];
 	}
 
 	//TODO display error.
@@ -43,13 +48,13 @@ irr::core::vector3df Pathfinder::getLocationWithinTile(irr::core::vector2d<int> 
 	pos = Level::getResolvedLocation(coord);
 	//Find a random location within it
 		//TODO
-	return irr::core::vector3df(pos.X,100.0f,pos.Y);
+	return irr::core::vector3df(pos.X,40.0f,pos.Y);
 }
 
 // Returns a vector3df at the center of a supplied grid coordinate, at height 100.0f
 irr::core::vector3df Pathfinder::getResolvedLocation(irr::core::vector2d<int> coord){
 	irr::core::vector2df pos = Level::getResolvedLocation(coord);
-	return irr::core::vector3df(pos.X,100.0f,pos.Y);
+	return irr::core::vector3df(pos.X,40.0f,pos.Y);
 }
 
 // Get an adjacent Dark tile.
@@ -86,16 +91,23 @@ irr::core::vector2d<int> Pathfinder::getAdjacentDarkLocation(irr::core::vector2d
 		}
 	}
 
-	if (!possibleLocations.empty())
+	if (possibleLocations.size() > 1)
 	{
 		//You're so Random, you don't even know it.
 		//Todo Tidy this unholy function.
 		std::default_random_engine generator;
 		generator.seed (rand());
+		if (possibleLocations.size()-1 == 0)
+		{
+			std::cerr <<"PROBALESM" << std::endl;
+		}
 		std::uniform_int_distribution<int> distribution(0, possibleLocations.size()-1);
 		int a = distribution(generator);
-		//std::cerr << "moving to: " << a << "out of: "<< possibleLocations.size() << std::endl;
 		return (possibleLocations[a]);
+	}
+	else if (possibleLocations.size()  == 1)
+	{
+		return possibleLocations[0];
 	}
 
 	//TODO display error.
