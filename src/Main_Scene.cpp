@@ -63,7 +63,7 @@ void Main_Scene::initialize()
 	player = new Player(this,irr::core::vector3df(0,200.0f,0));
 	Enemy::setPlayer(player);
 
-	for(int i = 0; i < 3000; i++)
+	for(int i = 0; i < 250; i++)
 	{
 		new Enemy(this,Pathfinder::getResolvedLocation(Pathfinder::getDarkLocation()));
 	}

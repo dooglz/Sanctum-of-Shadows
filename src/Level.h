@@ -17,7 +17,7 @@ class Level: public GameEngine::Entity{
 		//level gen stuff
 		//@{
 			//! Grid size, X by X, has to be an odd number.
-			static const unsigned int _gridSize = 9;
+			static const unsigned int _gridSize = 11;
 			//! amount of dark tiles lining the edge.
 			static const unsigned int _darkPadding = 1;
 			//! Physical size of each tile in the grid.

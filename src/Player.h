@@ -17,6 +17,8 @@ class Player:public Character{
 		
 		//! The Maximum radius of the lanterns effects.
 		static const float _Lanternmaxradius;
+
+		static const float _Lanternrminradius;
 		
 		//! Current state of the lantern.
 		bool _LanternOn;

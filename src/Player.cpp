@@ -2,7 +2,8 @@
 #include "Player.h"
 
 // The Maximum radius of the lanterns effects.
-const float Player::_Lanternmaxradius = 300.0f;
+const float Player::_Lanternmaxradius = 0.45f;
+const float Player::_Lanternrminradius = 0.06f;
 
 Player::Player(GameEngine::Scene* parentScene, irr::core::vector3df position): Character(parentScene,0,"player")
 {
@@ -18,8 +19,9 @@ Player::Player(GameEngine::Scene* parentScene, irr::core::vector3df position): C
 	_characterC = addCharacter((btScalar)1.0f, &btVector3(position.X, position.Y, position.Z), (btScalar)50, (btScalar)30);
 	
 	//player render node
-	_node = GameEngine::engine.getDevice()->getSceneManager()->addCubeSceneNode(1.0f);
-	_node->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_dev_stone.png"));
+	//_node = GameEngine::engine.getDevice()->getSceneManager()->addCubeSceneNode(1.0f);
+	_node = GameEngine::engine.getDevice()->getSceneManager()->addEmptySceneNode();
+	//_node->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_dev_stone.png"));
 	_node->setScale(playerScale);
 
 	//The player doesn't need lighting
@@ -30,9 +32,9 @@ Player::Player(GameEngine::Scene* parentScene, irr::core::vector3df position): C
 	_camera->bindTargetAndRotation(true);
 	_health = 100.0f;
 	_Lanternlight = GameEngine::engine.getDevice()->getSceneManager()->addLightSceneNode(
-		_node, irr::core::vector3df(0,1.0f,0),			//Parent and offset
+		_node, irr::core::vector3df(0,0.0f,0),			//Parent and offset
 		irr::video::SColorf(1.0f, 1.0f, 1.0f, 1.0f),	//Colour
-		(irr::f32)_Lanternmaxradius//Radius
+		450.0f//Radius
 	);
 
 }
@@ -55,17 +57,27 @@ void Player::update(float delta)
 
 	if(_LanternOn)
 	{
-		 if (_fuelLevel > 0){ 
-		    _fuelLevel -= 0.02f*delta;
+
+		if (_fuelLevel > 0){ 
+			_fuelLevel -= 0.02f*delta;
+			float light = _Lanternrminradius + (_fuelLevel * (_Lanternmaxradius - _Lanternrminradius));
+
+			irr::video::SLight& data = 	_Lanternlight->getLightData();
+			data.DiffuseColor = (irr::video::SColorf(light, light, light, 1.0f));
+			_Lanternlight->setLightData(data);
+
+			//_Lanternlight->setRadius(_Lanternrminradius);
 			irr::core::stringw str = "Lantern fuel: ";
-			str += _Lanternlight->getRadius()/3;
+			str += _fuelLevel;
 			GameEngine::UI::displayTextMessage(str,0);
-			_Lanternlight->setRadius(_fuelLevel * _Lanternmaxradius);
-		 }
-		 else
-		 {
-			 toggleLantern(false);
-		 }
+			str = "Lantern strength: ";
+			str += light;
+			GameEngine::UI::displayTextMessage(str,0);
+			}
+		else
+		{
+			//toggleLantern(false);
+		}
 	}
 
 	if (GameEngine::handler.keyDown(irr::KEY_KEY_A))
@@ -126,12 +138,14 @@ void Player::toggleLantern(bool onoff)
 {
 	if(onoff && _fuelLevel > 0)
 	{
-		_Lanternlight->setVisible(true);
+		//_Lanternlight->setVisible(true);
 		_LanternOn = true;
 	}
 	else
 	{
-		_Lanternlight->setVisible(false);
+		irr::video::SLight& data = 	_Lanternlight->getLightData();
+			data.DiffuseColor = (irr::video::SColorf(_Lanternrminradius, _Lanternrminradius, _Lanternrminradius, 1.0f));
+			_Lanternlight->setLightData(data);
 		_LanternOn = false;
 	}
 }
@@ -159,7 +173,7 @@ void Player::handleMessage(const GameEngine::Message& message)
 			_characterC->setGravity(100);
 			_characterC->jump();
 			//take damage off of players health
-			_health = _health - 10.0f;
+		//	_health = _health - 10.0f;
 		}
 		delete message.data;
 	}

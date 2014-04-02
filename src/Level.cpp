@@ -36,7 +36,7 @@ void Level::intitalise()
 void Level::createLevel()
 {
 	//fog
-	GameEngine::engine.getDevice()->getVideoDriver()->setFog(irr::video::SColor(0,0,0,0), irr::video::EFT_FOG_LINEAR, 250, 1000, .003f, true, false);	
+	GameEngine::engine.getDevice()->getVideoDriver()->setFog(irr::video::SColor(0,0,0,0), irr::video::EFT_FOG_LINEAR, 300, 2000, .003f, true, false);	
 
 	float tileSize = (float)_tileSize;
 	irr::video::ITexture* cobbleTex = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble2_1024.jpg");
