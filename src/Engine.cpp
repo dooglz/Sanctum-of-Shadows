@@ -94,12 +94,20 @@ namespace GameEngine{
 
 	//Shuts down components and closes the irrlicht device.
 	void Engine::shutdown(){
-//		EntityManager::shutdown();
-		if(_device)
+		
+		if(soundengine != nullptr)
+		{
+			soundengine->stopAllSounds();
+			soundengine->drop();
+			soundengine = NULL;
+		}
+
+		if(_device!= nullptr)
 		{
 			_device->closeDevice();
 			_device = NULL;
 		}
+
 	}
 
 	// Set's run to false.

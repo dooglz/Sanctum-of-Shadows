@@ -18,9 +18,6 @@ class Main_Scene : public GameEngine::Scene{
 		//! is the game paused.
 		static bool _gamepaused;
 
-		//! DEBUG resets stuff, TODO remove for release
-		void reset();
-
 		//! Handle the loose scenario
 		void GameOver();
 

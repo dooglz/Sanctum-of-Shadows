@@ -1,6 +1,8 @@
+#pragma once
 #include "Level.h"
 #include <ctime>
-#include <math.h> 
+#include <math.h>
+#include "Utilities.h"
 
 // The level Grid.
 std::array<std::array<Level::tile,Level::_gridSize>, Level::_gridSize> Level::_grid;
@@ -186,24 +188,25 @@ void Level::generateLevel()
 		}
 	}
 
-	
-	//print
-	for(unsigned int col = 0; col < _grid.size(); col ++)
-	{
-		for(unsigned int row = 0; row < _grid[col].size(); row ++)
+	if(VERBOSE_lEVEL > 1){
+		//print
+		for(unsigned int col = 0; col < _grid.size(); col ++)
 		{
-			if(_grid[col][row] == BADLANDS){
-				std::cout << char(178);
-			}else if(_grid[col][row] == EMPTY){
-				std::cout << char(176);
-			}else if(_grid[col][row] == OBSTACLE){
-				std::cout << char(254);
+			for(unsigned int row = 0; row < _grid[col].size(); row ++)
+			{
+				if(_grid[col][row] == BADLANDS){
+					std::cout << char(178);
+				}else if(_grid[col][row] == EMPTY){
+					std::cout << char(176);
+				}else if(_grid[col][row] == OBSTACLE){
+					std::cout << char(254);
+				}
+				else{
+					std::cout << char(233);
+				}
 			}
-			else{
-				std::cout << char(233);
-			}
+			std::cout << std::endl;
 		}
-		std::cout << std::endl;
 	}
 
 }

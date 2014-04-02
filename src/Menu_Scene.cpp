@@ -1,29 +1,41 @@
 #include "Menu_Scene.h"
 #include "Engine.h"
 #include "Game.h"
+#include "Utilities.h"
 
 Menu_Scene::Menu_Scene():Scene("menu")
 {
-	std::cout << "Menu_Scene constructor" << std::endl;
+	if(VERBOSE_lEVEL > 1)
+	{
+		std::cout << "Menu_Scene constructor" << std::endl;
+	}
 }
 
 Menu_Scene::~Menu_Scene()
 {
-	std::cout << "Menu_Scene Destructor" << std::endl;
+	if(VERBOSE_lEVEL > 1)
+	{
+		std::cout << "Menu_Scene Destructor" << std::endl;
+	}
 	flush();
 }
 
 bool Menu_Scene::loadContent()
 {
-	std::cout << "Menu_Scene loadContent" << std::endl;
+	if(VERBOSE_lEVEL > 1)
+	{
+		std::cout << "Menu_Scene loadContent" << std::endl;
+	}
 	return true;
 }
 
 void Menu_Scene::initialize()
 {
 	loadContent();
-	std::cout << "Menu_Scene initialize" << std::endl;
-
+	if(VERBOSE_lEVEL > 1)
+	{
+		std::cout << "Menu_Scene initialize" << std::endl;
+	}
 	irr::scene::ISceneManager* smgr = GameEngine::engine.getDevice()->getSceneManager();
 	
 	// Floating Logo
@@ -59,7 +71,10 @@ void Menu_Scene::initialize()
 
 void Menu_Scene::flush()
 {
-	std::cout << "Menu_Scene flush" << std::endl;
+	if(VERBOSE_lEVEL > 1)
+	{
+		std::cout << "Menu_Scene flush" << std::endl;
+	}
 	if (logoNode != nullptr )
 	{
 		logoNode->remove();
@@ -92,13 +107,9 @@ void Menu_Scene::flush()
 void Menu_Scene::update(float delta)
 {
 	GameEngine::UI::displayTextMessage(irr::core::stringw("Press Space to Begin"),0);
-	if(GameEngine::handler.keyFired(irr::KEY_RETURN))
-	{
-		// Change Scene
-		Game::changeScene("main");
-	}
+
 	if(GameEngine::handler.keyFired(irr::KEY_SPACE))
 	{
-		GameEngine::UI::displayTextMessage(irr::core::stringw("Space pressed"),100);
+		Game::changeScene("main");
 	}
 }

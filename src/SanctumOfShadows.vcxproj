@@ -141,6 +141,7 @@
     <ClInclude Include="SanctumOfShadows.h" />
     <ClInclude Include="StaticPhysicalEntity.h" />
     <ClInclude Include="UI.h" />
+    <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

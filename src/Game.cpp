@@ -1,6 +1,7 @@
 #pragma once
 #include "Game.h"
 #include "UI.h"
+#include "Utilities.h"
 
 // The currently active Scene.
 GameEngine::Scene* Game::_activeScene;
@@ -53,7 +54,10 @@ GameEngine::Scene* Game::findScene(std::string sceneName)
 		return found->second;
 	}
 	//TODO handle this better.
-	std::cout << "Couldn't Locate Scene: "<< sceneName << std::endl;
+	if(VERBOSE_lEVEL > 0)
+	{
+		std::cout << "Couldn't Locate Scene: "<< sceneName << std::endl;
+	}
 	return NULL;
 }
 

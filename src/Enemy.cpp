@@ -1,11 +1,10 @@
+#pragma once
 #include "Enemy.h"
 #include "Message.h"
 #include "MessageHandler.h"
 #include "SanctumOfShadows.h"
-#include "irrKlang.h"
-#include <iostream>
 #include "Pathfinder.h"
-#pragma comment(lib, "irrKlang.lib")
+#include "Utilities.h"
 
 Player* Enemy::_player;
 
@@ -135,7 +134,6 @@ void Enemy::update(float delta)
 		else if(_state == IDLE)
 		{
 			//We are at our target, find a new one.
-			//std::cout << "Location reached" << std::endl;
 			//_targetPosition = Pathfinder::getResolvedLocation(Pathfinder::getDarkLocation());
 			_targetPosition = Pathfinder::getLocationWithinTile(
 					Pathfinder::getAdjacentDarkLocation(
@@ -150,7 +148,10 @@ void Enemy::update(float delta)
 	
 	if(_health <= 0)
 	{
-		std::cerr << "Enemy is dead" << std::endl;
+		if(VERBOSE_lEVEL > 1)
+		{
+			std::cerr << "Enemy is dead" << std::endl;
+		}
 		//play the sound for when enemy dies
 		GameEngine::Engine::soundengine->play2D("sounds/enemydead.mp3", false);
 		die();

@@ -2,7 +2,6 @@
   Author:   Sam Serrels
   Purpose:  Entry and exit point for game application.
 ===============================================================================*/
-
 #pragma comment(lib,"Irrlicht")
 //Bullet
 #if defined(DEBUG) | defined(_DEBUG)
@@ -18,7 +17,7 @@
 #include "Engine.h"
 #include "Game.h"
 #include "SanctumOfShadows.h"
-#include <iostream>
+#include "Utilities.h"
 
 int main(){
 
@@ -55,7 +54,7 @@ int main(){
 		delta = (currtime - prevTime) / 1000.f; // Time in seconds
 
 		
-		if (device->isWindowActive())
+		if (UPDATE_WHILE_UNFOCUSSED || device->isWindowActive() )
         {
 
 			if(delta > 1.0f)

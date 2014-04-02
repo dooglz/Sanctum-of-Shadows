@@ -1,5 +1,7 @@
 #include "EntityManager.h"
+#pragma once
 #include <iostream>
+#include "Utilities.h"
 
 namespace GameEngine{
 
@@ -134,8 +136,11 @@ namespace GameEngine{
 	// Takes an iterator from _entities, Removes entity from _entities and _namedentities, increments iterator, Does not delete the actual entity.
 	bool EntityManager::remove(std::unordered_map<int,Entity*>::iterator &iter)
 	{
-		std::cout << "Removing Entity: ID:"<<iter->first << " Name: " << iter->second->getName() << std::endl;
-		std::cout << "_entities.size: " << _entities.size() << std::endl;
+		if(VERBOSE_lEVEL > 1)
+		{
+			std::cout << "Removing Entity: ID:"<<iter->first << " Name: " << iter->second->getName() << std::endl;
+			std::cout << "_entities.size: " << _entities.size() << std::endl;
+		}
 
 		//does entity have a name
 		if(iter->second->getName() != "")
@@ -144,9 +149,7 @@ namespace GameEngine{
 			auto found = _namedEntities.find(iter->second->getName());
 			if(found != _namedEntities.end())
 			{
-				std::cout << found->second.size()<< std::endl;
 				found->second.remove(iter->second);
-				std::cout << found->second.size()<< std::endl;
 			}
 		}
 
@@ -155,7 +158,10 @@ namespace GameEngine{
 
 		//Delete the pointer to the Entity from the main list. The iterator gets incremented
 		iter = _entities.erase(iter);
-		std::cout << "_entities.size: " <<  _entities.size() << std::endl;
+		if(VERBOSE_lEVEL > 1)
+		{
+			std::cout << "_entities.size: " <<  _entities.size() << std::endl;
+		}
 		return true;
 	}
 

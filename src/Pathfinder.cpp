@@ -5,7 +5,6 @@
 
 std::default_random_engine Pathfinder::_generator;
 
-
 // Find a random dark tile.
 irr::core::vector2d<int> Pathfinder::getDarkLocation()
 {	
@@ -22,19 +21,13 @@ irr::core::vector2d<int> Pathfinder::getDarkLocation()
 		}
 	}
 
-	//TODO display error.
 	if (possibleLocations.size() > 1)
 	{
-		//You're so Random, you don't even know it.
-		//Todo Tidy this unholy function.
 		int seed = rand();
 		if ( seed <= 0 ) { seed = 1;}
-
 		_generator.seed (seed);
-		//TODO this throws and exception sometimes, fixxit.
 		std::uniform_int_distribution<int> distribution(0, possibleLocations.size()-1);
-		int a = distribution(_generator);
-		return (possibleLocations[a]);
+		return (possibleLocations[distribution(_generator)]);
 	}
 	else if (possibleLocations.size()  == 1)
 	{
@@ -51,10 +44,9 @@ irr::core::vector3df Pathfinder::getLocationWithinTile(irr::core::vector2d<int> 
 	//get tile position
 	irr::core::vector2df pos;
 	pos = Level::getResolvedLocation(coord);
+
 	//Find a random location within it
-		//TODO
 	std::uniform_real_distribution<float> distribution(-300.0,300.0);
-	//std::cout <<"num: " <<distribution(_generator) << std::endl;
 	return irr::core::vector3df(pos.X+ distribution(_generator),40.0f,pos.Y+ distribution(_generator));
 }
 
@@ -100,15 +92,12 @@ irr::core::vector2d<int> Pathfinder::getAdjacentDarkLocation(irr::core::vector2d
 
 	if (possibleLocations.size() > 1)
 	{
-		//You're so Random, you don't even know it.
-		//Todo Tidy this unholy function.
 		int seed = rand();
 		if ( seed <= 0 ) { seed = 1;}
-
 		_generator.seed (seed);
+
 		std::uniform_int_distribution<int> distribution(0, possibleLocations.size()-1);
-		int a = distribution(_generator);
-		return (possibleLocations[a]);
+		return (possibleLocations[distribution(_generator)]);
 	}
 	else if (possibleLocations.size()  == 1)
 	{

@@ -7,6 +7,7 @@
 #include "Level.h"
 #include "Box.h"
 #include "Pathfinder.h"
+#include "Utilities.h"
 
 irr::scene::ICameraSceneNode* Flycamera;
 irr::scene::ICameraSceneNode* Menucamera;
@@ -21,25 +22,40 @@ irr::gui::IGUIInOutFader* fader;
 
 Main_Scene::Main_Scene():Scene("main")
 {
-	std::cout << "Main_Scene constructor" << std::endl;
+	if(VERBOSE_lEVEL > 1)
+	{
+		std::cout << "Main_Scene constructor" << std::endl;
+	}
 }
 
 // Destructor
 Main_Scene::~Main_Scene()
 {
-	std::cout << "Main_Scene destructor" << std::endl;
+	if(VERBOSE_lEVEL > 1)
+	{
+		std::cout << "Main_Scene destructor" << std::endl;
+	}
 	flush();
 }
 
 bool Main_Scene::loadContent()
 {
-	std::cout << "Main_Scene loadContent" << std::endl;
+	if(VERBOSE_lEVEL > 1)
+	{
+		std::cout << "Main_Scene loadContent" << std::endl;
+	}
 	return true;
 }
 
 void Main_Scene::initialize()
 {
-	std::cout << "Main_Scene initialize" << std::endl;
+	if(VERBOSE_lEVEL > 1)
+	{
+		std::cout << "Main_Scene initialize" << std::endl;
+	}
+
+	_gameover = false;
+	_gamewon = false;
 
 	irr::scene::ISceneManager* smgr = GameEngine::engine.getDevice()->getSceneManager();
 
@@ -61,6 +77,9 @@ void Main_Scene::initialize()
 
 	//Game Entities
 	player = new Player(this,irr::core::vector3df(0,200.0f,0));
+	player->setHealth(100.0f);
+	player->getController()->warp(btVector3(0,10,0));
+	player->setAlive(true);
 	Enemy::setPlayer(player);
 
 	for(int i = 0; i < 250; i++)
@@ -68,17 +87,19 @@ void Main_Scene::initialize()
 		new Enemy(this,Pathfinder::getResolvedLocation(Pathfinder::getDarkLocation()));
 	}
 
-	//new Enemy(this,Pathfinder::getResolvedLocation(Pathfinder::getDarkLocation()));
-
 	GameEngine::UI::displayTextMessage(irr::core::stringw("Press H for help"),1000);
-
-	reset();
+	
+	//Spookysound
+	GameEngine::Engine::soundengine->play2D("sounds/SOS_cave_amb_2.ogg", true);
 
 }
 
 void Main_Scene::flush()
 {
-	std::cout << "Main_Scene Flush" << std::endl;
+	if(VERBOSE_lEVEL > 1)
+	{
+		std::cout << "Main_Scene Flush" << std::endl;
+	}
 
 	if (Menucamera != nullptr )
 	{
@@ -111,6 +132,7 @@ void Main_Scene::flush()
 	}
 
 	_entityManager->shutdown();
+	GameEngine::Engine::soundengine->stopAllSounds();
 }
 
 // Run per-frame game logic.
@@ -143,11 +165,6 @@ void Main_Scene::update(float delta)
 	if(GameEngine::handler.keyFired(irr::KEY_F11))
 	{
 		level->toggleLighting(!level->isLit());
-	}
-
-	if(GameEngine::handler.keyFired(irr::KEY_KEY_R))
-	{
-		reset();
 	}
 
 	if(GameEngine::handler.keyFired(irr::KEY_KEY_H))
@@ -235,23 +252,15 @@ void Main_Scene::update(float delta)
 
 }
 
-// Resets everything to starting positions.
-void Main_Scene::reset()
-{
-	//reset player position and health
-	player->setHealth(100.0f);
-	player->getController()->warp(btVector3(0,10,0));
-	player->setAlive(true);
-	_gameover = false;
-	_gamewon = false;
-}
-
 // Handle the loose scenario
 void Main_Scene::GameOver()
 {
 	if(_gameover == false)
 	{
-		std::cerr << "Game is over" << std::endl;
+		if(VERBOSE_lEVEL > 1)
+		{
+			std::cerr << "Game is over" << std::endl;
+		}
 		fader->fadeOut(1000);
 	}
 	_gameover = true;
@@ -262,7 +271,10 @@ void Main_Scene::GameWon()
 {
 	if(!_gamewon)
 	{
-		std::cerr << "Game has been won" << std::endl;
+		if(VERBOSE_lEVEL > 1)
+		{
+			std::cerr << "Game has been won" << std::endl;
+		}
 		fader->fadeOut(3000);
 	}
 	_gamewon = true;
