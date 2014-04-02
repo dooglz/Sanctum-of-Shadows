@@ -27,7 +27,10 @@ irr::core::vector2d<int> Pathfinder::getDarkLocation()
 	{
 		//You're so Random, you don't even know it.
 		//Todo Tidy this unholy function.
-		_generator.seed (rand());
+		int seed = rand();
+		if ( seed <= 0 ) { seed = 1;}
+
+		_generator.seed (seed);
 		//TODO this throws and exception sometimes, fixxit.
 		std::uniform_int_distribution<int> distribution(0, possibleLocations.size()-1);
 		int a = distribution(_generator);
@@ -99,11 +102,10 @@ irr::core::vector2d<int> Pathfinder::getAdjacentDarkLocation(irr::core::vector2d
 	{
 		//You're so Random, you don't even know it.
 		//Todo Tidy this unholy function.
-		_generator.seed (rand());
-		if (possibleLocations.size()-1 == 0)
-		{
-			std::cerr <<"PROBALESM" << std::endl;
-		}
+		int seed = rand();
+		if ( seed <= 0 ) { seed = 1;}
+
+		_generator.seed (seed);
 		std::uniform_int_distribution<int> distribution(0, possibleLocations.size()-1);
 		int a = distribution(_generator);
 		return (possibleLocations[a]);

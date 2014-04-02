@@ -38,7 +38,6 @@ void Menu_Scene::initialize()
 	irr::scene::ISceneNodeAnimator* anim = smgr->createFlyCircleAnimator (irr::core::vector3df(0,0,700),200.0,0.0005f);
 	menucam->addAnimator(anim);
 	anim->drop();
-
 	//Beacon
 	menuBeacon = new Beacon(this,irr::core::vector3df(0,-150,500));
 	menuBeacon->getNode()->setRotation(irr::core::vector3df(0,90.0f,0));
