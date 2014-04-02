@@ -92,4 +92,6 @@ class Level: public GameEngine::Entity{
 
 		//! Returns a vector2d<int> grid coordinate that contains the supplied position, Clamps between 0 and _gridSize.
 		static irr::core::vector2d<int> getResolvedCoord(irr::core::vector2df location);
+
+		void displayProgress();
 };

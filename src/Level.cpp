@@ -327,3 +327,34 @@ irr::core::vector2d<int> Level::getResolvedCoord(irr::core::vector2df location)
 
 	return irr::core::vector2d<int>(bX,bY);
 }
+
+
+void Level::displayProgress()
+{
+
+	//str += _fuelLevel;
+	//
+	int lit = 0;
+	int unlit = 0;
+	if (!_beacons.empty())
+	{
+		for (Beacon* i : _beacons ) 
+		{
+			if(i->isLit())
+			{
+				lit++;
+			}
+			else
+			{
+				unlit++;
+			}
+			
+		}
+	}
+	irr::core::stringw str = "";
+	str += lit;
+	str += " out of " ;
+	str += lit+unlit;
+	str += " Beacons Lit" ;
+	GameEngine::UI::displayTextMessage(str,0);
+}

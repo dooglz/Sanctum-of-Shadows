@@ -193,6 +193,7 @@ void Main_Scene::update(float delta)
 	{
 		GameWon();
 	}
+	level->displayProgress();
 
 	// Only update if the game is still playing
 	if(!_gameover && !_gamewon && !_gamepaused)
