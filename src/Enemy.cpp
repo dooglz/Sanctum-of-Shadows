@@ -154,7 +154,12 @@ void Enemy::update(float delta)
 		}
 		//play the sound for when enemy dies
 		GameEngine::Engine::soundengine->play2D("sounds/enemydead.mp3", false);
-		die();
+		
+		//teleport somewhere else
+		_position =  Pathfinder::getResolvedLocation(Pathfinder::getDarkLocation());
+		_node->setPosition(_position);
+
+		_health = 80.0f; 
 	}
 }
 

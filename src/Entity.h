@@ -28,10 +28,6 @@ namespace GameEngine{
 			//! A flag to tell EntityManager to remove this entity from the entity List at the next loop. May cause leaks!
 			bool _shouldRemove;
 
-			//TODO call this remove()
-			//! sets _shouldremove to true, all final gamelogic for this Entity should be in here.
-			virtual void die();
-
 		public:
 			//! Constructor
 			Entity(Scene* parentScene, irr::scene::ISceneNode* node,const std::string& name);
@@ -51,11 +47,8 @@ namespace GameEngine{
 			//! Receive and process a message.
 			virtual void handleMessage(const Message& message){}
 
-			//TODO
-			//! Force Remove from Entity manager,  Remember to call Delete afterwards.
-			void remove(){
-				die();
-			}
+			//! Remove from Entity manager,  Remember to call Delete afterwards.
+			virtual void remove();
 
 			//! Returns _node.
 			irr::scene::ISceneNode* getNode()

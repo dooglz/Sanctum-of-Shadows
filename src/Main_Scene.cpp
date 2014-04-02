@@ -9,6 +9,7 @@
 #include "Pathfinder.h"
 #include "Utilities.h"
 
+
 irr::scene::ICameraSceneNode* Flycamera;
 irr::scene::ICameraSceneNode* Menucamera;
 
@@ -169,34 +170,7 @@ void Main_Scene::update(float delta)
 
 	if(GameEngine::handler.keyFired(irr::KEY_KEY_H))
 	{
-		irr::core::stringw strhelp1 = "use the wasd keys to move";
-		GameEngine::UI::displayTextMessage(strhelp1,400);
-		irr::core::stringw strhelp2 = "use space to attack";
-		GameEngine::UI::displayTextMessage(strhelp2,400);
-		irr::core::stringw strhelp3 = "approach beacons to activate them!";
-		GameEngine::UI::displayTextMessage(strhelp3,400);
-	}
-
-	//debug physics objects
-	if(GameEngine::handler.keyDown(irr::KEY_F5))
-	{
-		new Box(this,btVector3(-75.0f + ((((float) rand()) / ((float) RAND_MAX))*150.0f),100.0f,-75.0f + ((((float) rand()) / ((float) RAND_MAX))*150.0f)),irr::core::vector3df(10.0f,10.0f,10.0f),10.0f);
-	}
-	if(GameEngine::handler.keyFired(irr::KEY_F6))
-	{
-		new Box(this,btVector3(0,30,0),irr::core::vector3df(10.0f,10.0f,10.0f),10.0f);
-	}
-	if(GameEngine::handler.keyFired(irr::KEY_F7)){
-		irr::scene::ICameraSceneNode* cam = GameEngine::engine.getDevice()->getSceneManager()->getActiveCamera();
-		Box* bx = new Box(this,
-			GameEngine::Physics::irrVec3ToBtVec3(cam->getAbsolutePosition()),
-			irr::core::vector3df(30.0f,30.0f,30.0f),
-			100.0f
-		);
-		irr::core::vector3df start = cam->getPosition();
-		irr::core::vector3df end = (cam->getTarget() - start);
-		end.normalize();
-		bx->getRB()->setLinearVelocity(GameEngine::Physics::irrVec3ToBtVec3(end) * 100.0f);
+		displayHelp();
 	}
 
 	// Has the player died?
@@ -278,4 +252,20 @@ void Main_Scene::GameWon()
 		fader->fadeOut(3000);
 	}
 	_gamewon = true;
+}
+
+void Main_Scene::displayHelp()
+{
+	irr::core::stringw strings[6];
+
+	strings[0] = "Use the wasd keys to move";
+	strings[1] = "Use space to attack";
+	strings[2] = "Approach beacons to activate them!";
+	strings[3] = "Press 'P' to pause";
+	strings[4] = "Press 'Esc' to quit";
+	strings[5] = "Beacons Regerate your Health and Fuel";
+
+	std::uniform_int_distribution<int> distribution(0, 5);
+
+	GameEngine::UI::displayTextMessage(strings[distribution(GameEngine::Engine::generator)],400);
 }

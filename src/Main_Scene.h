@@ -24,6 +24,9 @@ class Main_Scene : public GameEngine::Scene{
 		//! Handle the win scenario
 		void GameWon();
 
+		//! Show a hint notification
+		void displayHelp();
+
 	public: 
 		//! Constructor.
 		Main_Scene();

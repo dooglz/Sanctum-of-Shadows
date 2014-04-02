@@ -10,6 +10,7 @@
 #include "UI.h"
 #include "BulletDebugDraw.h"
 #include "irrKlang.h"
+#include <random>
 #pragma comment(lib, "irrKlang.lib")
 
 /**
@@ -114,6 +115,8 @@ namespace GameEngine{
 			{
 				return ((A.X*B.Y)-(A.Y*B.X));
 			}
+
+			static std::default_random_engine generator;
 	};
 
 	//! The primary Engine instance.

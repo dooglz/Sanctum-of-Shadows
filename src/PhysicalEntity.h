@@ -18,8 +18,8 @@ namespace GameEngine{
 			//! Reference to the Motionstate in use.
 			GameEngine::MotionState* _motionstate;
 
-			//! TODO
-			void die();
+			void remove();
+
 		public:
 			//! Constructor.
 			PhysicalEntity(Scene* parentScene, irr::scene::ISceneNode* node,const std::string& name):Entity(parentScene,node,name){}

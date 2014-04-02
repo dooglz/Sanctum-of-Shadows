@@ -12,7 +12,8 @@ namespace GameEngine{
 		_parentScene = parentScene;
 		_parentScene->getEntityManager()->registerEntity(this);
 	}
-	void Entity::die()
+
+	void Entity::remove()
 	{
 		_shouldRemove = true;
 	}

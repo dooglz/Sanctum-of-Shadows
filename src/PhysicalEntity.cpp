@@ -11,7 +11,7 @@ namespace GameEngine{
 		//have we fallen out of world?
 		if(_btposition.getY() < -200.0f)
 		{
-			die();
+			remove();
 			return;
 		}
 	}
@@ -36,11 +36,11 @@ namespace GameEngine{
 	}
 
 
-	void PhysicalEntity::die(){
+	void PhysicalEntity::remove(){
 		_node->remove();
 		GameEngine::Physics::world->removeRigidBody(_rigidBody);
 		delete _rigidBody;
 		_rigidBody = 0;
-		Entity::die();
+		Entity::remove();
 	}
 }

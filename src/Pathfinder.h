@@ -1,6 +1,5 @@
 #pragma once
 #include <irrlicht.h>
-#include <random>
 
 /*! \brief Pathfinding, and grid traversal logic.
  * \ingroup Game
@@ -13,8 +12,6 @@ class Pathfinder{
 
 		//! Destructor.
 		~Pathfinder(); 
-
-		static std::default_random_engine _generator;
 	public:
 
 		//! Get an adjacent Dark tile.

@@ -3,6 +3,8 @@
 
 namespace GameEngine{
 	irrklang::ISoundEngine* Engine::soundengine;
+	std::default_random_engine Engine::generator;
+
 	Engine engine = Engine();
 	KeyHandler handler = KeyHandler();
 	UI ui = UI();
@@ -48,6 +50,9 @@ namespace GameEngine{
 
 		debugMat.Lighting = false;
 
+		int seed = rand();
+		if ( seed <= 0 ) { seed = 1;}
+		generator.seed (seed);
 
 		return true;
 	}

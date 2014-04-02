@@ -3,7 +3,6 @@
 #include "Level.h"
 #include <random>
 
-std::default_random_engine Pathfinder::_generator;
 
 // Find a random dark tile.
 irr::core::vector2d<int> Pathfinder::getDarkLocation()
@@ -23,11 +22,8 @@ irr::core::vector2d<int> Pathfinder::getDarkLocation()
 
 	if (possibleLocations.size() > 1)
 	{
-		int seed = rand();
-		if ( seed <= 0 ) { seed = 1;}
-		_generator.seed (seed);
 		std::uniform_int_distribution<int> distribution(0, possibleLocations.size()-1);
-		return (possibleLocations[distribution(_generator)]);
+		return (possibleLocations[distribution(GameEngine::Engine::generator)]);
 	}
 	else if (possibleLocations.size()  == 1)
 	{
@@ -47,7 +43,7 @@ irr::core::vector3df Pathfinder::getLocationWithinTile(irr::core::vector2d<int> 
 
 	//Find a random location within it
 	std::uniform_real_distribution<float> distribution(-300.0,300.0);
-	return irr::core::vector3df(pos.X+ distribution(_generator),40.0f,pos.Y+ distribution(_generator));
+	return irr::core::vector3df(pos.X+ distribution(GameEngine::Engine::generator),40.0f,pos.Y+ distribution(GameEngine::Engine::generator));
 }
 
 // Returns a vector3df at the center of a supplied grid coordinate, at height 100.0f
@@ -92,12 +88,8 @@ irr::core::vector2d<int> Pathfinder::getAdjacentDarkLocation(irr::core::vector2d
 
 	if (possibleLocations.size() > 1)
 	{
-		int seed = rand();
-		if ( seed <= 0 ) { seed = 1;}
-		_generator.seed (seed);
-
 		std::uniform_int_distribution<int> distribution(0, possibleLocations.size()-1);
-		return (possibleLocations[distribution(_generator)]);
+		return (possibleLocations[distribution(GameEngine::Engine::generator)]);
 	}
 	else if (possibleLocations.size()  == 1)
 	{
