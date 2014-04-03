@@ -189,11 +189,6 @@ void Main_Scene::update(float delta)
 	// Only update if the game is still playing
 	if(!_gameover && !_gamewon && !_gamepaused)
 	{
-		//display player health
-		irr::core::stringw str = "Player Health: ";
-		str += player->getHealth();
-		GameEngine::UI::displayTextMessage(str,0);
-
 		//update entityManage
 		_entityManager->update(delta);
 	}

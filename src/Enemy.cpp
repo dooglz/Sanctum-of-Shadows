@@ -124,7 +124,7 @@ void Enemy::update(float delta)
 			else
 			{
 				//roll dice, damage player
-				if((rand() % 400) < 3)
+				if((rand() % 800) < 1)
 				{	
 					GameEngine::Message message(_player,"playerHealthDecrease",0);
 					GameEngine::MessageHandler::sendMessage(message);
