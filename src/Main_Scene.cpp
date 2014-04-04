@@ -56,6 +56,7 @@ void Main_Scene::initialize()
 
 	_gameover = false;
 	_gamewon = false;
+	_gamepaused = false;
 
 	irr::scene::ISceneManager* smgr = GameEngine::engine.getDevice()->getSceneManager();
 
@@ -138,13 +139,6 @@ void Main_Scene::flush()
 // Run per-frame game logic.
 void Main_Scene::update(float delta)
 {
-	// Toggle the pause state
-	if(GameEngine::handler.keyFired(irr::KEY_KEY_P) || GameEngine::handler.keyFired(irr::KEY_PAUSE))
-	{
-		//TODO fix this, it's completely broken. Physics doesn't pause.
-		_gamepaused = !_gamepaused;
-		GameEngine::UI::displayTextMessage(irr::core::stringw("Game Paused"),100);
-	}
 
 	if(DEVELOPER_MODE)
 	{
@@ -184,6 +178,11 @@ void Main_Scene::update(float delta)
 		Game::changeScene("menu");
 	}
 
+	// Toggle the pause state
+	if(GameEngine::handler.keyFired(irr::KEY_KEY_P) || GameEngine::handler.keyFired(irr::KEY_PAUSE))
+	{
+		_gamepaused = !_gamepaused;
+	}
 
 	// Has the player died?
 	if(!_gameover && (player->getHealth() <= 0 || !player->isAlive()) )
@@ -204,6 +203,11 @@ void Main_Scene::update(float delta)
 	{
 		//update entityManage
 		_entityManager->update(delta);
+	}
+	
+	if(_gamepaused)
+	{
+		GameEngine::UI::displayBigMessage(irr::core::stringw("Game Paused"),1);
 	}
 	
 	if(_gamewon || _gameover)

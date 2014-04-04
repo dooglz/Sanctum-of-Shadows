@@ -96,6 +96,7 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="KeyboardHandler.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Main.cpp" />
