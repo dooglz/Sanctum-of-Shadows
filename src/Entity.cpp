@@ -3,6 +3,8 @@
 #include "EntityManager.h"
 
 namespace GameEngine{
+	
+	// Constructor, registers with the manager
 	Entity::Entity(Scene* parentScene, irr::scene::ISceneNode* node, const std::string& name)
 	{
 		_name = name;
@@ -18,6 +20,7 @@ namespace GameEngine{
 		_shouldRemove = true;
 	}
 
+	// Destructor.
 	Entity::~Entity()
 	{
 		//IF id != 1, the manager is still tracking us

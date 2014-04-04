@@ -5,7 +5,6 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Level.h"
-#include "Box.h"
 #include "Pathfinder.h"
 #include "Utilities.h"
 
@@ -147,31 +146,44 @@ void Main_Scene::update(float delta)
 		GameEngine::UI::displayTextMessage(irr::core::stringw("Game Paused"),100);
 	}
 
-	//Debug Camera commands
-	if(GameEngine::handler.keyFired(irr::KEY_F1))
+	if(DEVELOPER_MODE)
 	{
-		GameEngine::engine.getDevice()->getSceneManager()->setActiveCamera(player->getCamera());
+		//Debug Camera commands
+		if(GameEngine::handler.keyFired(irr::KEY_F1))
+		{
+			GameEngine::engine.getDevice()->getSceneManager()->setActiveCamera(player->getCamera());
+		}
+
+		if(GameEngine::handler.keyFired(irr::KEY_F2))
+		{
+			GameEngine::engine.getDevice()->getSceneManager()->setActiveCamera(Menucamera);
+		}
+
+		if(GameEngine::handler.keyFired(irr::KEY_F3))
+		{
+			GameEngine::engine.getDevice()->getSceneManager()->setActiveCamera(Flycamera);
+		}
+
+		//toggle level lighting
+		if(GameEngine::handler.keyFired(irr::KEY_F11))
+		{
+			level->toggleLighting(!level->isLit());
+		}
+
 	}
 
-	if(GameEngine::handler.keyFired(irr::KEY_F2))
-	{
-		GameEngine::engine.getDevice()->getSceneManager()->setActiveCamera(Menucamera);
-	}
-
-	if(GameEngine::handler.keyFired(irr::KEY_F3))
-	{
-		GameEngine::engine.getDevice()->getSceneManager()->setActiveCamera(Flycamera);
-	}
-
-	if(GameEngine::handler.keyFired(irr::KEY_F11))
-	{
-		level->toggleLighting(!level->isLit());
-	}
-
+	// Show a help message
 	if(GameEngine::handler.keyFired(irr::KEY_KEY_H))
 	{
 		displayHelp();
 	}
+
+	// Return to menu
+	if(GameEngine::handler.keyFired(irr::KEY_ESCAPE))
+	{
+		Game::changeScene("menu");
+	}
+
 
 	// Has the player died?
 	if(!_gameover && (player->getHealth() <= 0 || !player->isAlive()) )
@@ -184,6 +196,7 @@ void Main_Scene::update(float delta)
 	{
 		GameWon();
 	}
+
 	level->displayProgress();
 
 	// Only update if the game is still playing
@@ -211,12 +224,6 @@ void Main_Scene::update(float delta)
 		{
 			Game::changeScene("menu");
 		}
-	}
-
-	if(GameEngine::handler.keyFired(irr::KEY_RETURN))
-	{
-		// Change Scene
-		Game::changeScene("menu");
 	}
 
 }
@@ -249,6 +256,8 @@ void Main_Scene::GameWon()
 	_gamewon = true;
 }
 
+
+// Show a random help message
 void Main_Scene::displayHelp()
 {
 	irr::core::stringw strings[6];

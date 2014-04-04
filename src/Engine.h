@@ -2,15 +2,15 @@
 #include "driverChoice.h"
 #include <string>
 #include <irrlicht.h>
+#include <random>
 #include <iostream>
 #include "KeyboardHandler.h"
 #include "EntityManager.h"
-#include "MeshManager.h"
 #include "Physics.h"
 #include "UI.h"
 #include "BulletDebugDraw.h"
 #include "irrKlang.h"
-#include <random>
+
 #pragma comment(lib, "irrKlang.lib")
 
 /**
@@ -44,8 +44,11 @@ namespace GameEngine{
 			//! destructor
 			~Engine(){}
 
-			//! the sound engine
+			//! The sound engine
 			 static irrklang::ISoundEngine* soundengine;
+
+			//! The random generator to use throughout the gamelogic
+			static std::default_random_engine generator;
 
 			//! Calls initialise() on various components and creates the irrlicht device.
 			bool initialise();
@@ -110,13 +113,6 @@ namespace GameEngine{
 			{
 				return _debug_draw_bullet;
 			}
-			
-			static float cross(irr::core::vector2df A, irr::core::vector2df B)
-			{
-				return ((A.X*B.Y)-(A.Y*B.X));
-			}
-
-			static std::default_random_engine generator;
 	};
 
 	//! The primary Engine instance.
@@ -124,9 +120,6 @@ namespace GameEngine{
 
 	//! The keyboard handler
 	extern KeyHandler handler;
-
-	//! The MeshManager
-	extern MeshManager meshManager;
 
 	//! The UI Manager
 	extern UI ui;

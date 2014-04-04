@@ -331,12 +331,9 @@ irr::core::vector2d<int> Level::getResolvedCoord(irr::core::vector2df location)
 	return irr::core::vector2d<int>(bX,bY);
 }
 
-
+// Display a notification stating how many beacons are lit
 void Level::displayProgress()
 {
-
-	//str += _fuelLevel;
-	//
 	int lit = 0;
 	int unlit = 0;
 	if (!_beacons.empty())

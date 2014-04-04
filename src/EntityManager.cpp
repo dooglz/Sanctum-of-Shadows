@@ -67,6 +67,7 @@ namespace GameEngine{
 		return true;
 	}
 
+	// Clear all lists, will call destructor on any entities still defined.
 	void EntityManager::shutdown()
 	{
 		std::unordered_map<int,Entity*>::iterator iter = _entities.begin();

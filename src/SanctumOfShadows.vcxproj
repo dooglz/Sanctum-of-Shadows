@@ -87,7 +87,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Beacon.cpp" />
-    <ClCompile Include="Box.cpp" />
     <ClCompile Include="BulletdebugDraw.cpp" />
     <ClCompile Include="CGUITTFont.cpp" />
     <ClCompile Include="Character.cpp" />
@@ -102,7 +101,6 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Main_Scene.cpp" />
     <ClCompile Include="Menu_Scene.cpp" />
-    <ClCompile Include="MeshManager.cpp" />
     <ClCompile Include="MessageHandler.cpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Pathfinder.cpp" />
@@ -115,7 +113,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Beacon.h" />
-    <ClInclude Include="Box.h" />
     <ClInclude Include="BulletDebugDraw.h" />
     <ClInclude Include="CGUITTFont.h" />
     <ClInclude Include="Character.h" />
@@ -130,7 +127,6 @@
     <ClInclude Include="Level.h" />
     <ClInclude Include="Main_Scene.h" />
     <ClInclude Include="Menu_Scene.h" />
-    <ClInclude Include="MeshManager.h" />
     <ClInclude Include="Message.h" />
     <ClInclude Include="MessageHandler.h" />
     <ClInclude Include="Obstacle.h" />

@@ -29,7 +29,7 @@ namespace GameEngine{
 			bool _shouldRemove;
 
 		public:
-			//! Constructor
+			//! Constructor, registers with the manager
 			Entity(Scene* parentScene, irr::scene::ISceneNode* node,const std::string& name);
 
 			//! Destructor.

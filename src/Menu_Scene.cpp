@@ -112,4 +112,9 @@ void Menu_Scene::update(float delta)
 	{
 		Game::changeScene("main");
 	}
+	if(GameEngine::handler.keyFired(irr::KEY_ESCAPE))
+	{
+		GameEngine::engine.stop();
+	}
+
 }

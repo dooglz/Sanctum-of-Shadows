@@ -56,7 +56,7 @@ namespace GameEngine{
 			//! Returns a list of named entities
 			std::list<Entity*>* getNamedEntity(const std::string& name);
 
-			//! clear all lists, will call destructor on any entities still defined.
+			//! Clear all lists, will call destructor on any entities still defined.
 			void shutdown();
 
 			//! Print debug info to std::out.

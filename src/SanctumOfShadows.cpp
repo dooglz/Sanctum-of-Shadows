@@ -1,6 +1,7 @@
 #include "SanctumOfShadows.h"
 #include "Main_Scene.h"
 #include "Menu_Scene.h"
+#include "Utilities.h"
 
 SanctumOfShadows::SanctumOfShadows()
 {
@@ -30,13 +31,8 @@ bool SanctumOfShadows::init(){
 bool SanctumOfShadows::update(float delta){
 	
 	processScenes();
-	
-	if(GameEngine::handler.keyFired(irr::KEY_ESCAPE))
-	{
-		GameEngine::engine.stop();
-	}
 
-	if(GameEngine::handler.keyFired(irr::KEY_F8))
+	if(DEVELOPER_MODE && GameEngine::handler.keyFired(irr::KEY_F8))
 	{
 		GameEngine::engine.setBulletDebugDrawing(!GameEngine::engine.getBulletDebugDrawing());
 	}
