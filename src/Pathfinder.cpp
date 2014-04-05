@@ -13,7 +13,7 @@ irr::core::vector2d<int> Pathfinder::getDarkLocation()
 	{
 		for(unsigned int row = 0; row < Level::_grid[col].size(); row ++)
 		{
-			if(Level::_grid[col][row] == Level::EMPTY || Level::_grid[col][row] ==  Level::BADLANDS)
+			if(Level::_grid[col][row] == Level::EMPTY)
 			{
 				possibleLocations.push_back(irr::core::vector2d<int>(col,row));
 			}
@@ -59,28 +59,28 @@ irr::core::vector2d<int> Pathfinder::getAdjacentDarkLocation(irr::core::vector2d
 
 	//UP
 	if(coord.X > 0){
-		if(Level::_grid[coord.X-1][coord.Y] == Level::EMPTY || Level::_grid[coord.X-1][coord.Y] == Level::BADLANDS)
+		if(Level::_grid[coord.X-1][coord.Y] == Level::EMPTY)
 		{
 			possibleLocations.push_back(irr::core::vector2d<int>(coord.X-1,coord.Y));
 		}
 	}
 	//Down
 	if((unsigned int) coord.X < Level::_grid.size()-1){
-		if(Level::_grid[coord.X+1][coord.Y] == Level::EMPTY || Level::_grid[coord.X+1][coord.Y] == Level::BADLANDS)
+		if(Level::_grid[coord.X+1][coord.Y] == Level::EMPTY)
 		{
 			possibleLocations.push_back(irr::core::vector2d<int>(coord.X+1,coord.Y));
 		}
 	}
 	//Left
 	if(coord.Y > 0){
-		if(Level::_grid[coord.X][coord.Y-1] == Level::EMPTY || Level::_grid[coord.X][coord.Y-1] == Level::BADLANDS)
+		if(Level::_grid[coord.X][coord.Y-1] == Level::EMPTY)
 		{
 			possibleLocations.push_back(irr::core::vector2d<int>(coord.X,coord.Y-1));
 		}
 	}
 	//Right
 	if((unsigned int)coord.Y < Level::_grid[coord.X].size()-1){
-		if(Level::_grid[coord.X][coord.Y+1] == Level::EMPTY || Level::_grid[coord.X][coord.Y+1] == Level::BADLANDS)
+		if(Level::_grid[coord.X][coord.Y+1] == Level::EMPTY)
 		{
 			possibleLocations.push_back(irr::core::vector2d<int>(coord.X,coord.Y+1));
 		}

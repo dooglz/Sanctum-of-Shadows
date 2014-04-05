@@ -54,7 +54,7 @@ void Level::createLevel()
 	irr::scene::IMesh* tangentMesh = GameEngine::engine.getDevice()->getSceneManager()->getMeshManipulator()->createMeshWithTangents(planeMesh->getMesh(0));
 	irr::scene::IMesh* tangentMesh2 = GameEngine::engine.getDevice()->getSceneManager()->getMeshManipulator()->createMeshWithTangents(planeMesh2->getMesh(0));
 
-	unsigned int a =0;
+	///top left coord
 	float startingPos = (-1.0f * (0.5f*(tileSize * _gridSize))) +(0.5f*tileSize);
 
 	for(unsigned int col = 0; col < _grid.size(); col ++)
@@ -64,7 +64,7 @@ void Level::createLevel()
 
 			irr::core::vector3df origin = irr::core::vector3df(startingPos + (col*tileSize),0,startingPos + (row*tileSize));
 
-			if(_grid[col][row] == OBSTACLE)
+			if(_grid[col][row] == OBSTACLE || _grid[col][row] == BADLANDS)
 			{
 				_obstacles.push_back( new Obstacle(_parentScene, origin,irr::core::vector3df(tileSize,tileSize,tileSize)) );
 			}
@@ -85,11 +85,6 @@ void Level::createLevel()
 					node->setMaterialTexture(0, cobbleTex);
 					node->setMaterialTexture(1, normalMap2);
 				}
-				else
-				{
-					node = GameEngine::engine.getDevice()->getSceneManager()->addMeshSceneNode(tangentMesh);
-					node->setMaterialTexture(0, darkTex);
-				}
 
 				//Normal map parameters
 				node->getMaterial(1).MaterialTypeParam = 1.f / 64.f;
@@ -105,8 +100,6 @@ void Level::createLevel()
 
 				_floorTiles.push_back(node);
 			}
-
-			a++;
 		}
 	}
 }
