@@ -1,12 +1,12 @@
 #pragma once
 #include <irrlicht.h>
-#include "Character.h"
+#include "PhysicalCharacter.h"
 
 /*! \brief The player.
  * \ingroup Game
  */
 
-class Player:public Character{
+class Player:public PhysicalCharacter{
 	private:
 		
 		//! The primary camera.

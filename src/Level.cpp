@@ -238,6 +238,14 @@ void Level::toggleLighting(bool a)
 	{
 		j->getNode()->setMaterialFlag(irr::video::EMF_LIGHTING, a);
 		j->getNode()->setMaterialFlag(irr::video::EMF_FOG_ENABLE, a);
+		if(!a)
+		{
+			j->getNode()->setMaterialType(irr::video::EMT_SOLID);
+		}
+		else
+		{
+			j->getNode()->setMaterialType(irr::video::EMT_NORMAL_MAP_SOLID);
+		}
 	}
 }
 

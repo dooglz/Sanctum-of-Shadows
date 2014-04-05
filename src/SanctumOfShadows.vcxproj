@@ -97,6 +97,7 @@
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="KeyboardHandler.cpp" />
+    <ClCompile Include="PhyiscalCharacter.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -123,6 +124,7 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="PhysicalCharacter.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="KeyboardHandler.h" />
     <ClInclude Include="Level.h" />

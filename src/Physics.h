@@ -37,6 +37,7 @@ namespace GameEngine{
 			static btVector3 irrVec3ToBtVec3(irr::core::vector3df iVec){
 				return btVector3(iVec.X,iVec.Y,iVec.Z);
 			}
+
 			//! Convert a Bullet Vector3 to an Irrlicht Vector3.
 			static irr::core::vector3df btVecToirrVec3(const btVector3& bVec){
 				return irr::core::vector3df((float)bVec.getX(),(float)bVec.getY(),(float)bVec.getZ());

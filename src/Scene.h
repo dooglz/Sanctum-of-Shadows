@@ -1,7 +1,6 @@
 #pragma once
 #include <irrlicht.h>
 #include <string>
-//#include "EntityManager.h"
 
 namespace GameEngine{
 	/*! \brief A Scene.

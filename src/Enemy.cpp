@@ -8,7 +8,7 @@
 
 Player* Enemy::_player;
 
-Enemy::Enemy(GameEngine::Scene* parentScene, irr::core::vector3df position): cheapCharacter(parentScene,0,"Skeletors")
+Enemy::Enemy(GameEngine::Scene* parentScene, irr::core::vector3df position): cheapCharacter(parentScene,"Enemy")
 {
 	irr::core::vector3df enemyScale = irr::core::vector3df(50.0f,80.0f,50.0f);
 	//Render node
@@ -19,7 +19,7 @@ Enemy::Enemy(GameEngine::Scene* parentScene, irr::core::vector3df position): che
 	_node->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
 	_node->setPosition(position);
 	//
-	_walkVelocity = 110.5f;
+	_walkSpeed = 110.5f;
 	_rotateSpeed = 90.0f;
 	_health = 80.0f;
 	_visibleRange = 300.0f;

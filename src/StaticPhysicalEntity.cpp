@@ -1,3 +1,4 @@
+#pragma once
 #include "StaticPhysicalEntity.h"
 #include "Engine.h"
 

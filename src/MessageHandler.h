@@ -12,7 +12,7 @@ namespace GameEngine{
 			//! Constructor.
 			MessageHandler(){}
 
-			//! queue of messages.
+			//! The queue of messages.
 			static std::queue<Message> _messages;
 		public:
 			//! Destructor

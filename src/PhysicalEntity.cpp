@@ -1,3 +1,4 @@
+#pragma once
 #include "PhysicalEntity.h"
 #include <btBulletDynamicsCommon.h>
 
@@ -8,7 +9,8 @@ namespace GameEngine{
 	{
 		_btposition = _rigidBody->getWorldTransform().getOrigin();
 
-		//have we fallen out of world?
+		// Have we fallen out of world?
+		// Having objects falling forever is a major performance drain.
 		if(_btposition.getY() < -200.0f)
 		{
 			remove();
@@ -16,7 +18,7 @@ namespace GameEngine{
 		}
 	}
 
-	//! Sync Bullet object to irrlicht scene node, only use if no Motionstate available.
+	//! Sync Bullet object transformation to irrlicht scene node, only use if no Motionstate available.
 	void PhysicalEntity::sync(float delta)
 	{
 		btVector3 point = _rigidBody->getWorldTransform().getOrigin();
@@ -35,7 +37,7 @@ namespace GameEngine{
 		_node->setRotation(euler);
 	}
 
-
+	// Removes Rigidbody, calls parent Destructor.
 	void PhysicalEntity::remove(){
 		_node->remove();
 		GameEngine::Physics::world->removeRigidBody(_rigidBody);

@@ -3,7 +3,6 @@
 #include "Engine.h"
 #include "Player.h"
 #include "SanctumOfShadows.h"
-#include <iostream>
 
 /*! \brief A Beacon, can be lit, doesn't move. 
  * \ingroup Game
@@ -36,7 +35,7 @@ class Beacon : public GameEngine::StaticPhysicalEntity{
 		//! Destructor.
 		~Beacon (){};
 
-		//! Toggle state, lights and effects.
+		//! Toggle state and effects.
 		void light(bool onOff);
 
 		//! returns _isLit.

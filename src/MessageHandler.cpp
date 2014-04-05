@@ -1,9 +1,12 @@
+#pragma once
 #include "MessageHandler.h"
 #include "Entity.h"
 
 namespace GameEngine{
+	// The queue of messages.
 	std::queue<Message> MessageHandler::_messages = std::queue<Message>();
 
+	// Destructor
 	MessageHandler::~MessageHandler()
 	{
 		while(!_messages.empty())

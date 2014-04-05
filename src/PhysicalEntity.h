@@ -18,6 +18,7 @@ namespace GameEngine{
 			//! Reference to the Motionstate in use.
 			GameEngine::MotionState* _motionstate;
 
+			//! Removes Rigidbody, calls parent Destructor.
 			void remove();
 
 		public:
@@ -30,7 +31,7 @@ namespace GameEngine{
 			//! Updates _btposition, Checks to see if out of bounds.
 			void update(float delta);
 
-			//! Sync Bullet object to irrlicht scene node, only use if no Motionstate available.
+			//! Sync Bullet object transformation to irrlicht scene node, only use if no Motionstate available.
 			void sync(float delta);
 
 			//! Get the Rigidbody. There is no set as that would require also changing the Motionstate and other things.

@@ -1,36 +1,30 @@
-
 #include "Player.h"
 
 // The Maximum radius of the lanterns effects.
 const float Player::_Lanternmaxradius = 0.45f;
 const float Player::_Lanternrminradius = 0.06f;
 
-Player::Player(GameEngine::Scene* parentScene, irr::core::vector3df position): Character(parentScene,0,"player")
+Player::Player(GameEngine::Scene* parentScene, irr::core::vector3df position): PhysicalCharacter(parentScene,"player")
 {
 	_fuelLevel = 1.0f;
 	_LanternOn = true;
-
-	_walkVelocity = btScalar(6);
+	_health = 100.0f;
+	_walkSpeed = 6.0f;
 	_rotateSpeed = 5.0f;
 
 	irr::core::vector3df playerScale = irr::core::vector3df(60.0f,100.0f,60.0f);
 	
 	//Physics Kinematic character Object
-	_characterC = addCharacter((btScalar)1.0f, &btVector3(position.X, position.Y, position.Z), (btScalar)50, (btScalar)30);
+	_characterC = addbtKinematicCharacterController((btScalar)1.0f, &btVector3(position.X, position.Y, position.Z), (btScalar)50, (btScalar)30);
 	
 	//player render node
-	//_node = GameEngine::engine.getDevice()->getSceneManager()->addCubeSceneNode(1.0f);
 	_node = GameEngine::engine.getDevice()->getSceneManager()->addEmptySceneNode();
-	//_node->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_dev_stone.png"));
-	_node->setScale(playerScale);
+	_node->setScale(playerScale); // Necessary for child node offsets to function
 
-	//The player doesn't need lighting
-	_node->setMaterialFlag(irr::video::EMF_LIGHTING, false);
-	_node->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
 	//player camera
 	_camera = GameEngine::engine.getDevice()->getSceneManager()->addCameraSceneNode(_node,irr::core::vector3df(0,0,0));
 	_camera->bindTargetAndRotation(true);
-	_health = 100.0f;
+	//Lantern
 	_Lanternlight = GameEngine::engine.getDevice()->getSceneManager()->addLightSceneNode(
 		_node, irr::core::vector3df(0,0.0f,0),			//Parent and offset
 		irr::video::SColorf(1.0f, 1.0f, 1.0f, 1.0f),	//Colour
@@ -52,7 +46,7 @@ void Player::update(float delta)
 	walkright = false;
 	walkforward = false;
 	walkback = false;
-	Character::update(delta);
+	PhysicalCharacter::update(delta);
 
 	//display player health
 	irr::core::stringw str = "Player Health: ";

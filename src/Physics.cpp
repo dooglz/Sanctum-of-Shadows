@@ -1,8 +1,8 @@
+#pragma once
 #include "Physics.h"
 
 namespace GameEngine{
 
-	//physics
 	btDiscreteDynamicsWorld* Physics::world;
 	btDefaultCollisionConfiguration* Physics::_collisionConfig;
 	btCollisionDispatcher* Physics::_dispatcher;

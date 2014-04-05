@@ -3,6 +3,7 @@
 #include "Scene.h"
 
 namespace GameEngine{
+
 	EntityManager* Scene::getEntityManager()
 	{
 		return _entityManager;

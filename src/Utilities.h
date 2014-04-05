@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 
-static const int VERBOSE_lEVEL = 0;
-static bool UPDATE_WHILE_UNFOCUSSED = true;
-static bool DEVELOPER_MODE = false;
-static bool VSYNC = false;
+static const int VERBOSE_lEVEL = 4;
+static const bool UPDATE_WHILE_UNFOCUSSED = true;
+static const bool DEVELOPER_MODE = true;
+static const bool VSYNC = false;

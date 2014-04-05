@@ -1,5 +1,6 @@
 #include "Beacon.h"
 #include "Main_Scene.h"
+#include "Utilities.h"
 
 Beacon::Beacon(GameEngine::Scene* parentScene, const irr::core::vector3df& position) : GameEngine::StaticPhysicalEntity(parentScene,0,"Beacon")
 {
@@ -100,22 +101,11 @@ Beacon::Beacon(GameEngine::Scene* parentScene, const irr::core::vector3df& posit
 }
 
 
-// Toggle state, lights and effects.
+// Toggle state and effects.
 void Beacon::light(bool onOff)
 {
 	_isLit = onOff;
-	//change radius of main Light
-	if(_isLit)
-	{
-	//	_light->setRadius((irr::f32)_lightRange);
-	//	_light->setVisible(true);
-	}
-	else
-	{
-		//A radius this small doesn't seem to effect the floor
-	//	_light->setRadius(0.25f * _lightRange);
-		//_light->setVisible(false);
-	}
+
 	//toggle all effects
 	for(auto& e : _effects) {
 		e->setVisible(_isLit);
@@ -176,7 +166,7 @@ void Beacon::update(float delta)
 	}
 	else
 	{
-		//Even if _isLit, disable the light for performance
+		//Even if _isLit, disable the light when the player is far away, for performance.
 		_light->setRadius(0.25f * _lightRange);
 	}
 }
@@ -192,5 +182,4 @@ void Beacon::handleMessage(const GameEngine::Message& message)
 void Beacon::intitalise(){
 	_alive = true;
 	light(false);
-
 }

@@ -40,16 +40,20 @@ namespace GameEngine{
 			//! Clear Messages. 
 			static void clear();
 
+			//! Uses device to setup fonts. 
 			static void initialise(irr::IrrlichtDevice* dev);
 
 		private:
+			//! The large center notification, their can only be one displayed at a time.
 			static TextMessage _bigmessage;
 
 			//! Vector containing all text messages. Unsorted.
 			static std::vector<TextMessage> _textMessages;
 
-			//! Font to use. 
+			//! Font to use for notifications. 
 			static irr::gui::CGUITTFont* _font;
+
+			//! Font to use for large center notification
 			static irr::gui::CGUITTFont* _bigfont;
 
 			//! Font Colour to use. 

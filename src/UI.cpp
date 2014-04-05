@@ -1,13 +1,23 @@
 #include "UI.h"
 
 namespace GameEngine{
+
+	// Font to use for notifications. 
 	irr::gui::CGUITTFont* UI::_font;
+
+	// Font to use for large center notification
 	irr::gui::CGUITTFont* UI::_bigfont;
+
+	// Font Colour to use. 
 	irr::video::SColor UI::_colour;
+
+	// The large center notification, their can only be one displayed at a time.
 	UI::TextMessage UI::_bigmessage;
+
+	// Vector containing all text messages. Unsorted.
 	std::vector<UI::TextMessage> UI::_textMessages;
 
-	// Constructor, uses device to setup fonts. 
+	// Uses device to setup fonts. 
 	void UI::initialise(irr::IrrlichtDevice* dev){
 
 		_colour = irr::video::SColor(255,255,255,255);
