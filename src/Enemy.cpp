@@ -153,7 +153,7 @@ void Enemy::update(float delta)
 			std::cerr << "Enemy is dead" << std::endl;
 		}
 		//play the sound for when enemy dies
-		GameEngine::Engine::soundengine->play2D("sounds/enemydead.mp3", false);
+		GameEngine::Engine::soundengine->play2D("sounds/enemydead.wav", false);
 		
 		//teleport somewhere else
 		_position =  Pathfinder::getResolvedLocation(Pathfinder::getDarkLocation());

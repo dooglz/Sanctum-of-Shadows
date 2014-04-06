@@ -109,7 +109,7 @@ void Player::update(float delta)
 	
 	if  (GameEngine::handler.keyFired(irr::KEY_SPACE))
 	{
-		std::list<Entity*>* entities = _parentScene->getEntityManager()->getNamedEntity("Skeletors");
+		std::list<Entity*>* entities = _parentScene->getEntityManager()->getNamedEntity("Enemy");
 		//if the list isn't empty, then we check if we have hit something 
 		if(entities->size() > 0)
 		{

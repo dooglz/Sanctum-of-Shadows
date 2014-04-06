@@ -6,8 +6,8 @@
 SanctumOfShadows::SanctumOfShadows()
 {
 	_gameTitle = L"SanctumOfShadows";
-	//_resolution  = irr::core::dimension2d<irr::u32>(1280, 720);
-	_resolution  = irr::core::dimension2d<irr::u32>(1920, 1080);
+	_resolution  = irr::core::dimension2d<irr::u32>(1280, 720);
+	//_resolution  = irr::core::dimension2d<irr::u32>(1920, 1080);
 	//_resolution  = irr::core::dimension2d<irr::u32>(2560, 1440);
 }
 
