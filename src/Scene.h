@@ -3,10 +3,12 @@
 #include <string>
 
 namespace GameEngine{
+
+	class EntityManager;
+
 	/*! \brief A Scene.
 	 * \ingroup Engine
 	 */
-	class EntityManager;
 	class Scene{ 
 		protected : 
 

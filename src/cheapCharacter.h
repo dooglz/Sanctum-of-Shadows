@@ -1,7 +1,5 @@
 #pragma once
 #include <irrlicht.h>
-#include "Engine.h"
-#include "Entity.h"
 #include "Character.h"
 
 /*! \brief A character that has no bullet collision, movement controlled by irrlicht

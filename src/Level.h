@@ -6,14 +6,13 @@
 #include <vector>
 #include <array>
 
-/* ! \brief Primary Game logic for Sanctum of Shadows
+
+/*! \brief Manages Generating the random level and filling it with objects.
  * \ingroup Game
  */
-
 class Level: public GameEngine::Entity{
+
 	private:
-
-
 		//level gen stuff
 		//@{
 			//! Grid size, X by X, has to be an odd number.

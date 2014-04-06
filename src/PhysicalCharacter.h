@@ -3,8 +3,6 @@
 #include "Character.h"
 #include "BulletDynamics/Character/btKinematicCharacterController.h"
 #include "BulletCollision/CollisionDispatch/btGhostObject.h"
-#include "Engine.h"
-#include "Entity.h"
 
 /*! \brief A character manages an entity that implemets the bullet KinematicCharacterController and a irrlicht render node
  *  \ingroup Game

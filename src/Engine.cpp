@@ -43,7 +43,7 @@ namespace GameEngine{
 		}
 
 		// TODO investigate if vsync can be toggled
-		_device = irr::createDevice(driverType, _dimensions, 16, false, true, VSYNC, &handler);
+		_device = irr::createDevice(driverType, _dimensions, 16, FULLSCREEN, true, VSYNC, &handler);
 		
 		if (!_device){
 			std::cerr << "Error creating device" << std::endl;
