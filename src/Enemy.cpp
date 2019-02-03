@@ -13,7 +13,7 @@ Enemy::Enemy(GameEngine::Scene* parentScene, irr::core::vector3df position): che
 	irr::core::vector3df enemyScale = irr::core::vector3df(50.0f,80.0f,50.0f);
 	//Render node
 	_node = GameEngine::engine.getDevice()->getSceneManager()->addCubeSceneNode(1.0f);
-	_node->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_dev_flurry.jpg"));
+	_node->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_dev_flurry.bmp"));
 	_node->setScale(enemyScale);
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, true);
 	_node->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);

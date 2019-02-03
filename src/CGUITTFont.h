@@ -1,3 +1,10 @@
+#pragma once
+
+#ifdef USEFONT
+
+
+
+
 /*
    CGUITTFont FreeType class for Irrlicht
    Copyright (c) 2009-2010 John Norman
@@ -417,3 +424,70 @@ namespace gui
 } // end namespace irr
 
 #endif // __C_GUI_TTFONT_H_INCLUDED__
+
+#else
+
+
+#include <irrlicht.h>
+//#include <irrUString.h>
+namespace irr
+{
+  namespace gui
+  {
+    //! Manages the FT_Face cache
+    struct SGUITTFace {
+
+    };
+
+    //! Class representing a TrueType font.
+    class CGUITTFont : public IGUIFont
+    {
+    public:
+      static CGUITTFont* createTTFont(IGUIEnvironment *env, const io::path& filename, const u32 size, const bool antialias = true, const bool transparency = true) { 
+        return new CGUITTFont();
+      }
+      static CGUITTFont* createTTFont(IrrlichtDevice *device, const io::path& filename, const u32 size, const bool antialias = true, const bool transparency = true) { 
+        return new CGUITTFont();
+      };
+      static CGUITTFont* create(IGUIEnvironment *env, const io::path& filename, const u32 size, const bool antialias = true, const bool transparency = true) { 
+        return new CGUITTFont();
+      };
+      static CGUITTFont* create(IrrlichtDevice *device, const io::path& filename, const u32 size, const bool antialias = true, const bool transparency = true) {
+        return new CGUITTFont();
+      };
+      virtual ~CGUITTFont() {};
+      virtual void setBatchLoadSize(u32 batch_size) {  }
+      virtual void setMaxPageTextureSize(const core::dimension2du& texture_size) {  }
+      virtual u32 getFontSize() const { return 0; }
+      virtual bool isTransparent() const { return false; }
+      virtual bool useAutoHinting() const { return false; }
+      virtual bool useHinting()	 const { return false; }
+      virtual bool useMonochrome()  const { return false; }
+      virtual void setTransparency(const bool flag) {}
+      virtual void setMonochrome(const bool flag) {}
+      virtual void setFontHinting(const bool enable, const bool enable_auto_hinting = true) {}
+      virtual void draw(const core::stringw& text, const core::rect<s32>& position,
+        video::SColor color, bool hcenter = false, bool vcenter = false,
+        const core::rect<s32>* clip = 0) {}
+      virtual core::dimension2d<u32> getCharDimension(const wchar_t ch) const { return core::dimension2d<u32>(); };
+      virtual core::dimension2d<u32> getDimension(const wchar_t* text) const { return core::dimension2d<u32>(); };
+    //  virtual core::dimension2d<u32> getDimension(const core::ustring& text) const {};
+      virtual s32 getCharacterFromPos(const wchar_t* text, s32 pixel_x) const { return s32(); };
+
+     // virtual s32 getCharacterFromPos(const core::ustring& text, s32 pixel_x) const {};
+      virtual void setKerningWidth(s32 kerning) {};
+      virtual void setKerningHeight(s32 kerning) {};
+      virtual s32 getKerningWidth(const wchar_t* thisLetter = 0, const wchar_t* previousLetter = 0) const { return s32(); };
+     // virtual s32 getKerningWidth(const uchar32_t thisLetter = 0, const uchar32_t previousLetter = 0) const {};
+      virtual s32 getKerningHeight() const { return s32(); };
+      virtual void setInvisibleCharacters(const wchar_t *s) {};
+     // virtual void setInvisibleCharacters(const core::ustring& s) {};
+    //  virtual video::IImage* createTextureFromChar(const uchar32_t& ch) {};
+      virtual video::ITexture* getPageTextureByIndex(const u32& page_index) const { return nullptr; };
+    //  virtual core::array<scene::ISceneNode*> addTextSceneNode (const wchar_t* text, scene::ISceneManager* smgr, scene::ISceneNode* parent = 0, const video::SColor& color = video::SColor(255, 0, 0, 0), bool center = false) {};
+
+    };
+
+  } // end namespace gui
+} // end namespace irr
+#endif // USEFONT

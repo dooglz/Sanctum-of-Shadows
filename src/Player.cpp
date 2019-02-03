@@ -166,7 +166,7 @@ void Player::handleMessage(const GameEngine::Message& message)
 			//"bob" the player to notify damage taken
 			_characterC->setMaxJumpHeight(20);
 			_characterC->setJumpSpeed(20);
-			_characterC->setGravity(100);
+			_characterC->setGravity(btVector3 (0,0,0));
 			_characterC->jump();
 			//take damage off of players health
 			_health = _health - 10.0f;

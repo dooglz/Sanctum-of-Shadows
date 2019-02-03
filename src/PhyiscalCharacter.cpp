@@ -111,7 +111,7 @@ btKinematicCharacterController*  PhysicalCharacter::addbtKinematicCharacterContr
 	//ghostObject->setCollisionFlags(ghostObject->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
 	_ghostObject->setCollisionFlags (btCollisionObject::CF_CHARACTER_OBJECT);
 
-	btKinematicCharacterController*  character = new btKinematicCharacterController (_ghostObject, characterShape, stepHeight, 1);
+	btKinematicCharacterController*  character = new btKinematicCharacterController (_ghostObject, characterShape, stepHeight,btVector3(1,0,0));
    
 	GameEngine::Physics::world->addCollisionObject(_ghostObject, GameEngine::Physics::E_Actor,GameEngine::Physics::E_ActorGroup);
 	//GameEngine::Physics::world->addCollisionObject(ghostObject,btBroadphaseProxy::CharacterFilter, btBroadphaseProxy::StaticFilter|btBroadphaseProxy::DefaultFilter);

@@ -1,7 +1,8 @@
 /*===============================================================================
   Author:   Sam Serrels
   Purpose:  Entry and exit point for game application.
-===============================================================================*/
+/===============================================================================*/
+/*
 #pragma comment(lib,"Irrlicht")
 //Bullet
 #if defined(DEBUG) | defined(_DEBUG)
@@ -13,6 +14,7 @@
 	#pragma comment(lib, "BulletDynamics")
 	#pragma comment(lib, "LinearMath")
 #endif
+*/
 
 #include "Engine.h"
 #include "Game.h"
@@ -86,7 +88,7 @@ int main(){
 				str += "] FPS:";
 				str += fps;
 				str += " Ents:";
-				str +=  game->getActiveScene()->getEntityManager()->entityCount();
+				str += std::to_string(game->getActiveScene()->getEntityManager()->entityCount()).c_str();
 				device->setWindowCaption(str.c_str());
 				lastFPS = fps;
 			}

@@ -4,8 +4,14 @@
 
 namespace GameEngine{
 
-	// The sound engine
-	irrklang::ISoundEngine* Engine::soundengine;
+  // The sound engine
+#ifdef USESOUND
+
+//	irrklang::ISoundEngine* Engine::soundengine;
+#else
+  Engine::StubSoundengine* Engine::soundengine;
+#endif //USESOUND
+
 
 	// The random generator to use throughout the gamelogic
 	std::default_random_engine Engine::generator;
@@ -39,11 +45,12 @@ namespace GameEngine{
 		else
 		{
 			// Default driver
-			driverType = irr::video::EDT_DIRECT3D9;
+			driverType = irr::video::EDT_OPENGL;
 		}
 
 		// TODO investigate if vsync can be toggled
 		_device = irr::createDevice(driverType, _dimensions, 16, FULLSCREEN, true, VSYNC, &handler);
+  
 		
 		if (!_device){
 			std::cerr << "Error creating device" << std::endl;
@@ -56,8 +63,10 @@ namespace GameEngine{
 		// Textures need to be 32bit to allow for normal maps
 		_device->getVideoDriver()->setTextureCreationFlag(irr::video::ETCF_ALWAYS_32_BIT, true);
 
+#ifdef USESOUND
 		// Initialise sound engine
 		soundengine = irrklang::createIrrKlangDevice();
+#endif //USESOUND
 
 		// Initialise UI Manager
 		UI::initialise(_device);
@@ -121,7 +130,7 @@ namespace GameEngine{
 		{
 			//Render Physics Debug
 			_device->getVideoDriver()->setMaterial(debugMat);
-			_device->getVideoDriver()->setTransform(irr::video::ETS_WORLD, irr::core::IdentityMatrix);
+			//_device->getVideoDriver()->setTransform(irr::video::ETS_WORLD, irr::core::IdentityMatrix);
 			Physics::world->debugDrawWorld();
 		}
 

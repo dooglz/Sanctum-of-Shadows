@@ -12,7 +12,7 @@ Beacon::Beacon(GameEngine::Scene* parentScene, const irr::core::vector3df& posit
 	loadContent();
 	_node->setMaterialFlag(irr::video::EMF_LIGHTING, true);
 	_node->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
-	//_node->setMaterialFlag(irr::video::EMF_FOG_ENABLE, true);
+	_node->setMaterialFlag(irr::video::EMF_FOG_ENABLE, true);
 	irr::core::vector3df scale = irr::core::vector3df(15.0f,15.0f,15.0f);
 	_node->setScale(scale);
 	_node->setPosition(position);

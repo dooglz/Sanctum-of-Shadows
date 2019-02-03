@@ -1,0 +1,9 @@
+[submodule "lib/irrlicht"]
+	path = lib/irrlicht
+	url = https://github.com/zaki/irrlicht.git
+[submodule "lib/bullet3"]
+	path = lib/bullet3
+	url = https://github.com/bulletphysics/bullet3.git
+[submodule "lib/openal-soft"]
+	path = lib/openal-soft
+	url = https://github.com/kcat/openal-soft.git

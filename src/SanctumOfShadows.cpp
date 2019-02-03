@@ -20,7 +20,7 @@ bool SanctumOfShadows::init(){
 
 	_loadingImg = GameEngine::engine.getDevice()->getGUIEnvironment()->addImage(irr::core::rect<irr::s32>(0,0,_resolution.Width,_resolution.Height),0);
 	//TODO checks this loads.
-	_loadingTexture = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_loading.png");
+	_loadingTexture = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_loading.bmp");
 	_loadingImg->setImage(_loadingTexture );
 	_loadingImg->setScaleImage(true);
 

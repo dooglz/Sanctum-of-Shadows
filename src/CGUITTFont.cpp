@@ -1,3 +1,4 @@
+
 /*
    CGUITTFont FreeType class for Irrlicht
    Copyright (c) 2009-2010 John Norman
@@ -30,6 +31,7 @@
 
 #include <irrlicht.h>
 #include "CGUITTFont.h"
+#ifdef USEFONT
 
 namespace irr
 {
@@ -1143,3 +1145,5 @@ core::array<scene::ISceneNode*> CGUITTFont::addTextSceneNode(const wchar_t* text
 
 } // end namespace gui
 } // end namespace irr
+
+#endif // USEFONT

@@ -41,13 +41,13 @@ void Level::createLevel()
 	GameEngine::engine.getDevice()->getVideoDriver()->setFog(irr::video::SColor(0,0,0,0), irr::video::EFT_FOG_LINEAR, 300, 2000, .003f, true, false);	
 
 	float tileSize = (float)_tileSize;
-	irr::video::ITexture* cobbleTex = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble2_1024.jpg");
-	irr::video::ITexture* darkTex = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble_d_1024.jpg");
-	irr::video::ITexture* lightTex = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble_l_1024.jpg");
+	irr::video::ITexture* cobbleTex = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble2_1024.bmp");
+	irr::video::ITexture* darkTex = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble_d_1024.bmp");
+	irr::video::ITexture* lightTex = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble_l_1024.bmp");
 
 	//Normals are saved into meshdata once applied, So we need two meshes for the two different textures+normals.
-	irr::video::ITexture* normalMap = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble_1024_NRM.jpg");
-	irr::video::ITexture* normalMap2 = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble2_1024_NRM.jpg");
+	irr::video::ITexture* normalMap = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble_1024_NRM.bmp");
+	irr::video::ITexture* normalMap2 = GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble2_1024_NRM.bmp");
 
 	irr::scene::IAnimatedMesh* planeMesh = GameEngine::engine.getDevice()->getSceneManager()->addHillPlaneMesh("floormesh", irr::core::dimension2df(tileSize/4,tileSize/4), irr::core::dimension2du(4,4));
 	irr::scene::IAnimatedMesh* planeMesh2 = GameEngine::engine.getDevice()->getSceneManager()->addHillPlaneMesh("floormesh2", irr::core::dimension2df(tileSize/4,tileSize/4), irr::core::dimension2du(4,4));

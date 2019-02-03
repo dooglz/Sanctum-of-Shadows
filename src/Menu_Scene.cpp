@@ -42,7 +42,7 @@ void Menu_Scene::initialize()
 	logoNode = smgr->addBillboardSceneNode(0, irr::core::dimension2d<irr::f32>(1280, 163));
 	logoNode->setMaterialFlag(irr::video::EMF_LIGHTING, false);
 	logoNode->setMaterialType(irr::video::EMT_TRANSPARENT_ADD_COLOR);
-	logoNode->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/Logo1.jpg"));
+	logoNode->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/Logo1.bmp"));
 
 	//Camera
 	menucam = smgr->addCameraSceneNode(0,irr::core::vector3df(0,0,500),irr::core::vector3df(0,0,0));
@@ -60,8 +60,8 @@ void Menu_Scene::initialize()
 	irr::scene::IMesh* tangentMesh = GameEngine::engine.getDevice()->getSceneManager()->getMeshManipulator()->createMeshWithTangents(planeMesh->getMesh(0));
 	floorNode = smgr->addMeshSceneNode(tangentMesh);
 	floorNode->setPosition(irr::core::vector3df(0,-150,300));
-	floorNode->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble2_1024.jpg"));
-	floorNode->setMaterialTexture(1, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble2_1024_NRM.jpg"));
+	floorNode->setMaterialTexture(0, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble2_1024.bmp"));
+	floorNode->setMaterialTexture(1, GameEngine::engine.getDevice()->getVideoDriver()->getTexture("textures/tex_cobble2_1024_NRM.bmp"));
 	floorNode->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
 	floorNode->setMaterialType(irr::video::EMT_NORMAL_MAP_SOLID);
 	floorNode->setMaterialFlag(irr::video::EMF_LIGHTING, true);

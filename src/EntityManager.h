@@ -48,7 +48,7 @@ namespace GameEngine{
 			Entity* getEntity(int id);
 
 			//! Returns the amount of stored entities.
-			int entityCount()
+			size_t entityCount()
 			{
 				return _entities.size();
 			}

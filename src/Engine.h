@@ -9,9 +9,9 @@
 #include "Physics.h"
 #include "UI.h"
 #include "BulletDebugDraw.h"
-#include "irrKlang.h"
+//#include "irrKlang.h"
 
-#pragma comment(lib, "irrKlang.lib")
+//#pragma comment(lib, "irrKlang.lib")
 
 /**
 * \defgroup Engine Game Engine Classes
@@ -45,7 +45,18 @@ namespace GameEngine{
 			~Engine(){}
 
 			//! The sound engine
-			 static irrklang::ISoundEngine* soundengine;
+      #ifdef USESOUND
+         static irrklang::ISoundEngine* soundengine;
+      #else
+            struct StubSoundengine {
+              void play2D(const std::string& s, bool b) {}
+              void stopAllSounds() {};
+              void drop() {};
+            };
+            static StubSoundengine* Engine::soundengine;
+      #endif //USESOUND
+
+			
 
 			//! The random generator to use throughout the gamelogic
 			static std::default_random_engine generator;
